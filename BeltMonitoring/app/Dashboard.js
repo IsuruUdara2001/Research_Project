@@ -19,7 +19,7 @@ import BottomNav from "../components/BottomNav";
 import { LinearGradient } from 'expo-linear-gradient';
 
 const COLORS = {
-    background: "#F0F4F8",
+    background: "#E8F5E9",
     card: "#FFFFFF",
     primary: "#4A90E2",
     primaryLight: "#6BA3E8",
@@ -29,10 +29,10 @@ const COLORS = {
     warningLight: "#F5B041",
     danger: "#E74C3C",
     dangerLight: "#EC7063",
-    textDark: "#2C3E50",
-    textMedium: "#5D6D7E",
-    textLight: "#95A5A6",
-    border: "#E8EEF2",
+    textDark: "#1B5E20",
+    textMedium: "#558B2F",
+    textLight: "#558B2F",
+    border: "#C8E6C9",
     shadow: "#34495E"
 };
 
