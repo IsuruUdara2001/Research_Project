@@ -1,0 +1,9 @@
+pandas
+scikit-learn
+joblib
+flask
+flask-cors
+fastapi
+uvicorn
+firebase-admin
+python-multipart
