@@ -19,7 +19,7 @@ const COLORS = {
     background: "#E8F5E9",
     textDark: "#1B5E20",
     NORMAL: "#4CAF50",   // Green
-    WARNING: "#FFEB3B",  // Yellow
+    WARNING: "#F5B041",  // Yellow
     CRITICAL: "#F44336", // Red
     tipBackground: "#FFF3E0", // Light orange for the tip banner
     tipText: "#E65100",
