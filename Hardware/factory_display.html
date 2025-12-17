@@ -700,7 +700,8 @@
                 tempEl.innerHTML = `${data.temp ?? '-'}<span class="metric-unit">°C</span>`;
                 vibrationEl.innerHTML = `${data.vibration ?? '-'}<span class="metric-unit">g</span>`;
                 rpmEl.innerHTML = `${data.rpm ?? '-'}<span class="metric-unit"></span>`;
-                mlEl.textContent = data.alert_prediction ?? 'No prediction';
+               mlEl.textContent = data.ml_prediction ?? 'No prediction';
+
 
             } catch (err) {
                 // Update connection status to error
