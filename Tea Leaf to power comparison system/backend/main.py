@@ -9,8 +9,15 @@ import pandas as pd
 import requests
 from uuid import uuid4
 from fastapi import Body
+from weight_routes import router as weight_router
 
-app = FastAPI()
+
+
+
+
+app = FastAPI() 
+
+app.include_router(weight_router)
 
 # CORS settings
 app.add_middleware(
@@ -34,6 +41,8 @@ class BatchCreate(BaseModel):
 class LeafRecord(BaseModel):
     farmer_id: str
     leaf_weight: float
+
+
 
 
 @app.get("/api/leaf")
@@ -123,6 +132,7 @@ def update_batch_status(batch_id: str, status: str = Body(...)):
 
 
 
+
 # Load model
 try:
     model = joblib.load("tealeaf_model.pkl")
@@ -182,3 +192,10 @@ def predict_yield(req: PredictRequest):
         "predicted_powder_weight": round(float(pred), 2),
         "weather_used": weather
     }
+
+
+
+
+
+# py -3.12 -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
