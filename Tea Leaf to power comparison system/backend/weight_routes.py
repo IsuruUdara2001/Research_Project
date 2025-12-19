@@ -18,3 +18,28 @@ def save_weight(data: WeightData):
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+
+@router.get("/api/iot/weight/latest")
+def get_latest_weight():
+    docs = (
+        db.collection("iot_weight_data")
+        .order_by("timestamp", direction="DESCENDING")
+        .limit(1)
+        .stream()
+    )
+
+    for doc in docs:
+        data = doc.to_dict()
+        return {
+            "weight_value": data.get("weight_value", 0),
+            "timestamp": data.get("timestamp")
+        }
+
+    return {
+        "weight_value": 0,
+        "message": "No weight data found"
+    }
