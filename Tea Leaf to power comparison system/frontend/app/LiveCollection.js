@@ -7,6 +7,7 @@ import { Link } from "expo-router";
 export default function LiveCollection() {
   const [selectedCollections, setSelectedCollections] = useState([]);
   const [manualModalVisible, setManualModalVisible] = useState(false);
+  const [iotWeight, setIotWeight] = useState('');
  const [newFarmerID, setNewFarmerID] = useState('');
 const [newWeight, setNewWeight] = useState('');
 
@@ -135,12 +136,19 @@ const createBatch = () => {
 
 
 
+const openManualEntry = () => {
+  fetch("http://192.168.144.1:8000/api/iot/weight/latest")
+  .then(res => res.json())
+  .then(data => {
+    console.log("🔥 Latest IoT weight:", data);
+    setIotWeight(String(data.weight_value));
+  })
+  .catch(err => console.error("IoT fetch error", err));
 
 
+  setManualModalVisible(true);
+};
 
-  const openManualEntry = () => {
-    setManualModalVisible(true);
-  };
   
 
  // -----------------------------------------------------
@@ -148,10 +156,11 @@ const createBatch = () => {
   // -----------------------------------------------------
  const saveManualEntry = () => {
   // Validate inputs
-  if (!newFarmerID.trim() || !newWeight.trim()) {
-    Alert.alert('Missing Data', 'Please fill all fields.');
-    return;
-  }
+  if (!newFarmerID.trim() || !iotWeight) {
+  Alert.alert('Missing Data', 'Farmer ID or IoT weight missing.');
+  return;
+}
+
   if (isNaN(newWeight.trim())) {
     Alert.alert('Invalid Weight', 'Please enter a valid numeric weight.');
     return;
@@ -160,7 +169,7 @@ const createBatch = () => {
   // Prepare payload
   const payload = {
     farmer_id: newFarmerID.trim(),       // only farmer ID
-    leaf_weight: parseFloat(newWeight.trim()),  // leaf weight as number
+    leaf_weight: Number(iotWeight), // ✅ IoT weight  // leaf weight as number
   };
 
   // Send to backend
@@ -172,7 +181,11 @@ const createBatch = () => {
     .then(res => res.json())
     .then(data => {
       console.log("✅ Added to Firebase:", data);
-      Alert.alert("Leaf Entry Added", `Added ${newWeight} kg for Farmer ID ${newFarmerID}`);
+      Alert.alert(
+  "Leaf Entry Added",
+  `Added ${iotWeight} kg for Farmer ID ${newFarmerID}`
+);
+
       
       // Refresh the list
       fetchCollections();
@@ -336,13 +349,12 @@ const createBatch = () => {
               onChangeText={setNewFarmerID}
             />
            
-            <TextInput
-              style={styles.input}
-              placeholder="Weight (kg)"
-              keyboardType="numeric"
-              value={newWeight}
-              onChangeText={setNewWeight}
-            />
+           <TextInput
+  style={styles.input}
+  value={iotWeight}
+  editable={false}   // 🔒 user cannot edit
+/>
+
 
             <View style={styles.modalButtons}>
               <TouchableOpacity style={styles.saveButton} onPress={saveManualEntry}>
