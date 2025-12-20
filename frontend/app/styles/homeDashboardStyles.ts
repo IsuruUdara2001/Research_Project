@@ -1,0 +1,185 @@
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#022c22",
+  },
+  root: {
+    flex: 1,
+    backgroundColor: "#022c22",
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  greetingText: {
+    color: "#ecfdf5",
+    fontSize: 20,
+    fontWeight: "700",
+  },
+  subtitleText: {
+    color: "#a7f3d0",
+    fontSize: 13,
+    marginTop: 2,
+  },
+  userAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 999,
+    backgroundColor: "#065f46",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  userInitials: {
+    color: "#bbf7d0",
+    fontWeight: "700",
+  },
+  scroll: {
+    flex: 1,
+    backgroundColor: "#022c22",
+  },
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 24,
+  },
+  cardPrimary: {
+    marginTop: 8,
+    backgroundColor: "#064e3b",
+    borderRadius: 18,
+    padding: 18,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  cardPrimaryRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  cardPrimaryLabel: {
+    color: "#a7f3d0",
+    fontSize: 14,
+  },
+  cardPrimaryValue: {
+    color: "#ecfdf5",
+    fontSize: 32,
+    fontWeight: "800",
+  },
+  chipRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginBottom: 16,
+  },
+  chip: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#022c22",
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    gap: 6,
+  },
+  chipText: {
+    color: "#d1fae5",
+    fontSize: 12,
+  },
+  mainButton: {
+    marginTop: 4,
+    backgroundColor: "#a7f3d0",
+    borderRadius: 999,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    gap: 8,
+  },
+  mainButtonText: {
+    color: "#022c22",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  section: {
+    marginTop: 18,
+  },
+  sectionTitle: {
+    color: "#ecfdf5",
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 10,
+  },
+  qualityRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#022c22",
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 14,
+  },
+  qualityItem: {
+    alignItems: "center",
+    flex: 1,
+  },
+  qualityCircle: {
+    width: 16,
+    height: 16,
+    borderRadius: 999,
+    marginBottom: 6,
+  },
+  qualityLabel: {
+    color: "#cbd5f5",
+    fontSize: 12,
+  },
+  qualityValue: {
+    color: "#e5e7eb",
+    fontSize: 15,
+    fontWeight: "700",
+    marginTop: 2,
+  },
+  actionsRow: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 10,
+  },
+  actionCard: {
+    flex: 1,
+    backgroundColor: "#f9fafb",
+    borderRadius: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    gap: 6,
+  },
+  disabledCard: {
+    opacity: 0.8,
+  },
+  actionTitle: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#111827",
+  },
+  actionSubtitle: {
+    fontSize: 11,
+    color: "#6b7280",
+  },
+  footer: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 8,
+    marginTop: 18,
+  },
+  footerText: {
+    color: "#9ca3af",
+    fontSize: 11,
+    flex: 1,
+    lineHeight: 15,
+  },
+});
