@@ -1,4 +1,4 @@
-// Alert.js
+
 import React, { useEffect, useState, useRef } from "react";
 import {
     StyleSheet,
@@ -18,16 +18,23 @@ import BottomNav from "../components/BottomNav";
 const COLORS = {
     background: "#E8F5E9",
     textDark: "#1B5E20",
+    textLight: "#558B2F",
     NORMAL: "#4CAF50",   // Green
-    WARNING: "#F5B041",  // Yellow
+    WARNING: "#F39C12",  // Yellow
     CRITICAL: "#F44336", // Red
     tipBackground: "#FFF3E0", // Light orange for the tip banner
     tipText: "#E65100",
+    offlineBackground: "#FFECB3",
+    offlineText: "#F57C00",
 };
+
+// In-memory cache for alert data
+let cachedAlertData = null;
 
 export default function Alert() {
     const [alerts, setAlerts] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isOffline, setIsOffline] = useState(false);
     const [dimensions, setDimensions] = useState(Dimensions.get("window"));
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const scaleAnim = useRef(new Animated.Value(0.9)).current;
@@ -40,12 +47,21 @@ export default function Alert() {
     }, []);
 
     const fetchAlerts = async () => {
-        setLoading(true);
+        // Only show loading on first fetch
+        if (!alerts) {
+            setLoading(true);
+        }
+
         try {
-            const response = await fetch("http://10.41.93.98:5000/alerts");
+            const response = await fetch("http://192.168.3.98:5000/alerts");
             if (!response.ok) throw new Error("Network response was not ok");
             const data = await response.json();
+
             setAlerts(data);
+            setIsOffline(false);
+
+            // Cache the successful response
+            cachedAlertData = data;
 
             if (data.overall_status === "CRITICAL") {
                 RNAlert.alert("CRITICAL ALERT", "System status is CRITICAL! Immediate attention required.");
@@ -54,8 +70,18 @@ export default function Alert() {
             }
         } catch (error) {
             console.log("Fetch error:", error);
-            RNAlert.alert("Error", "Could not fetch alerts from backend");
-            setAlerts(null);
+
+            // Use cached data if available
+            if (cachedAlertData) {
+                setAlerts(cachedAlertData);
+                setIsOffline(true);
+            } else {
+                setAlerts(null);
+                // Don't show error alert on retry attempts
+                if (!alerts) {
+                    RNAlert.alert("Error", "Could not fetch alerts from backend");
+                }
+            }
         } finally {
             setLoading(false);
             Animated.parallel([
@@ -96,8 +122,12 @@ export default function Alert() {
     if (!alerts) {
         return (
             <View style={styles.loader}>
-                <Text style={[styles.title, { color: COLORS.textDark, fontSize: 18 }]}>
+                <Ionicons name="cloud-offline-outline" size={64} color={COLORS.textDark} style={{ marginBottom: 20 }} />
+                <Text style={[styles.title, { color: COLORS.textDark, fontSize: 18, marginBottom: 8 }]}>
                     No Data Available
+                </Text>
+                <Text style={[styles.subtitle, { color: COLORS.textLight, fontSize: 14, marginBottom: 20 }]}>
+                    Backend is offline. No cached data available.
                 </Text>
                 <TouchableOpacity
                     onPress={fetchAlerts}
@@ -125,6 +155,16 @@ export default function Alert() {
                         <Ionicons name="refresh" size={24} color={COLORS.textDark} />
                     </TouchableOpacity>
                 </View>
+
+                {/* Offline Mode Banner */}
+                {isOffline && (
+                    <View style={[styles.offlineBanner, { marginHorizontal: horizontalPadding }]}>
+                        <Ionicons name="cloud-offline" size={20} color={COLORS.offlineText} />
+                        <Text style={styles.offlineText}>
+                            Backend offline - Showing last known data
+                        </Text>
+                    </View>
+                )}
 
                 {alerts?.overall_status && (
                     <Animated.View
@@ -219,6 +259,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "500",
     },
+    subtitle: {
+        fontSize: 14,
+        textAlign: 'center',
+        paddingHorizontal: 40,
+    },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -261,6 +306,20 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginLeft: 8,
         fontSize: 16,
+    },
+    offlineBanner: {
+        backgroundColor: COLORS.offlineBackground,
+        padding: 12,
+        borderRadius: 10,
+        marginBottom: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    offlineText: {
+        color: COLORS.offlineText,
+        fontWeight: "600",
+        flex: 1,
     },
     overallStatus: {
         padding: 14,
