@@ -107,15 +107,8 @@
         }
 
         @keyframes pulse-dot {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.5;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .container {
@@ -163,13 +156,8 @@
         }
 
         @keyframes shine {
-            0% {
-                transform: translateX(-100%) translateY(-100%) rotate(45deg);
-            }
-
-            100% {
-                transform: translateX(100%) translateY(100%) rotate(45deg);
-            }
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .status-icon {
@@ -227,39 +215,18 @@
         }
 
         @keyframes pulse-green {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.01);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.01); }
         }
 
         @keyframes pulse-yellow {
-
-            0%,
-            100% {
-                box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
-            }
-
-            50% {
-                box-shadow: 0 15px 60px rgba(243, 156, 18, 0.6);
-            }
+            0%, 100% { box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4); }
+            50% { box-shadow: 0 15px 60px rgba(243, 156, 18, 0.6); }
         }
 
         @keyframes pulse-red {
-
-            0%,
-            100% {
-                box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
-            }
-
-            50% {
-                box-shadow: 0 15px 60px rgba(231, 76, 60, 0.8);
-            }
+            0%, 100% { box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4); }
+            50% { box-shadow: 0 15px 60px rgba(231, 76, 60, 0.8); }
         }
 
         .metrics-grid {
@@ -360,62 +327,8 @@
         }
 
         @keyframes pulse-audio {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        .sound-test-panel {
-            position: fixed;
-            bottom: 80px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .sound-test-btn {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 13px;
-        }
-
-        .sound-test-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .test-critical {
-            background: #E74C3C;
-            color: white;
-        }
-
-        .test-warning {
-            background: #F39C12;
-            color: white;
-        }
-
-        .test-stop {
-            background: #95A5A6;
-            color: white;
-        }
-
-        audio {
-            display: none;
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         @media (max-width: 768px) {
@@ -425,8 +338,7 @@
                 text-align: center;
             }
 
-            .header-left,
-            .header-right {
+            .header-left, .header-right {
                 width: 100%;
                 justify-content: center;
             }
@@ -447,33 +359,10 @@
                 flex-direction: column;
             }
         }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-
-            .header {
-                padding: 15px;
-            }
-
-            .factory-name {
-                font-size: 18px;
-            }
-
-            .metric-card {
-                padding: 20px;
-            }
-
-            .metric-value {
-                font-size: 36px;
-            }
-        }
     </style>
 </head>
 
 <body>
-
     <div class="header">
         <div class="header-left">
             <div class="factory-name">🏭 PRODUCTION LINE A</div>
@@ -526,12 +415,10 @@
         🔊 Click to enable sound alerts
     </div>
 
-    <!-- Critical Alert Sound (Urgent Siren) -->
     <audio id="criticalSound" loop preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Warning Alert Sound (Beep) -->
     <audio id="warningSound" loop preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/2871/2871-preview.mp3" type="audio/mpeg">
     </audio>
@@ -550,7 +437,6 @@
         let previousStatus = null;
         let audioEnabled = false;
 
-        // Status icons
         const statusIcons = {
             NORMAL: '✓',
             WARNING: '⚠️',
@@ -558,7 +444,6 @@
             ERROR: '❌'
         };
 
-        // Enable audio on click
         function enableAudio() {
             if (!audioEnabled) {
                 criticalSound.load();
@@ -575,48 +460,17 @@
             audioIndicator.classList.remove('show');
         });
 
-        // Test functions for manual sound testing
-        window.testCriticalSound = function () {
-            enableAudio();
-            stopAllSounds();
-            console.log('Testing critical sound...');
-            criticalSound.volume = 0.8;
-            criticalSound.play()
-                .then(() => console.log('Critical sound playing'))
-                .catch(e => console.error('Critical sound error:', e));
-            audioIndicator.classList.add('playing');
-            audioIndicator.innerHTML = '🚨 TESTING CRITICAL';
-        };
-
-        window.testWarningSound = function () {
-            enableAudio();
-            stopAllSounds();
-            console.log('Testing warning sound...');
-            warningSound.volume = 0.6;
-            warningSound.play()
-                .then(() => console.log('Warning sound playing'))
-                .catch(e => console.error('Warning sound error:', e));
-            audioIndicator.classList.add('playing');
-            audioIndicator.innerHTML = '⚠️ TESTING WARNING';
-        };
-
-        // Function to stop all sounds
         function stopAllSounds() {
             criticalSound.pause();
             criticalSound.currentTime = 0;
             warningSound.pause();
             warningSound.currentTime = 0;
             audioIndicator.classList.remove('playing');
-            console.log('All sounds stopped');
         }
 
-        window.stopAllSounds = stopAllSounds;
-
-        // Function to play critical sound
         function playCriticalSound() {
             stopAllSounds();
             if (audioEnabled) {
-                console.log('Playing critical sound...');
                 criticalSound.volume = 0.8;
                 criticalSound.play().catch(e => {
                     console.error("Critical audio play error:", e);
@@ -625,17 +479,13 @@
                 audioIndicator.classList.add('playing');
                 audioIndicator.innerHTML = '🚨 CRITICAL ALERT ACTIVE';
             } else {
-                console.log('Audio not enabled yet');
                 audioIndicator.classList.add('show');
-                audioIndicator.innerHTML = '🔊 Click to enable sound alerts';
             }
         }
 
-        // Function to play warning sound
         function playWarningSound() {
             stopAllSounds();
             if (audioEnabled) {
-                console.log('Playing warning sound...');
                 warningSound.volume = 0.6;
                 warningSound.play().catch(e => {
                     console.error("Warning audio play error:", e);
@@ -644,9 +494,7 @@
                 audioIndicator.classList.add('playing');
                 audioIndicator.innerHTML = '⚠️ WARNING ALERT ACTIVE';
             } else {
-                console.log('Audio not enabled yet');
                 audioIndicator.classList.add('show');
-                audioIndicator.innerHTML = '🔊 Click to enable sound alerts';
             }
         }
 
@@ -660,10 +508,16 @@
 
         async function fetchData() {
             try {
-                const res = await fetch("http://10.41.93.98:5000/alerts");
+                console.log('Fetching data from backend...');
+                const res = await fetch("http://192.168.3.98:5000/alerts");
+                
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                
                 const data = await res.json();
+                console.log('Data received:', data);
 
-                // Update connection status
                 connectionStatusEl.style.background = '#4CAF50';
                 connectionStatusEl.style.boxShadow = '0 0 10px #4CAF50';
 
@@ -673,21 +527,16 @@
                 if (data.overall_status === "CRITICAL") {
                     colorClass = 'red';
                     icon = statusIcons.CRITICAL;
-
-                    // Play critical sound if status changed to CRITICAL
                     if (previousStatus !== "CRITICAL") {
                         playCriticalSound();
                     }
                 } else if (data.overall_status === "WARNING") {
                     colorClass = 'yellow';
                     icon = statusIcons.WARNING;
-
-                    // Play warning sound if status changed to WARNING
                     if (previousStatus !== "WARNING") {
                         playWarningSound();
                     }
                 } else {
-                    // Normal status - stop all sounds
                     stopAllSounds();
                     audioIndicator.innerHTML = '🔊 Click to enable sound alerts';
                 }
@@ -700,11 +549,12 @@
                 tempEl.innerHTML = `${data.temp ?? '-'}<span class="metric-unit">°C</span>`;
                 vibrationEl.innerHTML = `${data.vibration ?? '-'}<span class="metric-unit">g</span>`;
                 rpmEl.innerHTML = `${data.rpm ?? '-'}<span class="metric-unit"></span>`;
-               mlEl.textContent = data.ml_prediction ?? 'No prediction';
-
+                
+                // Use alert_prediction field (consistent with Alert.js)
+                mlEl.textContent = data.alert_prediction ?? 'No prediction';
 
             } catch (err) {
-                // Update connection status to error
+                console.error('Fetch error:', err);
                 connectionStatusEl.style.background = '#E74C3C';
                 connectionStatusEl.style.boxShadow = '0 0 10px #E74C3C';
 
@@ -715,7 +565,6 @@
                 rpmEl.innerHTML = '-<span class="metric-unit"></span>';
                 mlEl.textContent = 'Offline';
                 stopAllSounds();
-                console.error(err);
             }
         }
 
@@ -724,8 +573,8 @@
 
         fetchData();
         setInterval(fetchData, 2000);
+        
+        console.log('Factory display initialized. Backend URL: http://192.168.3.98:5000/alerts');
     </script>
-
 </body>
-
 </html>
