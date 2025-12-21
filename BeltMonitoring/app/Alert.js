@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import {
     StyleSheet,
@@ -47,7 +46,6 @@ export default function Alert() {
     }, []);
 
     const fetchAlerts = async () => {
-        // Only show loading on first fetch
         if (!alerts) {
             setLoading(true);
         }
@@ -60,7 +58,6 @@ export default function Alert() {
             setAlerts(data);
             setIsOffline(false);
 
-            // Cache the successful response
             cachedAlertData = data;
 
             if (data.overall_status === "CRITICAL") {
@@ -71,13 +68,11 @@ export default function Alert() {
         } catch (error) {
             console.log("Fetch error:", error);
 
-            // Use cached data if available
             if (cachedAlertData) {
                 setAlerts(cachedAlertData);
                 setIsOffline(true);
             } else {
                 setAlerts(null);
-                // Don't show error alert on retry attempts
                 if (!alerts) {
                     RNAlert.alert("Error", "Could not fetch alerts from backend");
                 }
@@ -93,7 +88,6 @@ export default function Alert() {
 
     useEffect(() => {
         fetchAlerts();
-        // Auto-refresh every 5 seconds
         const interval = setInterval(fetchAlerts, 5000);
         return () => clearInterval(interval);
     }, []);
@@ -166,6 +160,7 @@ export default function Alert() {
                     </View>
                 )}
 
+                {/* Overall Condition */}
                 {alerts?.overall_status && (
                     <Animated.View
                         style={[
@@ -185,11 +180,11 @@ export default function Alert() {
                 )}
 
                 {/* Tip banner if ML prediction differs */}
-                {alerts?.alert_prediction && alerts?.overall_status && alerts.alert_prediction !== alerts.overall_status && (
+                {alerts?.ml_prediction && alerts?.overall_status && alerts.ml_prediction !== alerts.overall_status && (
                     <View style={[styles.tipBanner, { marginHorizontal: horizontalPadding }]}>
                         <Ionicons name="information-circle" size={20} color={COLORS.tipText} />
                         <Text style={styles.tipText}>
-                            ML prediction ({alerts.alert_prediction}) differs from overall condition ({alerts.overall_status})
+                            ML prediction ({alerts.ml_prediction}) differs from overall condition ({alerts.overall_status})
                         </Text>
                     </View>
                 )}
@@ -222,9 +217,9 @@ export default function Alert() {
                     />
                     <Card
                         title="ML Prediction"
-                        value={alerts.alert_prediction ?? "NORMAL"}
-                        status={alerts.alert_prediction ?? "NORMAL"}
-                        color={getColor(alerts.alert_prediction)}
+                        value={alerts.ml_prediction ?? "NORMAL"}    // <-- changed
+                        status={alerts.ml_prediction ?? "NORMAL"}   // <-- changed
+                        color={getColor(alerts.ml_prediction)}     // <-- changed
                         icon="🤖"
                     />
                 </ScrollView>
