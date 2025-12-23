@@ -47,7 +47,7 @@ class PredictRequest(BaseModel):
 
 # Load model
 try:
-    model  = joblib.load("tealeaf_model.pkl")
+    large_model  = joblib.load("tealeaf_model.pkl")
     print("ML Model Loaded!")
 except Exception as e:
     print("Error loading model:", e)
