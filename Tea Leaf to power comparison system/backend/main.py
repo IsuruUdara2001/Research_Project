@@ -88,23 +88,45 @@ def create_batch(batch: BatchCreate):
 
     batch_id = f"BATCH-{datetime.utcnow().year}-{int(datetime.utcnow().timestamp()*1000)}"
     total_weight = sum(c.leaf_weight for c in batch.collections)
-    expected_yield = 20
-    predicted_output = round(total_weight * expected_yield / 100, 2)
+
+    # 🔥 ML PREDICTION
+    weather = get_weather_data()
+
+    X = {
+        "leaf_weight_kg": total_weight,
+        "leaf_moisture_percent": 78,
+        "withering_time_hours": 16,
+        "fermentation_time_hours": 16,
+        "drying_temperature_celsius": 90,
+        "drying_duration_minutes": 45,
+        "ambient_temperature_celsius": weather["temp_c"],
+        "humidity_percentage": weather["humidity"],
+        "rainfall_mm": weather["precip_mm"],
+        "season": "Intermediate",
+        "collection_region": "Upper_Division"
+    }
+
+    df = pd.DataFrame([X])
+    predicted_output = round(float(model.predict(df)[0]), 2)
+    expected_yield = round((predicted_output / total_weight) * 100, 2)
 
     new_batch = {
         "id": batch_id,
         "startTime": datetime.utcnow().isoformat(),
         "status": "Processing",
-        "statusColor": "#f59e0b",
         "collections": [c.dict() for c in batch.collections],
         "totalWeight": total_weight,
+
+        # ✅ STORED ONCE
         "predictedOutput": predicted_output,
         "expectedYield": expected_yield,
+
         "isProcessing": True,
     }
 
     db.collection("batches").document(batch_id).set(new_batch)
     return {"message": "Batch created", "batch": new_batch}
+
 
 
 @app.get("/api/activeBatches")

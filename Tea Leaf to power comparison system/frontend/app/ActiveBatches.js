@@ -7,23 +7,7 @@ export default function ActiveBatches() {
   const [batches, setBatches] = useState([]);
 
 
-   const getPredictedOutput = async (leafWeight) => {
-    try {
-      const res = await fetch("http://192.168.144.1:8000/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          leaf_weight_kg: leafWeight
-        })
-      });
-
-      const data = await res.json();
-      return data.predicted_powder_weight;
-    } catch (err) {
-      console.error("❌ Prediction failed:", err);
-      return null;
-    }
-  };
+ 
 
   // 🔥 Fetch active batches from backend
    useEffect(() => {
@@ -34,36 +18,24 @@ export default function ActiveBatches() {
 
         console.log("🔥 Active Batches:", data);
 
-        const formatted = await Promise.all(
-          data.map(async (b) => {
-            const predictedOutput = await getPredictedOutput(b.totalWeight);
+       const formatted = data.map(b => ({
+  id: b.id,
+  startTime: new Date(b.startTime + "Z").toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  }),
+  status: b.status,
+  statusColor: b.isProcessing ? "#f59e0b" : "#10b981",
+  collections: b.collections || [],
+  totalWeight: b.totalWeight,
 
-            return {
-              id: b.id,
-              startTime: new Date(b.startTime + "Z").toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              }),
-              status: b.status,
-              statusColor: b.isProcessing ? "#f59e0b" : "#10b981",
-              collections: (b.collections || []).map(c => ({
-                name: c.farmer_name,
-                weight: c.leaf_weight,
-                time: c.time
-              })),
-              totalWeight: b.totalWeight,
+  // ✅ READ FROM DB
+  predictedOutput: b.predictedOutput,
+  expectedYield: b.expectedYield,
 
-              // ✅ ML OUTPUT
-              predictedOutput: predictedOutput,
+  isProcessing: b.isProcessing,
+}));
 
-              expectedYield: predictedOutput
-                ? ((predictedOutput / b.totalWeight) * 100).toFixed(2)
-                : "—",
-
-              isProcessing: b.isProcessing,
-            };
-          })
-        );
 
         setBatches(formatted);
       } catch (err) {
