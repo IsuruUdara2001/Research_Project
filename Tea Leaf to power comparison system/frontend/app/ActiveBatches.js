@@ -127,7 +127,7 @@ export default function ActiveBatches() {
                 <View key={index} style={styles.collectionRow}>
                   <View style={styles.collectionLeft}>
                     <Text style={styles.farmerIcon}>👤</Text>
-                    <Text style={styles.farmerName}>{collection.name}</Text>
+                    <Text style={styles.farmerName}>{collection.farmer_name}</Text>
                   </View>
                   <View style={styles.collectionRight}>
                     <Text style={styles.collectionWeight}>{collection.weight} kg</Text>
