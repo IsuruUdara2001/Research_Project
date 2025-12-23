@@ -130,7 +130,7 @@ export default function ActiveBatches() {
                     <Text style={styles.farmerName}>{collection.farmer_name}</Text>
                   </View>
                   <View style={styles.collectionRight}>
-                    <Text style={styles.collectionWeight}>{collection.weight} kg</Text>
+                    <Text style={styles.collectionWeight}>{collection.leaf_weight} kg</Text>
                     <Text style={styles.collectionTime}>{collection.time}</Text>
                   </View>
                 </View>
