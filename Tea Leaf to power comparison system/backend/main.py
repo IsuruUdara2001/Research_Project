@@ -42,6 +42,24 @@ class LeafRecord(BaseModel):
     farmer_id: str
     leaf_weight: float
 
+class PredictRequest(BaseModel):
+    leaf_weight_kg: float
+
+# Load model
+try:
+    model  = joblib.load("tealeaf_model.pkl")
+    print("ML Model Loaded!")
+except Exception as e:
+    print("Error loading model:", e)
+    model = None
+
+try:
+    small_model = joblib.load("small_batch_model.pkl")
+    print("Small batch model loaded")
+except Exception as e:
+    print("Small model load error:", e)
+    small_model = None
+
 
 
 
@@ -155,13 +173,10 @@ def update_batch_status(batch_id: str, status: str = Body(...)):
 
 
 
-# Load model
-try:
-    model = joblib.load("tealeaf_model.pkl")
-    print("ML Model Loaded!")
-except Exception as e:
-    print("Error loading model:", e)
-    model = None
+
+
+
+
 
 # Weather API constants
 WEATHER_API_KEY = "994f61d990ff481f888112805252211"
@@ -181,38 +196,58 @@ def get_weather_data(lat=BADULLA_LAT, lon=BADULLA_LON):
         "precip_mm": data.get("precip_mm")
     }
 
-# Request body model
-class PredictRequest(BaseModel):
-    leaf_weight_kg: float
 
-# Prediction route
+
+
+
+
+
+
+
+
+
+
+# =========================
+# PREDICT ENDPOINT
+# =========================
 @app.post("/predict")
 def predict_yield(req: PredictRequest):
-    if model is None:
-        raise HTTPException(status_code=500, detail="Model not loaded")
 
     weather = get_weather_data()
+    lw = req.leaf_weight_kg
 
-    X = {
-        "leaf_weight_kg": req.leaf_weight_kg,
-        "leaf_moisture_percent": 78,
-        "withering_time_hours": 16,
-        "fermentation_time_hours": 16,
-        "drying_temperature_celsius": 90,
-        "drying_duration_minutes": 45,
-        "ambient_temperature_celsius": weather["temp_c"],
-        "humidity_percentage": weather["humidity"],
-        "rainfall_mm": weather["precip_mm"],
-        "season": "Intermediate",
-        "collection_region": "Upper_Division"
-    }
+    if lw <= 250:
+        df = pd.DataFrame([{
+            "leaf_weight_kg": lw,
+            "ambient_temperature_celsius": weather["temp_c"],
+            "humidity_percentage": weather["humidity"],
+            "rainfall_mm": weather["precip_mm"],
+        }])
 
-    df = pd.DataFrame([X])
-    pred = model.predict(df)[0]
+        y = small_model.predict(df)[0]
+        powder = lw * y / 100
+        model_used = "small_batch_model"
+    else:
+        df = pd.DataFrame([{
+            "leaf_weight_kg": lw,
+            "leaf_moisture_percent": 78,
+            "withering_time_hours": 16,
+            "fermentation_time_hours": 16,
+            "drying_temperature_celsius": 90,
+            "drying_duration_minutes": 45,
+            "ambient_temperature_celsius": weather["temp_c"],
+            "humidity_percentage": weather["humidity"],
+            "rainfall_mm": weather["precip_mm"],
+            "season": "Intermediate",
+            "collection_region": "Upper_Division"
+        }])
+
+        powder = large_model.predict(df)[0]
+        model_used = "large_batch_model"
 
     return {
-        "predicted_powder_weight": round(float(pred), 2),
-        "weather_used": weather
+        "predicted_powder_weight": round(powder, 2),
+        "model_used": model_used
     }
 
 
