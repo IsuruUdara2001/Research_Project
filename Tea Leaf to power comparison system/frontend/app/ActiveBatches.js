@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   readyButton: {
-  backgroundColor: "#2563eb",
+  backgroundColor: "#10b981",
   paddingVertical: 14,
   paddingHorizontal: 20,
   borderRadius: 12,
