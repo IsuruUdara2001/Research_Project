@@ -24,6 +24,7 @@ const fetchCollections = () => {
 
       const formatted = data.map((item, index) => ({
         id: index + 1,
+        farmer_id: item.farmer_id,
         name: item.farmer_name,
         location: item.village_location,
         weight: item.leaf_weight,
@@ -72,22 +73,6 @@ const fetchCollections = () => {
       setSelectedCollections(collections.map(c => c.id));
     }
   };
-
-fetch("http://192.168.144.1:8000/api/leaf")
-  .then(res => res.json())
-  .then(data => {                     // ✅ data is defined HERE
-    const formatted = data.map((item, index) => ({
-      id: index + 1,
-      farmer_id: item.farmer_id,      // ✅ option 1 fix
-      name: item.farmer_name,
-      location: item.village_location,
-      weight: item.leaf_weight,
-    }));
-
-    setCollections(formatted);
-  })
-  .catch(err => console.error(err));
-
 
 
   

@@ -51,7 +51,7 @@ try:
     print("ML Model Loaded!")
 except Exception as e:
     print("Error loading model:", e)
-    model = None
+    large_model = None
 
 try:
     small_model = joblib.load("small_batch_model.pkl")
@@ -99,52 +99,57 @@ def add_leaf_record(record: LeafRecord):
     return {"message": "Leaf record added successfully", "leaf_id": leaf_id}
 
 
+# =========================
+# CREATE BATCH (FIXED)
+# =========================
 @app.post("/api/createBatch")
 def create_batch(batch: BatchCreate):
-    if not batch.collections:
-        raise HTTPException(status_code=400, detail="No collections provided")
 
-    batch_id = f"BATCH-{datetime.utcnow().year}-{int(datetime.utcnow().timestamp()*1000)}"
     total_weight = sum(c.leaf_weight for c in batch.collections)
-
-    # 🔥 ML PREDICTION
     weather = get_weather_data()
 
-    X = {
-        "leaf_weight_kg": total_weight,
-        "leaf_moisture_percent": 78,
-        "withering_time_hours": 16,
-        "fermentation_time_hours": 16,
-        "drying_temperature_celsius": 90,
-        "drying_duration_minutes": 45,
-        "ambient_temperature_celsius": weather["temp_c"],
-        "humidity_percentage": weather["humidity"],
-        "rainfall_mm": weather["precip_mm"],
-        "season": "Intermediate",
-        "collection_region": "Upper_Division"
-    }
+    if total_weight <= 250:
+        df = pd.DataFrame([{
+            "leaf_weight_kg": total_weight,
+            "ambient_temperature_celsius": weather["temp_c"],
+            "humidity_percentage": weather["humidity"],
+            "rainfall_mm": weather["precip_mm"],
+        }])
 
-    df = pd.DataFrame([X])
-    predicted_output = round(float(model.predict(df)[0]), 2)
-    expected_yield = round((predicted_output / total_weight) * 100, 2)
+        yield_percent = small_model.predict(df)[0]
+        predicted_output = total_weight * yield_percent / 100
+    else:
+        df = pd.DataFrame([{
+            "leaf_weight_kg": total_weight,
+            "leaf_moisture_percent": 78,
+            "withering_time_hours": 16,
+            "fermentation_time_hours": 16,
+            "drying_temperature_celsius": 90,
+            "drying_duration_minutes": 45,
+            "ambient_temperature_celsius": weather["temp_c"],
+            "humidity_percentage": weather["humidity"],
+            "rainfall_mm": weather["precip_mm"],
+            "season": "Intermediate",
+            "collection_region": "Upper_Division"
+        }])
 
-    new_batch = {
+        predicted_output = large_model.predict(df)[0]
+
+    expected_yield = (predicted_output / total_weight) * 100
+
+    batch_id = f"BATCH-{int(datetime.utcnow().timestamp()*1000)}"
+
+    db.collection("batches").document(batch_id).set({
         "id": batch_id,
-        "startTime": datetime.utcnow().isoformat(),
-        "status": "Processing",
-        "collections": [c.dict() for c in batch.collections],
         "totalWeight": total_weight,
+        "predictedOutput": round(predicted_output, 2),
+        "expectedYield": round(expected_yield, 2),
+        "collections": [c.dict() for c in batch.collections],
+        "status": "Processing",
+        "startTime": datetime.utcnow().isoformat()
+    })
 
-        # ✅ STORED ONCE
-        "predictedOutput": predicted_output,
-        "expectedYield": expected_yield,
-
-        "isProcessing": True,
-    }
-
-    db.collection("batches").document(batch_id).set(new_batch)
-    return {"message": "Batch created", "batch": new_batch}
-
+    return {"batch_id": batch_id}
 
 
 @app.get("/api/activeBatches")
