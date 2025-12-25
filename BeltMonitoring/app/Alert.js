@@ -18,16 +18,15 @@ const COLORS = {
     background: "#E8F5E9",
     textDark: "#1B5E20",
     textLight: "#558B2F",
-    NORMAL: "#4CAF50",   // Green
-    WARNING: "#F39C12",  // Yellow
-    CRITICAL: "#F44336", // Red
-    tipBackground: "#FFF3E0", // Light orange for the tip banner
+    NORMAL: "#4CAF50",
+    WARNING: "#F39C12",
+    CRITICAL: "#F44336",
+    tipBackground: "#FFF3E0",
     tipText: "#E65100",
     offlineBackground: "#FFECB3",
     offlineText: "#F57C00",
 };
 
-// In-memory cache for alert data
 let cachedAlertData = null;
 
 export default function Alert() {
@@ -46,18 +45,15 @@ export default function Alert() {
     }, []);
 
     const fetchAlerts = async () => {
-        if (!alerts) {
-            setLoading(true);
-        }
+        if (!alerts) setLoading(true);
 
         try {
-            const response = await fetch("http://192.168.3.98:5000/alerts");
+            const response = await fetch("http://192.168.8.158:5000/alerts"); // <-- your Flask backend IP
             if (!response.ok) throw new Error("Network response was not ok");
             const data = await response.json();
 
             setAlerts(data);
             setIsOffline(false);
-
             cachedAlertData = data;
 
             if (data.overall_status === "CRITICAL") {
@@ -67,15 +63,12 @@ export default function Alert() {
             }
         } catch (error) {
             console.log("Fetch error:", error);
-
             if (cachedAlertData) {
                 setAlerts(cachedAlertData);
                 setIsOffline(true);
             } else {
                 setAlerts(null);
-                if (!alerts) {
-                    RNAlert.alert("Error", "Could not fetch alerts from backend");
-                }
+                if (!alerts) RNAlert.alert("Error", "Could not fetch alerts from backend");
             }
         } finally {
             setLoading(false);
@@ -106,9 +99,7 @@ export default function Alert() {
         return (
             <View style={styles.loader}>
                 <ActivityIndicator size="large" color={COLORS.textDark} />
-                <Text style={[styles.loadingText, { color: COLORS.textDark }]}>
-                    Loading alerts...
-                </Text>
+                <Text style={[styles.loadingText, { color: COLORS.textDark }]}>Loading alerts...</Text>
             </View>
         );
     }
@@ -117,16 +108,11 @@ export default function Alert() {
         return (
             <View style={styles.loader}>
                 <Ionicons name="cloud-offline-outline" size={64} color={COLORS.textDark} style={{ marginBottom: 20 }} />
-                <Text style={[styles.title, { color: COLORS.textDark, fontSize: 18, marginBottom: 8 }]}>
-                    No Data Available
-                </Text>
+                <Text style={[styles.title, { color: COLORS.textDark, fontSize: 18, marginBottom: 8 }]}>No Data Available</Text>
                 <Text style={[styles.subtitle, { color: COLORS.textLight, fontSize: 14, marginBottom: 20 }]}>
                     Backend is offline. No cached data available.
                 </Text>
-                <TouchableOpacity
-                    onPress={fetchAlerts}
-                    style={styles.retryButton}
-                >
+                <TouchableOpacity onPress={fetchAlerts} style={styles.retryButton}>
                     <Ionicons name="refresh" size={24} color={COLORS.textDark} />
                     <Text style={styles.retryText}>Tap to retry</Text>
                 </TouchableOpacity>
@@ -142,26 +128,19 @@ export default function Alert() {
                     <Text style={[styles.title, { fontSize: titleSize, paddingHorizontal: horizontalPadding }]}>
                         Belt Alerts Dashboard
                     </Text>
-                    <TouchableOpacity
-                        onPress={fetchAlerts}
-                        style={styles.refreshButton}
-                    >
+                    <TouchableOpacity onPress={fetchAlerts} style={styles.refreshButton}>
                         <Ionicons name="refresh" size={24} color={COLORS.textDark} />
                     </TouchableOpacity>
                 </View>
 
-                {/* Offline Mode Banner */}
                 {isOffline && (
                     <View style={[styles.offlineBanner, { marginHorizontal: horizontalPadding }]}>
                         <Ionicons name="cloud-offline" size={20} color={COLORS.offlineText} />
-                        <Text style={styles.offlineText}>
-                            Backend offline - Showing last known data
-                        </Text>
+                        <Text style={styles.offlineText}>Backend offline - Showing last known data</Text>
                     </View>
                 )}
 
-                {/* Overall Condition */}
-                {alerts?.overall_status && (
+                {alerts.overall_status && (
                     <Animated.View
                         style={[
                             styles.overallStatus,
@@ -170,7 +149,7 @@ export default function Alert() {
                                 opacity: fadeAnim,
                                 transform: [{ scale: scaleAnim }],
                                 marginHorizontal: horizontalPadding,
-                            }
+                            },
                         ]}
                     >
                         <Text style={[styles.overallText, { fontSize: overallTextSize }]}>
@@ -179,8 +158,7 @@ export default function Alert() {
                     </Animated.View>
                 )}
 
-                {/* Tip banner if ML prediction differs */}
-                {alerts?.ml_prediction && alerts?.overall_status && alerts.ml_prediction !== alerts.overall_status && (
+                {alerts.ml_prediction && alerts.ml_prediction !== alerts.overall_status && (
                     <View style={[styles.tipBanner, { marginHorizontal: horizontalPadding }]}>
                         <Ionicons name="information-circle" size={20} color={COLORS.tipText} />
                         <Text style={styles.tipText}>
@@ -203,7 +181,7 @@ export default function Alert() {
                     />
                     <Card
                         title="Vibration"
-                        value={`${alerts.vibration ?? "-"}g`}
+                        value={`${alerts.vibration ? "Detected" : "No"} vibration`}
                         status={alerts.vibration_status ?? "NORMAL"}
                         color={getColor(alerts.vibration_status)}
                         icon="📳"
@@ -217,9 +195,9 @@ export default function Alert() {
                     />
                     <Card
                         title="ML Prediction"
-                        value={alerts.ml_prediction ?? "NORMAL"}    // <-- changed
-                        status={alerts.ml_prediction ?? "NORMAL"}   // <-- changed
-                        color={getColor(alerts.ml_prediction)}     // <-- changed
+                        value={alerts.ml_prediction ?? "NORMAL"}
+                        status={alerts.ml_prediction ?? "NORMAL"}
+                        color={getColor(alerts.ml_prediction)}
                         icon="🤖"
                     />
                 </ScrollView>
@@ -231,127 +209,23 @@ export default function Alert() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.background
-    },
-    contentWrapper: {
-        flex: 1
-    },
-    contentWrapperDesktop: {
-        maxWidth: 1200,
-        alignSelf: 'center',
-        width: '100%'
-    },
-    loader: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: COLORS.background
-    },
-    loadingText: {
-        marginTop: 10,
-        fontSize: 16,
-        fontWeight: "500",
-    },
-    subtitle: {
-        fontSize: 14,
-        textAlign: 'center',
-        paddingHorizontal: 40,
-    },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingRight: 20,
-    },
-    title: {
-        fontWeight: "bold",
-        color: COLORS.textDark,
-        textAlign: "center",
-        marginBottom: 16,
-        flex: 1,
-    },
-    refreshButton: {
-        padding: 8,
-        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-        borderRadius: 20,
-        elevation: 2,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-    },
-    retryButton: {
-        marginTop: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        paddingHorizontal: 20,
-        paddingVertical: 12,
-        borderRadius: 8,
-        elevation: 2,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-    },
-    retryText: {
-        color: COLORS.textDark,
-        fontWeight: '600',
-        marginLeft: 8,
-        fontSize: 16,
-    },
-    offlineBanner: {
-        backgroundColor: COLORS.offlineBackground,
-        padding: 12,
-        borderRadius: 10,
-        marginBottom: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    },
-    offlineText: {
-        color: COLORS.offlineText,
-        fontWeight: "600",
-        flex: 1,
-    },
-    overallStatus: {
-        padding: 14,
-        borderRadius: 14,
-        marginBottom: 12,
-        elevation: 4,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4
-    },
-    overallText: {
-        color: "#fff",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    tipBanner: {
-        backgroundColor: COLORS.tipBackground,
-        padding: 12,
-        borderRadius: 10,
-        marginBottom: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    },
-    tipText: {
-        color: COLORS.tipText,
-        fontWeight: "600",
-        flex: 1,
-    },
-    cardsScrollView: {
-        flex: 1
-    },
-    cardsContainer: {
-        gap: 16,
-        paddingVertical: 20,
-        alignItems: "center",
-        paddingBottom: 30
-    },
+    container: { flex: 1, backgroundColor: COLORS.background },
+    contentWrapper: { flex: 1 },
+    contentWrapperDesktop: { maxWidth: 1200, alignSelf: "center", width: "100%" },
+    loader: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: COLORS.background },
+    loadingText: { marginTop: 10, fontSize: 16, fontWeight: "500" },
+    subtitle: { fontSize: 14, textAlign: "center", paddingHorizontal: 40 },
+    header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingRight: 20 },
+    title: { fontWeight: "bold", color: COLORS.textDark, textAlign: "center", marginBottom: 16, flex: 1 },
+    refreshButton: { padding: 8, backgroundColor: "rgba(255, 255, 255, 0.7)", borderRadius: 20, elevation: 2 },
+    retryButton: { marginTop: 20, flexDirection: "row", alignItems: "center", backgroundColor: "#fff", paddingHorizontal: 20, paddingVertical: 12, borderRadius: 8, elevation: 2 },
+    retryText: { color: COLORS.textDark, fontWeight: "600", marginLeft: 8, fontSize: 16 },
+    offlineBanner: { backgroundColor: COLORS.offlineBackground, padding: 12, borderRadius: 10, marginBottom: 12, flexDirection: "row", alignItems: "center", gap: 8 },
+    offlineText: { color: COLORS.offlineText, fontWeight: "600", flex: 1 },
+    overallStatus: { padding: 14, borderRadius: 14, marginBottom: 12, elevation: 4 },
+    overallText: { color: "#fff", fontWeight: "bold", textAlign: "center" },
+    tipBanner: { backgroundColor: COLORS.tipBackground, padding: 12, borderRadius: 10, marginBottom: 12, flexDirection: "row", alignItems: "center", gap: 8 },
+    tipText: { color: COLORS.tipText, fontWeight: "600", flex: 1 },
+    cardsScrollView: { flex: 1 },
+    cardsContainer: { gap: 16, paddingVertical: 20, alignItems: "center", paddingBottom: 30 },
 });
