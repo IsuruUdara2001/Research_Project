@@ -13,406 +13,486 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #388E3C 100%);
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: #0a0e27;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-            padding: 20px;
         }
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, .03) 2px, rgba(255, 255, 255, .03) 4px),
-                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255, 255, 255, .03) 2px, rgba(255, 255, 255, .03) 4px);
-            pointer-events: none;
-        }
-
-        .header {
-            width: 100%;
-            max-width: 1400px;
+        .top-bar {
+            background: linear-gradient(180deg, #1a1f3a 0%, #0f1428 100%);
+            border-bottom: 3px solid #00ff41;
+            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0, 255, 65, 0.3);
         }
 
-        .header-left {
+        .facility-info {
             display: flex;
             align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            gap: 30px;
         }
 
-        .factory-name {
-            font-weight: bold;
-            font-size: 24px;
+        .facility-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00ff41;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        .machine-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #00ff41;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #00ff41;
             letter-spacing: 1px;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .machine-id {
-            background: rgba(255, 255, 255, 0.2);
+        .system-info {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .time-display {
+            font-family: 'Courier New', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .connection-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 8px 16px;
-            border-radius: 20px;
+            background: rgba(0, 255, 65, 0.1);
+            border-radius: 4px;
+            border: 1px solid #00ff41;
+        }
+
+        .connection-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00ff41;
+            box-shadow: 0 0 15px #00ff41;
+            animation: pulse 2s infinite;
+        }
+
+        .connection-dot.error {
+            background: #ff0040;
+            box-shadow: 0 0 15px #ff0040;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .connection-text {
             font-size: 14px;
             font-weight: 600;
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .main-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            padding: 25px 40px;
+            overflow: hidden;
         }
 
-        .timestamp {
-            font-family: 'Courier New', monospace;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px 20px;
+        .status-panel {
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f1428 100%);
+            border: 3px solid;
             border-radius: 8px;
-            font-size: 18px;
-            color: #fff;
-            font-weight: 600;
-            min-width: 120px;
-            text-align: center;
-        }
-
-        .connection-status {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #4CAF50;
-            box-shadow: 0 0 10px #4CAF50;
-            animation: pulse-dot 2s infinite;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1400px;
+            padding: 40px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
-            z-index: 1;
-        }
-
-        .status-section {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .status {
-            flex: 2;
-            min-width: 300px;
-            padding: 45px 40px;
-            border-radius: 20px;
-            font-size: clamp(48px, 6vw, 72px);
-            font-weight: 900;
-            color: #fff;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
-            border: 3px solid rgba(255, 255, 255, 0.2);
+            align-items: center;
+            justify-content: center;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
         }
 
-        .status::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: shine 3s infinite;
+        .status-panel.normal {
+            border-color: #00ff41;
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.3), inset 0 0 50px rgba(0, 0, 0, 0.5);
         }
 
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        .status-panel.warning {
+            border-color: #ffd700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.4), inset 0 0 50px rgba(0, 0, 0, 0.5);
+            animation: warning-pulse 2s infinite;
+        }
+
+        .status-panel.critical {
+            border-color: #ff0040;
+            box-shadow: 0 0 40px rgba(255, 0, 64, 0.5), inset 0 0 50px rgba(0, 0, 0, 0.5);
+            animation: critical-pulse 1s infinite;
+        }
+
+        @keyframes warning-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 40px rgba(255, 215, 0, 0.4), inset 0 0 50px rgba(0, 0, 0, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 60px rgba(255, 215, 0, 0.7), inset 0 0 50px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        @keyframes critical-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 40px rgba(255, 0, 64, 0.5), inset 0 0 50px rgba(0, 0, 0, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 70px rgba(255, 0, 64, 0.9), inset 0 0 50px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        .status-label {
+            font-size: 24px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        .status-value {
+            font-size: 120px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            line-height: 1;
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px currentColor;
         }
 
         .status-icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-            display: block;
+            font-size: 100px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px currentColor);
         }
 
-        .ml-prediction-card {
-            flex: 1;
-            min-width: 250px;
-            background: rgba(255, 255, 255, 0.95);
+        .normal .status-value,
+        .normal .status-icon {
+            color: #00ff41;
+        }
+
+        .warning .status-value,
+        .warning .status-icon {
+            color: #ffd700;
+        }
+
+        .critical .status-value,
+        .critical .status-icon {
+            color: #ff0040;
+        }
+
+        .ml-prediction {
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f1428 100%);
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .ml-label {
-            font-size: 14px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        .ml-value {
-            font-size: 40px;
-            font-weight: bold;
-            color: #1B5E20;
             text-align: center;
-            line-height: 1.2;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2), inset 0 0 50px rgba(0, 0, 0, 0.5);
         }
 
-        .green {
-            background: linear-gradient(135deg, #27AE60 0%, #4CAF50 100%);
-            animation: pulse-green 2s ease-in-out infinite;
+        .ml-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
-        .yellow {
-            background: linear-gradient(135deg, #F39C12 0%, #F1C40F 100%);
-            color: #000;
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
-            animation: pulse-yellow 1s ease-in-out infinite;
+        .ml-icon {
+            font-size: 36px;
         }
 
-        .red {
-            background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
-            animation: pulse-red 0.5s ease-in-out infinite;
+        .ml-title {
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #00d4ff;
         }
 
-        @keyframes pulse-green {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.01); }
+        .ml-result {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.4;
+            padding: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 6px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        @keyframes pulse-yellow {
-            0%, 100% { box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4); }
-            50% { box-shadow: 0 15px 60px rgba(243, 156, 18, 0.6); }
-        }
-
-        @keyframes pulse-red {
-            0%, 100% { box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4); }
-            50% { box-shadow: 0 15px 60px rgba(231, 76, 60, 0.8); }
-        }
-
-        .metrics-grid {
+        .metrics-section {
+            grid-column: 1 / -1;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
         }
 
-        .metric-card {
-            background: rgba(255, 255, 255, 0.95);
+        .metric-box {
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f1428 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.3);
             position: relative;
             overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
         }
 
-        .metric-card::before {
+        .metric-box::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, #1B5E20, #4CAF50);
-        }
-
-        .metric-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #00ff41, transparent);
         }
 
         .metric-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .metric-icon {
-            font-size: 32px;
-            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+            font-size: 42px;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 65, 0.5));
         }
 
-        .metric-label {
-            font-size: 14px;
-            color: #666;
+        .metric-title {
+            font-size: 16px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 700;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.7);
         }
 
-        .metric-value {
-            font-size: 48px;
-            font-weight: bold;
-            color: #1B5E20;
+        .metric-reading {
             font-family: 'Courier New', monospace;
-            margin-left: 44px;
+            font-size: 64px;
+            font-weight: 700;
+            color: #00ff41;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+            letter-spacing: 2px;
+            margin-left: 57px;
         }
 
         .metric-unit {
-            font-size: 24px;
-            color: #888;
-            margin-left: 5px;
+            font-size: 32px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-left: 10px;
         }
 
-        .audio-indicator {
+        .alert-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 0, 64, 0.95);
+            border: 4px solid #ff0040;
+            padding: 40px 60px;
+            border-radius: 12px;
+            font-size: 48px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            box-shadow: 0 0 100px rgba(255, 0, 64, 0.8);
+            z-index: 1000;
+            display: none;
+            animation: alert-flash 0.5s infinite;
+        }
+
+        .alert-indicator.active {
+            display: block;
+        }
+
+        @keyframes alert-flash {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .audio-control {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff41;
+            padding: 15px 25px;
+            border-radius: 50px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 600;
             transition: all 0.3s ease;
+            z-index: 999;
         }
 
-        .audio-indicator:hover {
-            background: rgba(0, 0, 0, 0.9);
+        .audio-control:hover {
+            background: rgba(0, 255, 65, 0.2);
             transform: scale(1.05);
         }
 
-        .audio-indicator.show {
-            display: flex;
+        .audio-control.active {
+            border-color: #ff0040;
+            background: rgba(255, 0, 64, 0.2);
         }
 
-        .audio-indicator.playing {
-            background: rgba(231, 76, 60, 0.9);
-            animation: pulse-audio 1s infinite;
+        @media (max-width: 1400px) {
+            .status-value {
+                font-size: 90px;
+            }
+
+            .status-icon {
+                font-size: 80px;
+            }
+
+            .metric-reading {
+                font-size: 52px;
+            }
         }
 
-        @keyframes pulse-audio {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .header-left, .header-right {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .factory-name {
-                font-size: 20px;
-            }
-
-            .status {
-                padding: 30px 20px;
-            }
-
-            .metrics-grid {
+        @media (max-width: 1024px) {
+            .main-content {
                 grid-template-columns: 1fr;
             }
 
-            .status-section {
+            .metrics-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
                 flex-direction: column;
+                gap: 15px;
+            }
+
+            .metrics-section {
+                grid-template-columns: 1fr;
+            }
+
+            .status-value {
+                font-size: 64px;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="header">
-        <div class="header-left">
-            <div class="factory-name">🏭 PRODUCTION LINE A</div>
-            <div class="machine-id">MACHINE #47</div>
+    <div class="top-bar">
+        <div class="facility-info">
+            <div class="facility-name">🏭 PRODUCTION LINE A</div>
+            <div class="machine-badge">MACHINE #47</div>
         </div>
-        <div class="header-right">
-            <div class="connection-status" id="connectionStatus"></div>
-            <div class="timestamp" id="timestamp">--:--:--</div>
+        <div class="system-info">
+            <div class="connection-indicator">
+                <div class="connection-dot" id="connectionDot"></div>
+                <div class="connection-text" id="connectionText">ONLINE</div>
+            </div>
+            <div class="time-display" id="timeDisplay">00:00:00</div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="status-section">
-            <div id="status" class="status green">
-                <span class="status-icon">⚙️</span>
-                LOADING...
-            </div>
-            <div class="ml-prediction-card">
-                <div class="ml-label">🤖 ML Prediction</div>
-                <div class="ml-value" id="ml">Analyzing...</div>
-            </div>
+    <div class="main-content">
+        <div class="status-panel normal" id="statusPanel">
+            <div class="status-label">SYSTEM STATUS</div>
+            <div class="status-icon" id="statusIcon">✓</div>
+            <div class="status-value" id="statusValue">LOADING</div>
         </div>
 
-        <div class="metrics-grid">
-            <div class="metric-card">
+        <div class="ml-prediction">
+            <div class="ml-header">
+                <div class="ml-icon">🤖</div>
+                <div class="ml-title">AI PREDICTION</div>
+            </div>
+            <div class="ml-result" id="mlResult">Analyzing...</div>
+        </div>
+
+        <div class="metrics-section">
+            <div class="metric-box">
                 <div class="metric-header">
                     <div class="metric-icon">🌡️</div>
-                    <div class="metric-label">Temperature</div>
+                    <div class="metric-title">Temperature</div>
                 </div>
-                <div class="metric-value" id="temp">-<span class="metric-unit">°C</span></div>
+                <div class="metric-reading" id="tempReading">---<span class="metric-unit">°C</span></div>
             </div>
-            <div class="metric-card">
+
+            <div class="metric-box">
                 <div class="metric-header">
                     <div class="metric-icon">📳</div>
-                    <div class="metric-label">Vibration</div>
+                    <div class="metric-title">Vibration</div>
                 </div>
-                <div class="metric-value" id="vibration">-<span class="metric-unit">g</span></div>
+                <div class="metric-reading" id="vibrationReading">---<span class="metric-unit">g</span></div>
             </div>
-            <div class="metric-card">
+
+            <div class="metric-box">
                 <div class="metric-header">
                     <div class="metric-icon">⚡</div>
-                    <div class="metric-label">RPM</div>
+                    <div class="metric-title">RPM</div>
                 </div>
-                <div class="metric-value" id="rpm">-<span class="metric-unit"></span></div>
+                <div class="metric-reading" id="rpmReading">---<span class="metric-unit"></span></div>
             </div>
         </div>
     </div>
 
-    <div class="audio-indicator" id="audioIndicator">
-        🔊 Click to enable sound alerts
+    <div class="alert-indicator" id="alertIndicator">
+        🚨 CRITICAL ALERT 🚨
+    </div>
+
+    <div class="audio-control" id="audioControl">
+        🔊 <span>ENABLE AUDIO</span>
     </div>
 
     <audio id="criticalSound" loop preload="auto">
@@ -424,40 +504,43 @@
     </audio>
 
     <script>
-        const statusEl = document.getElementById('status');
-        const tempEl = document.getElementById('temp');
-        const vibrationEl = document.getElementById('vibration');
-        const rpmEl = document.getElementById('rpm');
-        const mlEl = document.getElementById('ml');
-        const timestampEl = document.getElementById('timestamp');
-        const connectionStatusEl = document.getElementById('connectionStatus');
-        const audioIndicator = document.getElementById('audioIndicator');
+        const statusPanel = document.getElementById('statusPanel');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusValue = document.getElementById('statusValue');
+        const mlResult = document.getElementById('mlResult');
+        const tempReading = document.getElementById('tempReading');
+        const vibrationReading = document.getElementById('vibrationReading');
+        const rpmReading = document.getElementById('rpmReading');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const connectionDot = document.getElementById('connectionDot');
+        const connectionText = document.getElementById('connectionText');
+        const alertIndicator = document.getElementById('alertIndicator');
+        const audioControl = document.getElementById('audioControl');
         const criticalSound = document.getElementById('criticalSound');
         const warningSound = document.getElementById('warningSound');
-        let previousStatus = null;
-        let audioEnabled = false;
 
-        const statusIcons = {
-            NORMAL: '✓',
-            WARNING: '⚠️',
-            CRITICAL: '🚨',
-            ERROR: '❌'
+        let audioEnabled = false;
+        let previousStatus = null;
+
+        const statusConfig = {
+            NORMAL: { icon: '✓', class: 'normal' },
+            WARNING: { icon: '⚠️', class: 'warning' },
+            CRITICAL: { icon: '🚨', class: 'critical' },
+            ERROR: { icon: '❌', class: 'critical' }
         };
 
-        function enableAudio() {
-            if (!audioEnabled) {
+        audioControl.addEventListener('click', () => {
+            audioEnabled = !audioEnabled;
+            if (audioEnabled) {
                 criticalSound.load();
                 warningSound.load();
-                audioEnabled = true;
-                audioIndicator.classList.remove('show');
-                console.log('Audio enabled');
+                audioControl.classList.add('active');
+                audioControl.innerHTML = '🔇 <span>AUDIO ON</span>';
+            } else {
+                stopAllSounds();
+                audioControl.classList.remove('active');
+                audioControl.innerHTML = '🔊 <span>ENABLE AUDIO</span>';
             }
-        }
-
-        document.addEventListener('click', enableAudio, { once: true });
-        audioIndicator.addEventListener('click', () => {
-            enableAudio();
-            audioIndicator.classList.remove('show');
         });
 
         function stopAllSounds() {
@@ -465,116 +548,92 @@
             criticalSound.currentTime = 0;
             warningSound.pause();
             warningSound.currentTime = 0;
-            audioIndicator.classList.remove('playing');
+            alertIndicator.classList.remove('active');
         }
 
         function playCriticalSound() {
             stopAllSounds();
             if (audioEnabled) {
-                criticalSound.volume = 0.8;
-                criticalSound.play().catch(e => {
-                    console.error("Critical audio play error:", e);
-                    audioIndicator.classList.add('show');
-                });
-                audioIndicator.classList.add('playing');
-                audioIndicator.innerHTML = '🚨 CRITICAL ALERT ACTIVE';
-            } else {
-                audioIndicator.classList.add('show');
+                criticalSound.volume = 0.7;
+                criticalSound.play().catch(e => console.error("Audio error:", e));
+                alertIndicator.classList.add('active');
             }
         }
 
         function playWarningSound() {
             stopAllSounds();
             if (audioEnabled) {
-                warningSound.volume = 0.6;
-                warningSound.play().catch(e => {
-                    console.error("Warning audio play error:", e);
-                    audioIndicator.classList.add('show');
-                });
-                audioIndicator.classList.add('playing');
-                audioIndicator.innerHTML = '⚠️ WARNING ALERT ACTIVE';
-            } else {
-                audioIndicator.classList.add('show');
+                warningSound.volume = 0.5;
+                warningSound.play().catch(e => console.error("Audio error:", e));
             }
         }
 
-        function updateTimestamp() {
+        function updateTime() {
             const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            timestampEl.textContent = `${hours}:${minutes}:${seconds}`;
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            timeDisplay.textContent = `${h}:${m}:${s}`;
         }
 
         async function fetchData() {
             try {
-                console.log('Fetching data from backend...');
                 const res = await fetch("http://192.168.3.98:5000/alerts");
-                
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
-                
+
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
                 const data = await res.json();
-                console.log('Data received:', data);
 
-                connectionStatusEl.style.background = '#4CAF50';
-                connectionStatusEl.style.boxShadow = '0 0 10px #4CAF50';
+                connectionDot.classList.remove('error');
+                connectionText.textContent = 'ONLINE';
 
-                let colorClass = 'green';
-                let icon = statusIcons.NORMAL;
+                const status = data.overall_status || 'NORMAL';
+                const config = statusConfig[status] || statusConfig.NORMAL;
 
-                if (data.overall_status === "CRITICAL") {
-                    colorClass = 'red';
-                    icon = statusIcons.CRITICAL;
-                    if (previousStatus !== "CRITICAL") {
-                        playCriticalSound();
-                    }
-                } else if (data.overall_status === "WARNING") {
-                    colorClass = 'yellow';
-                    icon = statusIcons.WARNING;
-                    if (previousStatus !== "WARNING") {
-                        playWarningSound();
-                    }
-                } else {
+                statusPanel.className = `status-panel ${config.class}`;
+                statusIcon.textContent = config.icon;
+                statusValue.textContent = status;
+
+                if (status === "CRITICAL" && previousStatus !== "CRITICAL") {
+                    playCriticalSound();
+                } else if (status === "WARNING" && previousStatus !== "WARNING") {
+                    playWarningSound();
+                } else if (status === "NORMAL") {
                     stopAllSounds();
-                    audioIndicator.innerHTML = '🔊 Click to enable sound alerts';
                 }
 
-                previousStatus = data.overall_status;
+                previousStatus = status;
 
-                statusEl.className = `status ${colorClass}`;
-                statusEl.innerHTML = `<span class="status-icon">${icon}</span>${data.overall_status}`;
-
-                tempEl.innerHTML = `${data.temp ?? '-'}<span class="metric-unit">°C</span>`;
-                vibrationEl.innerHTML = `${data.vibration ?? '-'}<span class="metric-unit">g</span>`;
-                rpmEl.innerHTML = `${data.rpm ?? '-'}<span class="metric-unit"></span>`;
-                
-                // Use alert_prediction field (consistent with Alert.js)
-                mlEl.textContent = data.alert_prediction ?? 'No prediction';
+                tempReading.innerHTML = `${data.temp ?? '---'}<span class="metric-unit">°C</span>`;
+                vibrationReading.innerHTML = `${data.vibration ?? '---'}<span class="metric-unit">g</span>`;
+                rpmReading.innerHTML = `${data.rpm ?? '---'}<span class="metric-unit"></span>`;
+                mlResult.textContent = data.alert_prediction ?? 'No prediction';
 
             } catch (err) {
-                console.error('Fetch error:', err);
-                connectionStatusEl.style.background = '#E74C3C';
-                connectionStatusEl.style.boxShadow = '0 0 10px #E74C3C';
+                console.error('Connection error:', err);
 
-                statusEl.innerHTML = `<span class="status-icon">${statusIcons.ERROR}</span>CONNECTION ERROR`;
-                statusEl.className = 'status red';
-                tempEl.innerHTML = '-<span class="metric-unit">°C</span>';
-                vibrationEl.innerHTML = '-<span class="metric-unit">g</span>';
-                rpmEl.innerHTML = '-<span class="metric-unit"></span>';
-                mlEl.textContent = 'Offline';
+                connectionDot.classList.add('error');
+                connectionText.textContent = 'OFFLINE';
+
+                statusPanel.className = 'status-panel critical';
+                statusIcon.textContent = '❌';
+                statusValue.textContent = 'ERROR';
+
+                tempReading.innerHTML = '---<span class="metric-unit">°C</span>';
+                vibrationReading.innerHTML = '---<span class="metric-unit">g</span>';
+                rpmReading.innerHTML = '---<span class="metric-unit"></span>';
+                mlResult.textContent = 'Connection Lost';
+
                 stopAllSounds();
             }
         }
 
-        updateTimestamp();
-        setInterval(updateTimestamp, 1000);
+        updateTime();
+        setInterval(updateTime, 1000);
 
         fetchData();
         setInterval(fetchData, 2000);
-        
-        console.log('Factory display initialized. Backend URL: http://192.168.3.98:5000/alerts');
     </script>
 </body>
+
 </html>
