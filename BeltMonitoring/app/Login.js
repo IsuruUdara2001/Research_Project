@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
@@ -9,6 +9,8 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "expo-router";
@@ -16,7 +18,29 @@ import { useRouter } from "expo-router";
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
     const router = useRouter();
+
+    // Load saved credentials on component mount
+    useEffect(() => {
+        loadSavedCredentials();
+    }, []);
+
+    const loadSavedCredentials = async () => {
+        try {
+            const savedEmail = await AsyncStorage.getItem('savedEmail');
+            const savedPassword = await AsyncStorage.getItem('savedPassword');
+            const wasRemembered = await AsyncStorage.getItem('rememberMe');
+
+            if (wasRemembered === 'true' && savedEmail) {
+                setEmail(savedEmail);
+                setPassword(savedPassword || '');
+                setRememberMe(true);
+            }
+        } catch (error) {
+            console.log('Error loading saved credentials:', error);
+        }
+    };
 
     const handleLogin = async () => {
         if (!email || !password) {
@@ -26,8 +50,19 @@ export default function Login() {
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
+
+            // Save or clear credentials based on Remember Me
+            if (rememberMe) {
+                await AsyncStorage.setItem('savedEmail', email);
+                await AsyncStorage.setItem('savedPassword', password);
+                await AsyncStorage.setItem('rememberMe', 'true');
+            } else {
+                await AsyncStorage.removeItem('savedEmail');
+                await AsyncStorage.removeItem('savedPassword');
+                await AsyncStorage.removeItem('rememberMe');
+            }
+
             router.push("/Dashboard");
-;
         } catch (error) {
             Alert.alert("Login Failed", error.message);
         }
@@ -68,6 +103,20 @@ export default function Login() {
                 placeholderTextColor="#999"
             />
 
+            {/* Remember Me Checkbox */}
+            <TouchableOpacity
+                style={styles.rememberMeContainer}
+                onPress={() => setRememberMe(!rememberMe)}
+                activeOpacity={0.7}
+            >
+                <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                    {rememberMe && (
+                        <Ionicons name="checkmark" size={16} color="#FFFFFF" />
+                    )}
+                </View>
+                <Text style={styles.rememberMeText}>Remember Me</Text>
+            </TouchableOpacity>
+
             {/* Login Button */}
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
                 <Text style={styles.loginButtonText}>Login</Text>
@@ -81,7 +130,7 @@ export default function Login() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#E8F5E9", // Tea Bi mint background
+        backgroundColor: "#E8F5E9",
         paddingHorizontal: 30,
         justifyContent: "center",
     },
@@ -132,6 +181,32 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.08,
         shadowRadius: 8,
         elevation: 5,
+    },
+    rememberMeContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 8,
+        marginTop: 4,
+    },
+    checkbox: {
+        width: 24,
+        height: 24,
+        borderRadius: 6,
+        borderWidth: 2,
+        borderColor: "#2E7D32",
+        backgroundColor: "#FFFFFF",
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 10,
+    },
+    checkboxChecked: {
+        backgroundColor: "#2E7D32",
+        borderColor: "#2E7D32",
+    },
+    rememberMeText: {
+        fontSize: 16,
+        color: "#1B5E20",
+        fontWeight: "500",
     },
     loginButton: {
         height: 58,
