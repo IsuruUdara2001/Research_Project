@@ -200,6 +200,14 @@ export default function Alert() {
                         color={getColor(alerts.ml_prediction)}
                         icon="🤖"
                     />
+
+                    <Card
+                        title="Future Prediction"
+                        value={alerts.future_prediction ?? "NORMAL"}
+                        status={alerts.future_prediction ?? "NORMAL"}
+                        color={getColor(alerts.future_prediction)}
+                        icon="⏳"
+                    />
                 </ScrollView>
             </View>
 
