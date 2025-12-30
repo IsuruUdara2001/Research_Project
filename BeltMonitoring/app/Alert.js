@@ -61,6 +61,20 @@ export default function Alert() {
             } else if (data.overall_status === "WARNING") {
                 RNAlert.alert("WARNING", "System status is WARNING. Please check the parameters.");
             }
+            if (data.future_prediction === "WARNING") {
+                RNAlert.alert(
+                    "Future Warning",
+                    data.future_message || "Possible issue predicted soon"
+                );
+            }
+
+            if (data.future_prediction === "CRITICAL") {
+                RNAlert.alert(
+                    "Future Critical Alert",
+                    data.future_message || "Critical failure predicted soon"
+                );
+            }
+
         } catch (error) {
             console.log("Fetch error:", error);
             if (cachedAlertData) {
@@ -208,6 +222,17 @@ export default function Alert() {
                         color={getColor(alerts.future_prediction)}
                         icon="⏳"
                     />
+                    {/* ML-2 Future Prediction */}
+                    {alerts.future_prediction && (
+                        <Card
+                            title="Future Warning (ML-2)"
+                            value={alerts.future_message || alerts.future_prediction}
+                            status={alerts.future_prediction}
+                            color={getColor(alerts.future_prediction)}
+                            icon="⏳"
+                        />
+                    )}
+
                 </ScrollView>
             </View>
 
