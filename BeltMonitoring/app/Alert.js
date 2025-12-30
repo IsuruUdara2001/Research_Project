@@ -156,54 +156,89 @@ export default function Alert() {
                 {/* Main Status Card */}
                 {alerts.overall_status && (
                     <Animated.View style={[styles.mainStatusCard, { opacity: fadeAnim }]}>
-                        <View style={styles.statusIconWrapper}>
-                            <Ionicons
-                                name={getStatusIcon(alerts.overall_status)}
-                                size={48}
-                                color={getColor(alerts.overall_status)}
-                            />
+                        <View style={styles.statusCardInner}>
+                            <View style={[styles.statusIconCircle, { backgroundColor: getColor(alerts.overall_status) }]}>
+                                <Ionicons
+                                    name={getStatusIcon(alerts.overall_status)}
+                                    size={50}
+                                    color="#FFFFFF"
+                                />
+                            </View>
+                            <View style={styles.statusContent}>
+                                <Text style={styles.statusLabel}>CURRENT STATUS</Text>
+                                <Text style={[styles.statusValue, { color: getColor(alerts.overall_status) }]}>
+                                    {alerts.overall_status}
+                                </Text>
+                                {alerts.overall_status === "CRITICAL" && (
+                                    <View style={styles.statusHintContainer}>
+                                        <Text style={styles.statusHintEmoji}>🚨</Text>
+                                        <Text style={styles.statusHint}>Immediate attention needed</Text>
+                                    </View>
+                                )}
+                                {alerts.overall_status === "WARNING" && (
+                                    <View style={styles.statusHintContainer}>
+                                        <Text style={styles.statusHintEmoji}>⚡</Text>
+                                        <Text style={styles.statusHint}>Check system parameters</Text>
+                                    </View>
+                                )}
+                                {alerts.overall_status === "NORMAL" && (
+                                    <View style={styles.statusHintContainer}>
+                                        <Text style={styles.statusHintEmoji}>✅</Text>
+                                        <Text style={styles.statusHint}>All systems operational</Text>
+                                    </View>
+                                )}
+                            </View>
                         </View>
-                        <Text style={styles.statusLabel}>Current Status</Text>
-                        <Text style={[styles.statusValue, { color: getColor(alerts.overall_status) }]}>
-                            {alerts.overall_status}
-                        </Text>
-                        {alerts.overall_status === "CRITICAL" && (
-                            <Text style={styles.statusHint}>Immediate attention needed</Text>
-                        )}
-                        {alerts.overall_status === "WARNING" && (
-                            <Text style={styles.statusHint}>Please check system parameters</Text>
-                        )}
-                        {alerts.overall_status === "NORMAL" && (
-                            <Text style={styles.statusHint}>All systems operating normally</Text>
-                        )}
+                        <View style={[styles.statusGlow, { backgroundColor: getColor(alerts.overall_status) }]} />
                     </Animated.View>
                 )}
 
                 {/* Important Messages */}
                 {alerts.ml_prediction && alerts.ml_prediction !== alerts.overall_status && (
-                    <View style={styles.messageCard}>
-                        <View style={styles.messageHeader}>
-                            <Ionicons name="information-circle" size={20} color={COLORS.accent} />
-                            <Text style={styles.messageTitle}>AI Analysis</Text>
+                    <Animated.View style={[styles.predictionCard, { opacity: fadeAnim }]}>
+                        <View style={styles.predictionIconCircle}>
+                            <Ionicons name="analytics" size={32} color={COLORS.accent} />
                         </View>
-                        <Text style={styles.messageText}>
-                            ML prediction shows {alerts.ml_prediction} status
-                        </Text>
-                    </View>
+                        <View style={styles.predictionContent}>
+                            <Text style={styles.predictionLabel}>AI PREDICTION</Text>
+                            <View style={styles.predictionValueContainer}>
+                                <Text style={styles.predictionText}>ML predicts: </Text>
+                                <Text style={[styles.predictionStatus, { color: getColor(alerts.ml_prediction) }]}>
+                                    {alerts.ml_prediction}
+                                </Text>
+                            </View>
+                            <Text style={styles.predictionHint}>
+                                ⓘ Different from current status
+                            </Text>
+                        </View>
+                        <View style={styles.predictionBadge}>
+                            <Ionicons name="trending-up" size={20} color={COLORS.accent} />
+                        </View>
+                    </Animated.View>
                 )}
 
                 {alerts.future_message && (
-                    <View style={[styles.messageCard, {
-                        backgroundColor: alerts.future_prediction === "CRITICAL" ? COLORS.criticalLight :
-                            alerts.future_prediction === "WARNING" ? COLORS.warningLight :
-                                COLORS.normalLight
-                    }]}>
-                        <View style={styles.messageHeader}>
-                            <Ionicons name="time" size={20} color={getColor(alerts.future_prediction)} />
-                            <Text style={styles.messageTitle}>Prediction</Text>
+                    <Animated.View style={[
+                        styles.futureCard,
+                        { opacity: fadeAnim }
+                    ]}>
+                        <View style={styles.futureCardInner}>
+                            <View style={[styles.futureIconCircle, { backgroundColor: getColor(alerts.future_prediction) }]}>
+                                <Ionicons name="time-outline" size={36} color="#FFFFFF" />
+                            </View>
+                            <View style={styles.futureContent}>
+                                <Text style={styles.futureLabel}>FUTURE PREDICTION</Text>
+                                <Text style={[styles.futureStatus, { color: getColor(alerts.future_prediction) }]}>
+                                    {alerts.future_prediction}
+                                </Text>
+                                <View style={styles.futureMessageContainer}>
+                                    <Ionicons name="information-circle-outline" size={18} color={COLORS.textMedium} />
+                                    <Text style={styles.futureMessage}>{alerts.future_message}</Text>
+                                </View>
+                            </View>
                         </View>
-                        <Text style={styles.messageText}>{alerts.future_message}</Text>
-                    </View>
+                        <View style={[styles.futureGlow, { backgroundColor: getColor(alerts.future_prediction) }]} />
+                    </Animated.View>
                 )}
 
                 {/* Metrics Section */}
@@ -369,67 +404,211 @@ const styles = StyleSheet.create({
     },
     mainStatusCard: {
         backgroundColor: COLORS.cardBg,
-        borderRadius: 20,
-        padding: 32,
-        marginBottom: 20,
-        alignItems: "center",
+        borderRadius: 24,
+        marginBottom: 24,
         width: "100%",
         maxWidth: 600,
         shadowColor: "#000",
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.2,
+        shadowRadius: 16,
+        elevation: 10,
+        position: "relative",
+        overflow: "hidden",
+    },
+    statusCardInner: {
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 28,
+        zIndex: 1,
+    },
+    statusIconCircle: {
+        width: 90,
+        height: 90,
+        borderRadius: 45,
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 24,
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 10,
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
         elevation: 6,
     },
-    statusIconWrapper: {
-        marginBottom: 16,
+    statusContent: {
+        flex: 1,
     },
     statusLabel: {
-        fontSize: 13,
+        fontSize: 12,
         color: COLORS.textLight,
-        fontWeight: "600",
+        fontWeight: "800",
         textTransform: "uppercase",
-        letterSpacing: 1,
+        letterSpacing: 1.5,
         marginBottom: 8,
     },
     statusValue: {
-        fontSize: 32,
+        fontSize: 36,
         fontWeight: "900",
-        marginBottom: 8,
+        marginBottom: 10,
+        letterSpacing: 0.5,
     },
-    statusHint: {
-        fontSize: 13,
-        color: COLORS.textMedium,
-        textAlign: "center",
-    },
-    messageCard: {
-        backgroundColor: COLORS.cardBg,
-        borderRadius: 16,
-        padding: 16,
-        marginBottom: 16,
-        width: "100%",
-        maxWidth: 600,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    messageHeader: {
+    statusHintContainer: {
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
+    },
+    statusHintEmoji: {
+        fontSize: 18,
+    },
+    statusHint: {
+        fontSize: 14,
+        color: COLORS.textMedium,
+        fontWeight: "600",
+    },
+    statusGlow: {
+        position: "absolute",
+        right: 0,
+        top: 0,
+        bottom: 0,
+        width: 8,
+        opacity: 0.9,
+    },
+    predictionCard: {
+        backgroundColor: COLORS.cardBg,
+        borderRadius: 20,
+        padding: 24,
+        marginBottom: 20,
+        width: "100%",
+        maxWidth: 600,
+        shadowColor: COLORS.accent,
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.2,
+        shadowRadius: 12,
+        elevation: 6,
+        flexDirection: "row",
+        alignItems: "center",
+        borderWidth: 2,
+        borderColor: COLORS.accentLight,
+    },
+    predictionIconCircle: {
+        width: 70,
+        height: 70,
+        borderRadius: 35,
+        backgroundColor: COLORS.accentLight,
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 18,
+    },
+    predictionContent: {
+        flex: 1,
+    },
+    predictionLabel: {
+        fontSize: 11,
+        color: COLORS.textLight,
+        fontWeight: "800",
+        textTransform: "uppercase",
+        letterSpacing: 1.2,
         marginBottom: 8,
     },
-    messageTitle: {
-        fontSize: 14,
-        fontWeight: "700",
-        color: COLORS.textDark,
+    predictionValueContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        flexWrap: "wrap",
+        marginBottom: 8,
     },
-    messageText: {
-        fontSize: 13,
+    predictionText: {
+        fontSize: 16,
         color: COLORS.textMedium,
-        lineHeight: 18,
+        fontWeight: "600",
+    },
+    predictionStatus: {
+        fontWeight: "900",
+        fontSize: 20,
+    },
+    predictionHint: {
+        fontSize: 13,
+        color: COLORS.textLight,
+        fontWeight: "500",
+    },
+    predictionBadge: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        backgroundColor: COLORS.accentLight,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    futureCard: {
+        backgroundColor: COLORS.cardBg,
+        borderRadius: 24,
+        marginBottom: 20,
+        width: "100%",
+        maxWidth: 600,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.2,
+        shadowRadius: 16,
+        elevation: 10,
+        position: "relative",
+        overflow: "hidden",
+    },
+    futureCardInner: {
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 28,
+        zIndex: 1,
+    },
+    futureIconCircle: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 20,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 6,
+    },
+    futureContent: {
+        flex: 1,
+    },
+    futureLabel: {
+        fontSize: 12,
+        color: COLORS.textLight,
+        fontWeight: "800",
+        textTransform: "uppercase",
+        letterSpacing: 1.5,
+        marginBottom: 8,
+    },
+    futureStatus: {
+        fontSize: 28,
+        fontWeight: "900",
+        marginBottom: 12,
+    },
+    futureMessageContainer: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        gap: 8,
+        backgroundColor: COLORS.normalLight,
+        padding: 12,
+        borderRadius: 12,
+    },
+    futureMessage: {
+        fontSize: 14,
+        color: COLORS.textMedium,
+        lineHeight: 20,
+        fontWeight: "600",
+        flex: 1,
+    },
+    futureGlow: {
+        position: "absolute",
+        right: 0,
+        top: 0,
+        bottom: 0,
+        width: 8,
+        opacity: 0.9,
     },
     sectionTitle: {
         fontSize: 18,
