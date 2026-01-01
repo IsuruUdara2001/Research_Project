@@ -24,14 +24,14 @@ const BottomNav = () => {
     }, []);
 
     const isDesktop = dimensions.width > 768;
-    const iconSize = isDesktop ? 24 : Math.min(dimensions.width * 0.06, 26);
-    const fontSize = isDesktop ? 10 : Math.min(dimensions.width * 0.024, 9.5);
+    const iconSize = isDesktop ? 22 : Math.min(dimensions.width * 0.055, 24);
+    const fontSize = isDesktop ? 9.5 : Math.min(dimensions.width * 0.023, 9);
 
     const navItems = [
-        { href: "/Dashboard", icon: "home", iconOutline: "home-outline", label: "Home" },
+        { href: "/Dashboard", icon: "grid", iconOutline: "grid-outline", label: "Dashboard" },
         { href: "/Alert", icon: "notifications", iconOutline: "notifications-outline", label: "Alerts" },
-        { href: "/History", icon: "time", iconOutline: "time-outline", label: "History" },
-        { href: "/SystemStatus", icon: "pulse", iconOutline: "pulse-outline", label: "System" },
+        { href: "/History", icon: "list", iconOutline: "list-outline", label: "History" },
+        { href: "/SystemStatus", icon: "stats-chart", iconOutline: "stats-chart-outline", label: "Status" },
     ];
 
     return (
@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
-        paddingBottom: Platform.OS === "ios" ? 22 : 10,
-        paddingTop: 8,
+        paddingBottom: Platform.OS === "ios" ? 20 : 8,
+        paddingTop: 6,
         paddingHorizontal: 8,
         elevation: 25,
         shadowColor: "#1B5E20",
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
         borderTopWidth: 0,
     },
     containerDesktop: {
-        paddingVertical: 12,
-        paddingBottom: 12,
+        paddingVertical: 10,
+        paddingBottom: 10,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
     },
@@ -96,13 +96,13 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        paddingVertical: 4,
+        paddingVertical: 3,
         position: "relative",
     },
     iconWrapper: {
-        width: 44,
-        height: 44,
-        borderRadius: 22,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "transparent",
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         elevation: 8,
     },
     label: {
-        marginTop: 4,
+        marginTop: 3,
         color: "#7C8A85",
         fontWeight: "600",
         letterSpacing: 0.3,
@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
     activeIndicator: {
         position: "absolute",
         bottom: 0,
-        width: 32,
-        height: 3,
+        width: 28,
+        height: 2.5,
         backgroundColor: "#2E7D32",
         borderRadius: 2,
     },
