@@ -24,6 +24,7 @@ const fetchCollections = () => {
 
       const formatted = data.map((item, index) => ({
         id: index + 1,
+         leaf_id: item.leaf_id,
         farmer_id: item.farmer_id,
         name: item.farmer_name,
         location: item.village_location,
@@ -87,6 +88,7 @@ const createBatch = () => {
   );
 
   const payload = selected.map(c => ({
+    leaf_id: c.leaf_id,   
     farmer_id: c.farmer_id,
     farmer_name: c.name,
     village_location: c.location,
