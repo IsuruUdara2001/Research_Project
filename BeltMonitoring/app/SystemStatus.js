@@ -113,7 +113,7 @@ export default function SystemStatus() {
 /* ---------------- Status Card ---------------- */
 
 const StatusCard = ({ icon, label, value, color }) => (
-    <View style={styles.card}>
+    <View style={[styles.card, { borderLeftColor: color }]}>
         <Ionicons name={icon} size={28} color={color} />
         <View style={styles.cardContent}>
             <Text style={styles.cardLabel}>{label}</Text>
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
-        paddingBottom: 30, // Extra space above bottom nav
+        paddingBottom: 30,
     },
     title: {
         textAlign: "center",
@@ -153,7 +153,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: COLORS.card,
         padding: 18,
-        borderRadius: 16,
+        borderRadius: 12,
+        borderLeftWidth: 4,
+        borderWidth: 1,
+        borderColor: "#E0E0E0",
         marginHorizontal: 20,
         marginBottom: 14,
         elevation: 3,
