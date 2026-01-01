@@ -15,55 +15,37 @@ export default function TeaBiMenuPage({ navigation }) {
       id: 1,
       title: "Dashboard",
       icon: "grid",
-      bgColor: "#D4E8D4",
-      iconBgColor: "#52A052",
       route: "Dashboard",
     },
     {
       id: 2,
       title: "Farmer Management",
       icon: "people",
-      bgColor: "#FFFFFF",
-      iconBgColor: "#C8DCC8",
       route: "FarmerManagement",
     },
     {
       id: 3,
       title: "Analytics",
       icon: "pie-chart",
-      bgColor: "#FFFFFF",
-      iconBgColor: "#C8DCC8",
       route: "Analytics",
     },
     {
       id: 4,
-      title: "",
-      icon: "",
-      bgColor: "#D4E8D4",
-      iconBgColor: "#52A052",
-      route: "ModelTraining",
+      title: "Live Humidity",
+      icon: "water",
+      route: "LiveHumidity",
     },
     {
       id: 5,
       title: "Reports",
       icon: "document-text",
-      bgColor: "#D4E8D4",
-      iconBgColor: "#52A052",
       route: "Reports",
-    },
-    {
-      id: 6,
-      title: "Settings",
-      icon: "settings",
-      bgColor: "#FFFFFF",
-      iconBgColor: "#C8DCC8",
-      route: "Settings",
     },
   ];
 
   const handleMenuPress = (item) => {
     console.log(`Navigating to ${item.title}`);
-    // navigation.navigate(item.route);
+    navigation.navigate(item.route);
   };
 
   return (
@@ -84,25 +66,68 @@ export default function TeaBiMenuPage({ navigation }) {
 
         {/* Menu Grid */}
         <View style={styles.menuGrid}>
-          {menuItems.map((item) => (
+          <View style={styles.row}>
             <TouchableOpacity
-              key={item.id}
-              style={[styles.menuCard, { backgroundColor: item.bgColor }]}
-              onPress={() => handleMenuPress(item)}
-              activeOpacity={0.8}
+              style={styles.menuCard}
+              onPress={() => handleMenuPress(menuItems[0])}
+              activeOpacity={0.85}
             >
-              <View
-                style={[
-                  styles.iconContainer,
-                  { backgroundColor: item.iconBgColor },
-                ]}
-              >
-                <Ionicons name={item.icon} size={32} color="#FFFFFF" />
-                 <Ionicons name={item.icon} size={32} color="#FFFFFF" />
+              <View style={styles.iconCircle}>
+                <Ionicons name={menuItems[0].icon} size={36} color="#FFFFFF" />
               </View>
-              <Text style={styles.menuTitle}>{item.title}</Text>
+              <Text style={styles.menuTitle}>{menuItems[0].title}</Text>
             </TouchableOpacity>
-          ))}
+
+            <TouchableOpacity
+              style={styles.menuCard}
+              onPress={() => handleMenuPress(menuItems[1])}
+              activeOpacity={0.85}
+            >
+              <View style={styles.iconCircle}>
+                <Ionicons name={menuItems[1].icon} size={36} color="#FFFFFF" />
+              </View>
+              <Text style={styles.menuTitle}>{menuItems[1].title}</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.menuCard}
+              onPress={() => handleMenuPress(menuItems[2])}
+              activeOpacity={0.85}
+            >
+              <View style={styles.iconCircle}>
+                <Ionicons name={menuItems[2].icon} size={36} color="#FFFFFF" />
+              </View>
+              <Text style={styles.menuTitle}>{menuItems[2].title}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.menuCard}
+              onPress={() => handleMenuPress(menuItems[3])}
+              activeOpacity={0.85}
+            >
+              <View style={styles.iconCircle}>
+                <Ionicons name={menuItems[3].icon} size={36} color="#FFFFFF" />
+              </View>
+              <Text style={styles.menuTitle}>{menuItems[3].title}</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.menuCard}
+              onPress={() => handleMenuPress(menuItems[4])}
+              activeOpacity={0.85}
+            >
+              <View style={styles.iconCircle}>
+                <Ionicons name={menuItems[4].icon} size={36} color="#FFFFFF" />
+              </View>
+              <Text style={styles.menuTitle}>{menuItems[4].title}</Text>
+            </TouchableOpacity>
+
+            <View style={styles.emptyCard} />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -112,17 +137,17 @@ export default function TeaBiMenuPage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F3E8",
+    backgroundColor: "#FAFAF5",
   },
   scrollContent: {
-    padding: 16,
+    padding: 24,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 20,
-    marginTop: 20,
+    marginBottom: 28,
+    marginTop: 18,
     paddingHorizontal: 4,
   },
   backButton: {
@@ -132,45 +157,59 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 26,
+    fontWeight: "bold",
     color: "#2C2C2C",
   },
   placeholder: {
     width: 40,
   },
   menuGrid: {
+    width: "100%",
+  },
+  row: {
     flexDirection: "row",
-    flexWrap: "wrap",
     justifyContent: "space-between",
-    gap: 12,
+    marginBottom: 18,
   },
   menuCard: {
     width: "48%",
-    aspectRatio: 1.1,
-    borderRadius: 16,
-    padding: 16,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    padding: 24,
     alignItems: "center",
     justifyContent: "center",
+    minHeight: 160,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
     elevation: 3,
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
   },
-  iconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+  emptyCard: {
+    width: "48%",
+  },
+  iconCircle: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: "#6B9B8A",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 12,
+    marginBottom: 16,
+    shadowColor: "#6B9B8A",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
   },
   menuTitle: {
-    fontSize: 13,
-    fontWeight: "600",
+    fontSize: 15,
+    fontWeight: "500",
     color: "#2C2C2C",
     textAlign: "center",
-    lineHeight: 18,
+    lineHeight: 20,
   },
 });
