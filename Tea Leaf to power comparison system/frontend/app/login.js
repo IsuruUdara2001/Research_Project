@@ -103,7 +103,7 @@ export default function Login() {
             onPress={handleLogin}
             activeOpacity={0.8}
           >
-            <Text style={styles.loginButtonText}>Sign In</Text>
+            <Text style={styles.loginButtonText}>Login</Text>
             <Text style={styles.loginButtonIcon}>→</Text>
           </TouchableOpacity>
 
