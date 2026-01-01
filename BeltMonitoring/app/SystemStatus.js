@@ -114,7 +114,9 @@ export default function SystemStatus() {
 
 const StatusCard = ({ icon, label, value, color }) => (
     <View style={[styles.card, { borderLeftColor: color }]}>
-        <Ionicons name={icon} size={28} color={color} />
+        <View style={[styles.iconContainer, { backgroundColor: color + '15' }]}>
+            <Ionicons name={icon} size={32} color={color} />
+        </View>
         <View style={styles.cardContent}>
             <Text style={styles.cardLabel}>{label}</Text>
             <Text style={[styles.cardValue, { color }]}>{value}</Text>
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: COLORS.card,
-        padding: 18,
+        padding: 20,
         borderRadius: 12,
         borderLeftWidth: 4,
         borderWidth: 1,
@@ -165,19 +167,28 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 4,
     },
+    iconContainer: {
+        width: 56,
+        height: 56,
+        borderRadius: 12,
+        alignItems: "center",
+        justifyContent: "center",
+        marginRight: 16,
+    },
     cardContent: {
-        marginLeft: 15,
         flex: 1,
     },
     cardLabel: {
-        fontSize: 14,
-        color: "#555",
+        fontSize: 13,
+        color: "#666",
         fontWeight: "600",
+        marginBottom: 4,
+        letterSpacing: 0.2,
     },
     cardValue: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: "700",
-        marginTop: 2,
+        lineHeight: 22,
     },
     loader: {
         flex: 1,
