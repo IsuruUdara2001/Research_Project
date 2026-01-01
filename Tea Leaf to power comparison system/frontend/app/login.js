@@ -108,10 +108,7 @@ export default function Login() {
           </TouchableOpacity>
 
           {/* Demo Info */}
-          <View style={styles.demoInfo}>
-            <Text style={styles.demoText}>Demo Credentials:</Text>
-            <Text style={styles.demoCredentials}>customer@test.com / 123456</Text>
-          </View>
+          
         </View>
 
         {/* Footer */}
