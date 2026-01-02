@@ -1,62 +1,77 @@
-# train_model.py (FINAL VERSION)
-
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report
-import joblib
-import os
+import random
+from datetime import datetime, timedelta
 
-# -------------------------------------
-# Load synthetic dataset
-# -------------------------------------
-SYNTHETIC_PATH = "Ml/synthetic_output/belt_synthetic_3500.csv"
-REAL_DATA_PATH = "Ml/real_data/real_450.csv"
+# --------------------------
+# Configuration
+# --------------------------
+num_samples = 5200
 
-df = pd.read_csv(SYNTHETIC_PATH)
-print(f"Loaded synthetic data: {df.shape[0]} rows")
+# Date range: Oct 1, 2025 → Dec 28, 2025
+start_date = datetime(2025, 10, 1)
+end_date = datetime(2025, 12, 28)
+date_range_seconds = int((end_date - start_date).total_seconds())
 
-# -------------------------------------
-# Try to load your real 450 data
-# -------------------------------------
-if os.path.exists(REAL_DATA_PATH):
-    df_real = pd.read_csv(REAL_DATA_PATH)
-    
-    # Ensure same columns
-    df_real = df_real[["temp", "vibration", "rpm", "overall_status"]]
-    
-    df = pd.concat([df, df_real], ignore_index=True)
-    print(f"Loaded real data: {df_real.shape[0]} rows")
-else:
-    print("⚠ No real data found, training with synthetic only.")
+# --------------------------
+# Functions to generate values aligned with thresholds
+# --------------------------
+def gen_normal():
+    return {
+        "temp": round(random.uniform(30, 70), 2),          # <=70
+        "vibration": round(random.uniform(0.2, 10), 2),    # <=10
+        "rpm": round(random.uniform(800, 1500)),           # safe range
+        "label": "NORMAL"
+    }
 
-# -------------------------------------
-# ML Training
-# -------------------------------------
-X = df[["temp", "vibration", "rpm"]]
-y = df["overall_status"]
+def gen_warning():
+    return {
+        "temp": round(random.uniform(70, 90), 2),          # 70–90 triggers warning
+        "vibration": round(random.uniform(10, 20), 2),     # 10–20 triggers warning
+        "rpm": round(random.choice([700, 1600])),          # slightly out of normal range
+        "label": "WARNING"
+    }
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
-)
+def gen_critical():
+    return {
+        "temp": round(random.uniform(90, 100), 2),         # >90 critical
+        "vibration": round(random.uniform(20, 30), 2),     # >20 critical
+        "rpm": round(random.choice([400, 2200])),          # extreme RPM
+        "label": "CRITICAL"
+    }
 
-model = RandomForestClassifier(
-    n_estimators=200,
-    class_weight="balanced",
-    random_state=42
-)
+# --------------------------
+# Generate dataset
+# --------------------------
+data = []
 
-model.fit(X_train, y_train)
+# Distribute samples roughly 50% NORMAL, 30% WARNING, 20% CRITICAL
+for _ in range(int(num_samples * 0.5)):
+    data.append(gen_normal())
+for _ in range(int(num_samples * 0.3)):
+    data.append(gen_warning())
+for _ in range(int(num_samples * 0.2)):
+    data.append(gen_critical())
 
-# -------------------------------------
-# Evaluation
-# -------------------------------------
-y_pred = model.predict(X_test)
-print("\n=== Classification Report ===")
-print(classification_report(y_test, y_pred))
+# --------------------------
+# Add timestamps randomly in range
+# --------------------------
+for record in data:
+    random_seconds = random.randint(0, date_range_seconds)
+    timestamp = start_date + timedelta(seconds=random_seconds)
+    record["timestamp"] = timestamp
 
-# -------------------------------------
-# Save model
-# -------------------------------------
-joblib.dump(model, "Ml/belt_model.pkl")
-print("\n✅ Model saved as Ml/belt_model.pkl")
+# --------------------------
+# Shuffle dataset
+# --------------------------
+random.shuffle(data)
+
+# --------------------------
+# Save to CSV
+# --------------------------
+df = pd.DataFrame(data)
+csv_file = "belt_dataset_oct_dec_2025.csv"
+df.to_csv(csv_file, index=False)
+
+print(f"Dataset generated: {df.shape}")
+print(df["label"].value_counts())
+print(f"Saved to {csv_file}")
