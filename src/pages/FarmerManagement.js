@@ -262,6 +262,8 @@ export default function FarmerManagement({ navigation }) {
                   mode="date"
                   display={Platform.OS === "ios" ? "spinner" : "default"}
                   onChange={handleDateChange}
+                  // ensure the picker text is visible (black) on light backgrounds
+                  textColor="#000000"
                 />
               )}
 
@@ -501,7 +503,7 @@ const styles = StyleSheet.create({
   dateSelectorText: {
     flex: 1,
     fontSize: 15,
-    color: "#2C2C2C",
+    color: "#000000",
   },
   chevronIcon: {
     marginLeft: 8,
