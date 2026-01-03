@@ -17,7 +17,7 @@ const [collections, setCollections] = useState([]);
   // 🔥 FETCH DATA FROM FIREBASE BACKEND
   // -----------------------------------------------------
 const fetchCollections = () => {
-  fetch("http://192.168.144.1:8000/api/leaf")
+  fetch("http://192.168.244.112:8000/api/leaf")
     .then(res => res.json())
     .then(data => {
       console.log("🔥 Loaded Firebase Data:", data);
@@ -97,7 +97,7 @@ const createBatch = () => {
 
   console.log("📦 PAYLOAD:", payload);
 
-  fetch("http://192.168.144.1:8000/api/createBatch", {
+  fetch("http://192.168.244.112:8000/api/createBatch", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ collections: payload }),
@@ -124,7 +124,7 @@ const createBatch = () => {
 
 
 const openManualEntry = () => {
-  fetch("http://192.168.144.1:8000/api/iot/weight/latest")
+  fetch("http://192.168.244.112:8000/api/iot/weight/latest")
   .then(res => res.json())
   .then(data => {
     console.log("🔥 Latest IoT weight:", data);
@@ -160,7 +160,7 @@ const openManualEntry = () => {
   };
 
   // Send to backend
-  fetch("http://192.168.144.1:8000/api/leaf", {
+  fetch("http://192.168.244.112:8000/api/leaf", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
