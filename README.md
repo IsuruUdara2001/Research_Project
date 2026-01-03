@@ -63,5 +63,150 @@ The results are displayed in a **React Native (Expo) mobile application**, offer
 Stakeholders can **monitor consistency, compare expected vs. actual results, and make informed processing decisions**, enhancing **transparency, efficiency, and trust** across the tea supply chain.
 
 ---
+## Dependencies & Tools
+
+This section lists all **system-wide dependencies** and **module-specific dependencies**.  
+Your module (Belt Monitoring) is fully detailed; other modules have spaces for teammates to add their sensors, libraries, and tools.
+
+---
+
+### System-Wide Dependencies
+
+- **ESP32 microcontroller** – IoT controller for all sensor modules
+- **Arduino IDE** – Programming ESP32
+- **Python** – Backend and ML processing
+- **React Native (Expo)** – Mobile app development
+- **Firebase** – Cloud storage & real-time database
+- **VS Code** – Development environment
+- **Machine Learning Libraries:** NumPy, Pandas, Scikit-learn, TensorFlow/PyTorch, OpenCV, YOLO, Matplotlib, Seaborn
+- **Version Control:** Git & GitHub
+
+---
+
+## Module-Specific Dependencies
+
+### 1. Smart Pre-Processing Tea Leaf Quality Prediction Module (Placeholder)
+
+**Narrative:**  
+- Real-time tea leaf quality assessment using AI & computer vision  
+- Leaf features: color, texture, shape, bud-to-leaf ratio  
+- ML model classifies leaves into Premium / High / Medium / Low  
+
+**Hardware / Sensors:**  
+- Smartphone camera – Image capture  
+
+**Software / Libraries:**  
+- Python, OpenCV, YOLO, TensorFlow/PyTorch, NumPy, Pandas, Scikit-learn  
+- Mobile app: React Native / Expo  
+- Cloud: Firebase  
+
+> *Teammates can add exact pins, configurations, or extra tools here.*
+
+---
+
+### 2. Environmental Monitoring & Predictive Analytics Module (Placeholder)
+
+**Narrative:**  
+- Monitors temperature & humidity during tea processing  
+- ML models predict potential quality deviations  
+
+**Hardware / Sensors:**  
+- Temperature sensor  
+- Humidity sensor  
+- OLED display  
+
+**Software / Libraries:**  
+- Python, Scikit-learn, Matplotlib/Seaborn  
+- Mobile app: React Native / Expo  
+- Cloud: Firebase  
+
+> *Teammates can fill in pin configs, thresholds, or extra sensors.*
+
+---
+
+### 3. Belt Monitoring & Alert System (Fully Detailed)
+
+#### Programming Languages
+- **C / C++** – ESP32 firmware (Arduino IDE)
+- **Python** – Backend API & Machine Learning
+- **JavaScript** – Mobile application (React Native)
+
+#### Frameworks / IDE
+- Arduino IDE – ESP32 programming
+- Flask (Python) – REST API backend
+- React Native – Mobile app development
+- Expo Go – Mobile app testing
+- Scikit-learn – Machine Learning framework
+
+#### Python Libraries
+- NumPy – Numerical processing
+- Pandas – Dataset handling
+- Scikit-learn – ML training & prediction
+- Joblib – Model saving/loading
+- Firebase Admin SDK – Cloud integration
+
+#### Arduino / ESP32 Libraries
+- OneWire (Paul Stoffregen) – v2.3.7 recommended
+- DallasTemperature (Miles Burton) – v3.9.0 recommended
+
+#### Mobile App Libraries
+- Fetch API – Backend communication
+
+#### Databases / Cloud Services
+- Firebase Firestore / Realtime Database
+  - Sensor data storage
+  - ML prediction storage
+  - Historical analysis & remote access
+
+#### Hardware / Sensors
+- ESP32 Microcontroller – Wi-Fi enabled IoT controller
+- MH Hall-Effect Sensor – RPM measurement
+- SW-420 Vibration Sensor – Vibration detection
+- DS18B20 Temperature Sensor – Temperature monitoring
+- Belt-driven tea processing machine – Target system
+
+#### Hardware Summary – Sensor Pin Connections (ESP32)
+- MH Hall-Effect (DO) → GPIO 18 (Interrupt input)
+- SW-420 (DO) → GPIO 19 (Digital input; LOW = vibration)
+- DS18B20 (DATA/DQ) → GPIO 4 (1-Wire protocol)
+- Pull-up Resistor → 4.7 kΩ between DATA and 3.3V
+
+#### Power Connections
+- All Sensor VCC → 3.3V (ESP32)
+- All Sensor GND → GND (ESP32)
+- Common ground required
+
+#### Software & Tools Required
+- Arduino IDE (v1.8.x or 2.x – latest recommended)
+- ESP32 Arduino Core – v2.0.14 recommended
+- Boards Manager URL: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+
+**Drivers (Windows Only)**
+- CH340 / CH341 USB chip → Install CH341 driver
+- CP210x USB chip → Install Silicon Labs CP210x VCP driver
+
+#### Development & Testing Tools
+- Postman – API testing
+- VS Code – Code editor
+- Git & GitHub – Version control
+
+---
+
+### 4. Tea Leaf-to-Powder Yield Prediction Module (Placeholder)
+
+**Narrative:**  
+- Predicts tea powder output and yield percentages using IoT and ML  
+- Tracks batch-wise production for transparency  
+
+**Hardware / Sensors:**  
+- Load cell weight sensor  
+- ESP32  
+
+**Software / Libraries:**  
+- Python, Scikit-learn, NumPy, Pandas  
+- Mobile app: React Native / Expo  
+- Cloud: Firebase  
+
+> *Teammates can add wiring diagrams, calibration details, or additional libraries.*
 
 
