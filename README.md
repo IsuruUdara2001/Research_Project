@@ -84,7 +84,7 @@ This section lists all **system-wide dependencies** and **module-specific depend
 
 ## Module-Specific Dependencies
 
-### 1. Smart Pre-Processing Tea Leaf Quality Prediction Module (Placeholder)
+### 1. Smart Pre-Processing Tea Quality Prediction System Using Tea Leaf Images
 
 **Narrative:**  
 - Real-time tea leaf quality assessment using AI & computer vision  
@@ -123,7 +123,7 @@ This section lists all **system-wide dependencies** and **module-specific depend
 
 ---
 
-### 3. Belt Monitoring & Alert System (Fully Detailed)
+### 3. Smart Belt Monitoring and Alert System for Tea Processing Machines
 
 #### Programming Languages
 - **C / C++** – ESP32 firmware (Arduino IDE)
@@ -191,7 +191,7 @@ This section lists all **system-wide dependencies** and **module-specific depend
 
 ---
 
-### 4. Tea Leaf-to-Powder Yield Prediction Module (Placeholder)
+### 4. Tea Leaf-to-Powder Yield Prediction System
 
 **Narrative:**  
 - Predicts tea powder output and yield percentages using IoT and ML  
