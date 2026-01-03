@@ -24,7 +24,7 @@ An **ensemble machine learning model** classifies the leaves into quality grades
 
 ---
 
-### 2. Farmer-Centric Tea Supply Analytics and Predictive Business Intelligence System
+### 2. Environment-Aware Humidity Optimization for Tea Quality Prediction
 
 Maintaining consistent tea quality in small and medium scale processing facilities is challenging due to fluctuating **environmental conditions**, such as temperature and humidity, which affect **moisture retention, enzymatic reactions, and drying efficiency**. Many factories lack **continuous environmental monitoring**, relying instead on experience-based assumptions, which often leads to **reactive and inconsistent quality assessment**.
 
@@ -103,7 +103,7 @@ This section lists all **system-wide dependencies** and **module-specific depend
 
 ---
 
-### 2. Environmental Monitoring & Predictive Analytics Module (Placeholder)
+### 2. Environment-Aware Humidity Optimization for Tea Quality Prediction
 
 **Narrative:**  
 - Monitors temperature & humidity during tea processing  
