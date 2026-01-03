@@ -30,6 +30,7 @@ app.add_middleware(
 
 
 class BatchCollection(BaseModel):
+    leaf_id: str
     farmer_id: str
     farmer_name: str
     village_location: str
@@ -65,14 +66,22 @@ except Exception as e:
 
 @app.get("/api/leaf")
 def get_leaf_records():
-    snapshot = db.collection("leaf").get()
+    snapshot = db.collection("leaf").where("status", "==", "available").get()
     result = []
+
     for doc in snapshot:
         data = doc.to_dict()
+
+        # 🔥 ADD THIS LINE
+        data["leaf_id"] = doc.id
+
         if "timestamp" in data and isinstance(data["timestamp"], datetime):
             data["timestamp"] = data["timestamp"].isoformat()
+
         result.append(data)
+
     return result
+
 
 @app.post("/api/leaf")
 def add_leaf_record(record: LeafRecord):
@@ -93,7 +102,9 @@ def add_leaf_record(record: LeafRecord):
         "farmer_name": farmer_name,
         "village_location": village_location,
         "leaf_weight": leaf_weight,
-        "timestamp": datetime.now()
+        "timestamp": datetime.now(),
+         "status": "available",     # ✅ NEW
+         "batch_id": None 
     })
 
     return {"message": "Leaf record added successfully", "leaf_id": leaf_id}
@@ -105,9 +116,28 @@ def add_leaf_record(record: LeafRecord):
 @app.post("/api/createBatch")
 def create_batch(batch: BatchCreate):
 
+    # 🔒 STEP 1: Validate leaf records (prevent reuse)
+    for c in batch.collections:
+        leaf_ref = db.collection("leaf").document(c.leaf_id)
+        leaf_doc = leaf_ref.get()
+
+        if not leaf_doc.exists:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Leaf {c.leaf_id} not found"
+            )
+
+        if leaf_doc.to_dict().get("status") == "used":
+            raise HTTPException(
+                status_code=400,
+                detail=f"Leaf {c.leaf_id} already used in another batch"
+            )
+
+    # 🔢 STEP 2: Calculate total weight
     total_weight = sum(c.leaf_weight for c in batch.collections)
     weather = get_weather_data()
 
+    # 🧠 STEP 3: ML prediction
     if total_weight <= 250:
         df = pd.DataFrame([{
             "leaf_weight_kg": total_weight,
@@ -115,7 +145,6 @@ def create_batch(batch: BatchCreate):
             "humidity_percentage": weather["humidity"],
             "rainfall_mm": weather["precip_mm"],
         }])
-
         yield_percent = small_model.predict(df)[0]
         predicted_output = total_weight * yield_percent / 100
     else:
@@ -132,12 +161,12 @@ def create_batch(batch: BatchCreate):
             "season": "Intermediate",
             "collection_region": "Upper_Division"
         }])
-
         predicted_output = large_model.predict(df)[0]
 
     expected_yield = (predicted_output / total_weight) * 100
 
-    batch_id = f"BATCH-{int(datetime.utcnow().timestamp()*1000)}"
+    # 🆔 STEP 4: Create batch
+    batch_id = f"BATCH-{int(datetime.utcnow().timestamp() * 1000)}"
 
     db.collection("batches").document(batch_id).set({
         "id": batch_id,
@@ -149,7 +178,15 @@ def create_batch(batch: BatchCreate):
         "startTime": datetime.utcnow().isoformat()
     })
 
+    # 🔒 STEP 5: Lock leaf records (mark as used)
+    for c in batch.collections:
+        db.collection("leaf").document(c.leaf_id).update({
+            "status": "used",
+            "batch_id": batch_id
+        })
+
     return {"batch_id": batch_id}
+
 
 
 @app.get("/api/activeBatches")
