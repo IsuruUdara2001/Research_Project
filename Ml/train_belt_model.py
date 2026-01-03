@@ -8,6 +8,7 @@ import os
 # --------------------------
 # Paths
 # --------------------------
+
 CSV_PATH = "D:/Belt Monitoring System/Ml/belt_dataset_realistic.csv"
 MODEL_DIR = "D:/Belt Monitoring System/Ml"
 MODEL_FILE = "belt_model.pkl"
