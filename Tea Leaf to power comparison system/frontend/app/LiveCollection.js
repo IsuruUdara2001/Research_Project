@@ -13,9 +13,9 @@ const [newWeight, setNewWeight] = useState('');
 
 
 const [collections, setCollections] = useState([]);
-    // -----------------------------------------------------
+    
   // 🔥 FETCH DATA FROM FIREBASE BACKEND
-  // -----------------------------------------------------
+ 
 const fetchCollections = () => {
   fetch("http://192.168.244.112:8000/api/leaf")
     .then(res => res.json())
@@ -210,7 +210,7 @@ const openManualEntry = () => {
 
           {/* ✅ Add Manual Entry Button */}
           <TouchableOpacity style={styles.addManualButton} onPress={openManualEntry}>
-            <Text style={styles.addManualButtonText}>➕ Add Manual Entry</Text>
+            <Text style={styles.addManualButtonText}>➕ Add leaf Entry</Text>
           </TouchableOpacity>
 
           {/* Collection Cards */}
