@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
 
   statCard: {
-    width: "48%",
+    width: "58%",
     backgroundColor: "#fff",
     borderRadius: 12,
     padding: 16,
