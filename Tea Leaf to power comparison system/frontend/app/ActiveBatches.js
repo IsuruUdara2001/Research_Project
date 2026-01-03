@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   scrollView: {
-    flex: 3,
+    flex: 1,
   },
   header: {
     backgroundColor: '#ea580c',
