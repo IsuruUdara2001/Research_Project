@@ -55,9 +55,9 @@ const fetchCollections = () => {
     fetchCollections();
   }, []);
 
-  // -----------------------------------------------------
+  
   // UI Logic
-  // -----------------------------------------------------
+  
 
   const toggleSelection = (id) => {
     if (selectedCollections.includes(id)) {
@@ -138,9 +138,9 @@ const openManualEntry = () => {
 
   
 
- // -----------------------------------------------------
+
   // 🔥 SAVE MANUAL ENTRY TO BACKEND + REFRESH LIST
-  // -----------------------------------------------------
+  
  const saveManualEntry = () => {
   // Validate inputs
   if (!newFarmerID.trim() || !iotWeight) {
