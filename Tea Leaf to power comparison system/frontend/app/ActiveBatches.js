@@ -7,9 +7,8 @@ export default function ActiveBatches() {
   const [batches, setBatches] = useState([]);
 
 
- 
-
   // 🔥 Fetch active batches from backend
+
    useEffect(() => {
     const loadBatchesWithPrediction = async () => {
       try {
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   scrollView: {
-    flex: 1,
+    flex: 3,
   },
   header: {
     backgroundColor: '#ea580c',
