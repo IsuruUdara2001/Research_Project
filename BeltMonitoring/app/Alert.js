@@ -31,6 +31,17 @@ const COLORS = {
     border: "#A5D6A7",
 };
 
+// Consistent spacing scale (multiples of 4)
+const SPACING = {
+    xs: 4,
+    sm: 8,
+    md: 12,
+    lg: 16,
+    xl: 20,
+    xxl: 24,
+    xxxl: 32,
+};
+
 let cachedAlertData = null;
 
 export default function Alert() {
@@ -101,7 +112,7 @@ export default function Alert() {
     };
 
     const isDesktop = dimensions.width > 768;
-    const horizontalPadding = isDesktop ? 40 : 20;
+    const horizontalPadding = isDesktop ? 40 : SPACING.xl;
 
     if (loading) {
         return (
@@ -297,7 +308,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
-        paddingTop: 50,
+        paddingTop: 48,
         paddingBottom: 100,
         alignItems: "center",
     },
@@ -306,10 +317,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: COLORS.background,
-        padding: 20,
+        padding: SPACING.xl,
     },
     loadingText: {
-        marginTop: 16,
+        marginTop: SPACING.lg,
         fontSize: 16,
         fontWeight: "600",
         color: COLORS.textDark,
@@ -318,19 +329,19 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "700",
         color: COLORS.textDark,
-        marginTop: 20,
-        marginBottom: 8,
+        marginTop: SPACING.xl,
+        marginBottom: SPACING.sm,
     },
     errorMessage: {
         fontSize: 14,
         color: COLORS.textMedium,
-        marginBottom: 24,
+        marginBottom: SPACING.xxl,
     },
     retryButton: {
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: COLORS.accent,
-        paddingHorizontal: 28,
+        paddingHorizontal: SPACING.xxl + 4, // 28
         paddingVertical: 14,
         borderRadius: 30,
         shadowColor: "#000",
@@ -342,14 +353,14 @@ const styles = StyleSheet.create({
     retryText: {
         color: "#FFF",
         fontWeight: "700",
-        marginLeft: 8,
+        marginLeft: SPACING.sm,
         fontSize: 16,
     },
     header: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: 24,
+        marginBottom: SPACING.xxl,
         width: "100%",
         maxWidth: 600,
     },
@@ -361,7 +372,7 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 14,
         color: COLORS.textLight,
-        marginTop: 4,
+        marginTop: SPACING.xs,
     },
     refreshButton: {
         width: 44,
@@ -380,11 +391,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: COLORS.cardBg,
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-        borderRadius: 12,
-        marginBottom: 20,
-        gap: 10,
+        paddingHorizontal: SPACING.lg,
+        paddingVertical: SPACING.md,
+        borderRadius: SPACING.md,
+        marginBottom: SPACING.xl,
+        gap: SPACING.sm,
         width: "100%",
         maxWidth: 600,
         shadowColor: "#000",
@@ -404,14 +415,14 @@ const styles = StyleSheet.create({
     },
     mainStatusCard: {
         backgroundColor: COLORS.cardBg,
-        borderRadius: 24,
-        marginBottom: 24,
+        borderRadius: SPACING.xxl,
+        marginBottom: SPACING.xxl,
         width: "100%",
         maxWidth: 600,
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 8 },
+        shadowOffset: { width: 0, height: SPACING.sm },
         shadowOpacity: 0.2,
-        shadowRadius: 16,
+        shadowRadius: SPACING.lg,
         elevation: 10,
         position: "relative",
         overflow: "hidden",
@@ -419,20 +430,20 @@ const styles = StyleSheet.create({
     statusCardInner: {
         flexDirection: "row",
         alignItems: "center",
-        padding: 28,
+        padding: SPACING.xxl + 4, // 28
         zIndex: 1,
     },
     statusIconCircle: {
-        width: 90,
-        height: 90,
-        borderRadius: 45,
+        width: 88,
+        height: 88,
+        borderRadius: 44,
         justifyContent: "center",
         alignItems: "center",
-        marginRight: 24,
+        marginRight: SPACING.xxl,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
-        shadowRadius: 8,
+        shadowRadius: SPACING.sm,
         elevation: 6,
     },
     statusContent: {
@@ -444,18 +455,18 @@ const styles = StyleSheet.create({
         fontWeight: "800",
         textTransform: "uppercase",
         letterSpacing: 1.5,
-        marginBottom: 8,
+        marginBottom: SPACING.sm,
     },
     statusValue: {
         fontSize: 36,
         fontWeight: "900",
-        marginBottom: 10,
+        marginBottom: SPACING.sm,
         letterSpacing: 0.5,
     },
     statusHintContainer: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 8,
+        gap: SPACING.sm,
     },
     statusHintEmoji: {
         fontSize: 18,
@@ -470,20 +481,20 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        width: 8,
+        width: SPACING.sm,
         opacity: 0.9,
     },
     predictionCard: {
         backgroundColor: COLORS.cardBg,
-        borderRadius: 20,
-        padding: 24,
-        marginBottom: 20,
+        borderRadius: SPACING.xl,
+        padding: SPACING.xxl,
+        marginBottom: SPACING.xl,
         width: "100%",
         maxWidth: 600,
         shadowColor: COLORS.accent,
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.2,
-        shadowRadius: 12,
+        shadowRadius: SPACING.md,
         elevation: 6,
         flexDirection: "row",
         alignItems: "center",
@@ -491,13 +502,13 @@ const styles = StyleSheet.create({
         borderColor: COLORS.accentLight,
     },
     predictionIconCircle: {
-        width: 70,
-        height: 70,
-        borderRadius: 35,
+        width: 72,
+        height: 72,
+        borderRadius: 36,
         backgroundColor: COLORS.accentLight,
         justifyContent: "center",
         alignItems: "center",
-        marginRight: 18,
+        marginRight: SPACING.lg,
     },
     predictionContent: {
         flex: 1,
@@ -508,13 +519,13 @@ const styles = StyleSheet.create({
         fontWeight: "800",
         textTransform: "uppercase",
         letterSpacing: 1.2,
-        marginBottom: 8,
+        marginBottom: SPACING.sm,
     },
     predictionValueContainer: {
         flexDirection: "row",
         alignItems: "center",
         flexWrap: "wrap",
-        marginBottom: 8,
+        marginBottom: SPACING.sm,
     },
     predictionText: {
         fontSize: 16,
@@ -540,14 +551,14 @@ const styles = StyleSheet.create({
     },
     futureCard: {
         backgroundColor: COLORS.cardBg,
-        borderRadius: 24,
-        marginBottom: 20,
+        borderRadius: SPACING.xxl,
+        marginBottom: SPACING.xl,
         width: "100%",
         maxWidth: 600,
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 8 },
+        shadowOffset: { width: 0, height: SPACING.sm },
         shadowOpacity: 0.2,
-        shadowRadius: 16,
+        shadowRadius: SPACING.lg,
         elevation: 10,
         position: "relative",
         overflow: "hidden",
@@ -555,7 +566,7 @@ const styles = StyleSheet.create({
     futureCardInner: {
         flexDirection: "row",
         alignItems: "center",
-        padding: 28,
+        padding: SPACING.xxl + 4, // 28
         zIndex: 1,
     },
     futureIconCircle: {
@@ -564,11 +575,11 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         justifyContent: "center",
         alignItems: "center",
-        marginRight: 20,
+        marginRight: SPACING.xl,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
-        shadowRadius: 8,
+        shadowRadius: SPACING.sm,
         elevation: 6,
     },
     futureContent: {
@@ -580,20 +591,20 @@ const styles = StyleSheet.create({
         fontWeight: "800",
         textTransform: "uppercase",
         letterSpacing: 1.5,
-        marginBottom: 8,
+        marginBottom: SPACING.sm,
     },
     futureStatus: {
         fontSize: 28,
         fontWeight: "900",
-        marginBottom: 12,
+        marginBottom: SPACING.md,
     },
     futureMessageContainer: {
         flexDirection: "row",
         alignItems: "flex-start",
-        gap: 8,
+        gap: SPACING.sm,
         backgroundColor: COLORS.normalLight,
-        padding: 12,
-        borderRadius: 12,
+        padding: SPACING.md,
+        borderRadius: SPACING.md,
     },
     futureMessage: {
         fontSize: 14,
@@ -607,22 +618,22 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        width: 8,
+        width: SPACING.sm,
         opacity: 0.9,
     },
     sectionTitle: {
         fontSize: 18,
         fontWeight: "700",
         color: COLORS.textDark,
-        marginBottom: 16,
-        marginTop: 8,
+        marginBottom: SPACING.lg,
+        marginTop: SPACING.sm,
         width: "100%",
         maxWidth: 600,
     },
     cardsGrid: {
         width: "100%",
         alignItems: "center",
-        gap: 16,
-        marginBottom: 20,
+        gap: SPACING.lg,
+        marginBottom: SPACING.xl,
     },
 });
