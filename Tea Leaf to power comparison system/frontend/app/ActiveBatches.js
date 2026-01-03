@@ -13,7 +13,7 @@ export default function ActiveBatches() {
    useEffect(() => {
     const loadBatchesWithPrediction = async () => {
       try {
-        const res = await fetch("http://192.168.144.1:8000/api/activeBatches");
+        const res = await fetch("http://192.168.244.112:8000/api/activeBatches");
         const data = await res.json();
 
         console.log("🔥 Active Batches:", data);
@@ -48,7 +48,7 @@ export default function ActiveBatches() {
 
   const handleSetReady = async (batch) => {
   try {
-    const response = await fetch(`http://192.168.144.1:8000/api/updateBatchStatus/${batch.id}`, {
+    const response = await fetch(`http://192.168.244.112:8000/api/updateBatchStatus/${batch.id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify("Ready")
