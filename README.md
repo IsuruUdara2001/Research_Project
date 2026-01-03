@@ -66,7 +66,6 @@ Stakeholders can **monitor consistency, compare expected vs. actual results, and
 ## Dependencies & Tools
 
 This section lists all **system-wide dependencies** and **module-specific dependencies**.  
-Your module (Belt Monitoring) is fully detailed; other modules have spaces for teammates to add their sensors, libraries, and tools.
 
 ---
 
