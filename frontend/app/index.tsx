@@ -11,9 +11,8 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import * as ImagePicker from "expo-image-picker"; // ✅ Correct import
+import * as ImagePicker from "expo-image-picker";
 import { styles } from "./styles/homeDashboardStyles";
-import { useAppSettings } from "../context/AppSettingsContext";
 
 type QualityStat = {
   label: string;
@@ -30,42 +29,29 @@ const MOCK_STATS: QualityStat[] = [
 
 export default function HomeDashboard() {
   const router = useRouter();
-  const { theme, toggleTheme } = useAppSettings();
-  const isDark = theme === "dark";
 
   const totalToday = MOCK_STATS.reduce((sum, s) => sum + s.value, 0);
   const lastGrade = "Premium";
   const lastConfidence = 93;
 
-  const palette = isDark
-    ? {
-        bg: "#6B9B8A",
-        card: "#064e3b",
-        cardHighlight: "#bbf7d0",
-        text: "#ecfdf5",
-        textSoft: "#a7f3d0",
-        textMuted: "#9ca3af",
-        chipText: "#ecfdf5",
-        quickCard: "#020617",
-        footer: "#9ca3af",
-      }
-    : {
-        bg: "#f1f5f9",
-        card: "#ffffff",
-        cardHighlight: "#a7f3d0",
-        text: "#020617",
-        textSoft: "#0f766e",
-        textMuted: "#4b5563",
-        chipText: "#ffffff",
-        quickCard: "#e5e7eb",
-        footer: "#4b5563",
-      };
+  // ✅ Fixed palette (theme removed)
+  const palette = {
+    bg: "#F6EFE5",
+    card: "#E8F6E9",
+    cardHighlight: "##62917F",
+    text: "#020617",
+    textSoft: "#090516ff",
+    textMuted: "#000000ff",
+    chipText: "#0a0000ff",
+    quickCard: "#629181",
+    footer: "#4b5563",
+  };
 
   // Navigation handlers
   const handleStartScan = () => router.push("/camera");
   const handleGoToHistory = () => router.push("/history");
   const handleGoToAnalytics = () => router.push("/analytics");
-  const handleGoToBatches = () => router.push("/batches");
+  
 
   // Image upload handler
   const handleUploadImage = async () => {
@@ -84,19 +70,18 @@ export default function HomeDashboard() {
       quality: 1,
     });
 
-     if (!result.canceled) {
-    const selectedUri = result.assets[0].uri;
-    // Navigate to identify page with image URI
-    router.push({
-      pathname: "/identify",
-      params: { imageUri: selectedUri },
-    });
-  }
-};
+    if (!result.canceled) {
+      const selectedUri = result.assets[0].uri;
+      router.push({
+        pathname: "/identify",
+        params: { imageUri: selectedUri },
+      });
+    }
+  };
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: palette.bg }]}>
-      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
+      <StatusBar barStyle="dark-content" />
 
       <View style={[styles.root, { backgroundColor: palette.bg }]}>
         {/* HEADER */}
@@ -110,39 +95,11 @@ export default function HomeDashboard() {
             </Text>
           </View>
 
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {/* Theme toggle */}
-            <TouchableOpacity activeOpacity={0.8} onPress={toggleTheme}>
-              <View
-                style={{
-                  width: 70,
-                  height: 32,
-                  borderRadius: 16,
-                  padding: 4,
-                  marginRight: 10,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: isDark ? "flex-start" : "flex-end",
-                  backgroundColor: isDark ? "#e5e7eb" : "#0f172a",
-                }}
-              >
-                <View
-                  style={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: 12,
-                    backgroundColor: isDark ? "#0f172a" : "#f9fafb",
-                  }}
-                />
-              </View>
-            </TouchableOpacity>
-
-            {/* Profile avatar */}
-            <View style={[styles.userAvatar, { backgroundColor: isDark ? "#064e3b" : "#d1fae5" }]}>
-              <Text style={[styles.userInitials, { fontSize: 13, color: palette.text }]}>
-                NG
-              </Text>
-            </View>
+          {/* Profile avatar */}
+          <View style={[styles.userAvatar, { backgroundColor: "#d1fae5" }]}>
+            <Text style={[styles.userInitials, { fontSize: 13, color: palette.text }]}>
+              NG
+            </Text>
           </View>
         </View>
 
@@ -163,38 +120,44 @@ export default function HomeDashboard() {
                   {totalToday}
                 </Text>
               </View>
-              <Ionicons name="leaf" size={40} color={isDark ? "#bbf7d0" : "#047857"} />
+              <Ionicons name="leaf" size={40} color="#047857" />
             </View>
 
             {/* Chips */}
             <View style={styles.chipRow}>
-              <View style={styles.chip}>
-                <Ionicons name="checkmark-circle" size={16} color="#22c55e" />
-                <Text
-                  style={[styles.chipText, { fontSize: 13, color: isDark ? palette.chipText : "#ffffff" }]}
-                >
-                  Last grade: {lastGrade}
-                </Text>
-              </View>
+  <View style={styles.chipResponsive}>
+    <Ionicons name="checkmark-circle" size={16} color="#ffffffff" />
+    <Text style={styles.chipTextResponsive}>
+      Last grade: {lastGrade}
+    </Text>
+  </View>
 
-              <View style={styles.chip}>
-                <Ionicons name="stats-chart" size={16} color="#0ea5e9" />
-                <Text
-                  style={[styles.chipText, { fontSize: 13, color: isDark ? palette.chipText : "#ffffff" }]}
-                >
-                  Confidence: {lastConfidence}%
-                </Text>
-              </View>
-            </View>
+  <View style={styles.chipResponsive}>
+    <Ionicons name="stats-chart" size={16} color="#ffffffff" />
+    <Text style={styles.chipTextResponsive}>
+      Confidence: {lastConfidence}%
+    </Text>
+  </View>
+</View>
+
 
             {/* Start Scan Button */}
             <TouchableOpacity
-              style={[styles.mainButton, { backgroundColor: palette.cardHighlight }]}
+              style={[
+                styles.mainButton,
+                {
+                  backgroundColor: "#629181",
+                  marginTop: 10,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+              ]}
               onPress={handleStartScan}
               activeOpacity={0.8}
             >
-              <Ionicons name="camera" size={20} color="#6B9B8A" />
-              <Text style={[styles.mainButtonText, { fontSize: 13, color: "#6B9B8A" }]}>
+              <Ionicons name="camera" size={20} color="#ffffffff" />
+              <Text style={[styles.mainButtonText, { fontSize: 13, color: "#F6EFE5" }]}>
                 Start Leaf Scan
               </Text>
             </TouchableOpacity>
@@ -204,7 +167,7 @@ export default function HomeDashboard() {
               style={[
                 styles.mainButton,
                 {
-                  backgroundColor: isDark ? "#0f172a" : "#a5f3fc",
+                  backgroundColor: "#629181",
                   marginTop: 10,
                   flexDirection: "row",
                   justifyContent: "center",
@@ -214,11 +177,11 @@ export default function HomeDashboard() {
               onPress={handleUploadImage}
               activeOpacity={0.8}
             >
-              <Ionicons name="cloud-upload-outline" size={20} color={isDark ? "#ecfdf5" : "#6B9B8A"} />
+              <Ionicons name="cloud-upload-outline" size={20} color="#ffffffff" />
               <Text
                 style={[
                   styles.mainButtonText,
-                  { fontSize: 13, color: isDark ? "#ecfdf5" : "#6B9B8A", marginLeft: 6 },
+                  { fontSize: 13, color: "#ffffffff", marginLeft: 6 },
                 ]}
               >
                 Upload Image
@@ -227,17 +190,7 @@ export default function HomeDashboard() {
           </View>
 
           {/* Quality Distribution */}
-          <View
-            style={[
-              styles.section,
-              {
-                backgroundColor: isDark ? "transparent" : "#e2f3ec",
-                borderRadius: isDark ? 0 : 18,
-                paddingHorizontal: isDark ? 0 : 12,
-                paddingVertical: isDark ? 0 : 14,
-              },
-            ]}
-          >
+          <View style={styles.section}>
             <Text style={[styles.sectionTitle, { fontSize: 15, color: palette.text }]}>
               Quality Distribution (Today)
             </Text>
@@ -246,10 +199,10 @@ export default function HomeDashboard() {
               {MOCK_STATS.map((stat) => (
                 <View key={stat.label} style={styles.qualityItem}>
                   <View style={[styles.qualityCircle, { backgroundColor: stat.color }]} />
-                  <Text style={[styles.qualityLabel, { fontSize: 13, color: isDark ? "#f9fafb" : "#ffffff" }]}>
+                  <Text style={[styles.qualityLabel, { fontSize: 13, color: "#000000ff" }]}>
                     {stat.label}
                   </Text>
-                  <Text style={[styles.qualityValue, { fontSize: 13, color: isDark ? "#f9fafb" : "#ffffff" }]}>
+                  <Text style={[styles.qualityValue, { fontSize: 13, color: "#000000ff" }]}>
                     {stat.value}
                   </Text>
                 </View>
@@ -259,39 +212,29 @@ export default function HomeDashboard() {
 
           {/* Quick Actions */}
           <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { fontSize: 15, color: isDark ? palette.text : "#ffffff" }]}>
+            <Text style={[styles.sectionTitle, { fontSize: 15, color: "#000000ff" }]}>
               Quick Actions
             </Text>
 
-            {/* Row 1 */}
             <View style={styles.actionsRow}>
               <TouchableOpacity style={[styles.actionCard, { backgroundColor: palette.quickCard }]} onPress={handleGoToHistory}>
-                <Ionicons name="time" size={26} color="#0f766e" />
-                <Text style={[styles.actionTitle, { fontSize: 13, color: palette.text }]}>History</Text>
-                <Text style={[styles.actionSubtitle, { fontSize: 13, color: isDark ? palette.textMuted : "#000000" }]}>
+                <Ionicons name="time" size={26} color="#ffffffff" />
+                <Text style={[styles.actionTitle, { fontSize: 13, color: "#ffffffff" }]}>History</Text>
+                <Text style={[styles.actionSubtitle, { fontSize: 13, color: "#ffffffff" }]}>
                   Recent predictions
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={[styles.actionCard, { backgroundColor: palette.quickCard }]} onPress={handleGoToAnalytics}>
-                <Ionicons name="analytics" size={26} color="#7c2d12" />
-                <Text style={[styles.actionTitle, { fontSize: 13, color: palette.text }]}>Analytics</Text>
-                <Text style={[styles.actionSubtitle, { fontSize: 13, color: isDark ? palette.textMuted : "#000000" }]}>
+                <Ionicons name="analytics" size={26} color="#ffffffff" />
+                <Text style={[styles.actionTitle, { fontSize: 13, color: "#ffffffff" }]}>Analytics</Text>
+                <Text style={[styles.actionSubtitle, { fontSize: 13, color: "#ffffffff" }]}>
                   Trends & insights
                 </Text>
               </TouchableOpacity>
             </View>
 
-            {/* Row 2 */}
-            <View style={styles.actionsRow}>
-              <TouchableOpacity style={[styles.actionCard, { backgroundColor: palette.quickCard }]} onPress={handleGoToBatches}>
-                <Ionicons name="cube" size={26} color="#1d4ed8" />
-                <Text style={[styles.actionTitle, { fontSize: 13, color: palette.text }]}>Batches</Text>
-                <Text style={[styles.actionSubtitle, { fontSize: 13, color: isDark ? palette.textMuted : "#000000" }]}>
-                  Assign & review
-                </Text>
-              </TouchableOpacity>
-            </View>
+            
           </View>
 
           {/* Footer */}
