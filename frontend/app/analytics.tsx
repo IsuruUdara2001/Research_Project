@@ -63,7 +63,7 @@ export default function AnalyticsDashboard() {
           <View style={styles.summaryCard}>
             <Text style={styles.summaryLabel}>Today&apos;s Scans</Text>
             <View style={styles.summaryMainRow}>
-              <Ionicons name="leaf" size={24} color="#bbf7d0" />
+              <Ionicons name="leaf" size={24} color="#ffffffff" />
               <Text style={styles.summaryValue}>{totalScansToday}</Text>
             </View>
             <Text style={styles.summarySub}>Across all grades</Text>
@@ -72,7 +72,7 @@ export default function AnalyticsDashboard() {
           <View style={styles.summaryCard}>
             <Text style={styles.summaryLabel}>Premium Ratio</Text>
             <View style={styles.summaryMainRow}>
-              <Ionicons name="ribbon" size={24} color="#22c55e" />
+              <Ionicons name="ribbon" size={24} color="#ffffffff" />
               <Text style={styles.summaryValue}>{premiumRatio}%</Text>
             </View>
             <Text style={styles.summarySub}>of today&apos;s scans</Text>
@@ -83,7 +83,7 @@ export default function AnalyticsDashboard() {
           <View style={[styles.summaryCard, { flex: 1 }]}>
             <Text style={styles.summaryLabel}>Average Confidence</Text>
             <View style={styles.summaryMainRow}>
-              <Ionicons name="stats-chart" size={24} color="#0ea5e9" />
+              <Ionicons name="stats-chart" size={24} color="#ffffffff" />
               <Text style={styles.summaryValue}>{avgConfidence}%</Text>
             </View>
             <Text style={styles.summarySub}>Model prediction strength</Text>
@@ -138,9 +138,7 @@ export default function AnalyticsDashboard() {
               );
             })}
           </View>
-          <Text style={styles.weeklyHint}>
-            Taller bars indicate higher number of scanned leaves on that day.
-          </Text>
+          
         </View>
 
         {/* Insights cards */}

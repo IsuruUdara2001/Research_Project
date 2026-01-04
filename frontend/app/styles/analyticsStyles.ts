@@ -3,11 +3,11 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#022c22",
+    backgroundColor: "#E8F6E9",
   },
   root: {
     flex: 1,
-    backgroundColor: "#022c22",
+    backgroundColor: "#E8F6E9",
   },
   scrollContent: {
     paddingHorizontal: 16,
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#064e3b",
   },
   headerTitle: {
-    color: "#ecfdf5",
+    color: "#000000ff",
     fontSize: 18,
     fontWeight: "600",
   },
@@ -43,15 +43,15 @@ export const styles = StyleSheet.create({
   },
   summaryCard: {
     flex: 1,
-    backgroundColor: "#064e3b",
+    backgroundColor: "#629181",
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: "#065f46",
+    borderColor: "#629181",
   },
   summaryLabel: {
-    color: "#a7f3d0",
+    color: "#ffffffff",
     fontSize: 13,
   },
   summaryMainRow: {
@@ -61,12 +61,12 @@ export const styles = StyleSheet.create({
     marginTop: 4,
   },
   summaryValue: {
-    color: "#ecfdf5",
+    color: "#ffffffff",
     fontSize: 24,
     fontWeight: "800",
   },
   summarySub: {
-    color: "#9ca3af",
+    color: "#ffffffff",
     fontSize: 12,
     marginTop: 4,
   },
@@ -75,7 +75,7 @@ export const styles = StyleSheet.create({
     marginTop: 18,
   },
   sectionTitle: {
-    color: "#ecfdf5",
+    color: "#000000ff",
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 10,
@@ -83,12 +83,12 @@ export const styles = StyleSheet.create({
 
   // Quality distribution
   qualityContainer: {
-    backgroundColor: "#022c22",
+    backgroundColor: "#629181",
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderWidth: 1,
-    borderColor: "#064e3b",
+    borderColor: "#629181",
   },
   qualityItemRow: {
     flexDirection: "row",
@@ -108,7 +108,7 @@ export const styles = StyleSheet.create({
     borderRadius: 999,
   },
   qualityLabel: {
-    color: "#e5e7eb",
+    color: "#ffffffff",
     fontSize: 12,
   },
   qualityBarBackground: {
@@ -134,12 +134,12 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "space-between",
-    backgroundColor: "#022c22",
+    backgroundColor: "#629181",
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: "#064e3b",
+    borderColor: "#629181",
   },
   weeklyBarItem: {
     alignItems: "center",
@@ -151,39 +151,35 @@ export const styles = StyleSheet.create({
     backgroundColor: "#4ade80",
   },
   weeklyBarLabel: {
-    color: "#9ca3af",
+    color: "#ffffffff",
     fontSize: 11,
   },
-  weeklyHint: {
-    marginTop: 6,
-    color: "#9ca3af",
-    fontSize: 11,
-  },
+  
 
   // Insights
   insightCard: {
     flexDirection: "row",
     gap: 10,
     alignItems: "flex-start",
-    backgroundColor: "#022c22",
+    backgroundColor: "#629181",
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: "#064e3b",
+    borderColor: "#629181",
     marginBottom: 10,
   },
   insightContent: {
     flex: 1,
   },
   insightTitle: {
-    color: "#ecfdf5",
+    color: "#ffffffff",
     fontSize: 14,
     fontWeight: "600",
     marginBottom: 2,
   },
   insightText: {
-    color: "#d1fae5",
+    color: "#ffffffff",
     fontSize: 12,
   },
 });
