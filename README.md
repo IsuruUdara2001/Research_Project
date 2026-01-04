@@ -184,19 +184,74 @@ This section lists all **system-wide dependencies** and **module-specific depend
 
 ### 4. Tea Leaf-to-Powder Yield Prediction System
 
-**Narrative:**  
-- Predicts tea powder output and yield percentages using IoT and ML  
-- Tracks batch-wise production for transparency  
+This section lists all **programming languages, frameworks, libraries, hardware, and tools** required for the **Tea Leaf-to-Powder Yield Prediction System**.
 
-**Hardware / Sensors:**  
-- Load cell weight sensor  
-- ESP32  
+---
 
-**Software / Libraries:**  
-- Python, Scikit-learn, NumPy, Pandas  
-- Mobile app: React Native / Expo  
-- Cloud: Firebase  
+## Programming Languages
 
-> *Teammates can add wiring diagrams, calibration details, or additional libraries.*
+- **Python** – Backend API development and machine learning implementation  
+- **C / C++** – ESP32 / ESP8266 firmware development  
+- **JavaScript** – Mobile application development (React Native)  
 
+---
 
+## Frameworks / IDE
+
+- **FastAPI (Python)** – RESTful backend APIs for sensor data handling, ML inference, and database integration  
+- **Uvicorn** – ASGI server for running FastAPI backend  
+- **Arduino IDE** – ESP32 / ESP8266 firmware programming  
+- **React Native** – Mobile application development  
+- **Expo Go** – Mobile application testing  
+- **Scikit-learn** – Machine learning framework  
+
+---
+
+## Python Libraries
+
+- **NumPy** – Numerical computations and array operations  
+- **Pandas** – Dataset handling, cleaning, and preprocessing  
+- **Scikit-learn** – ML model training, evaluation, and prediction  
+- **Joblib** – Saving and loading trained ML models  
+- **Firebase Admin SDK** – Secure backend communication with Firebase services  
+
+---
+
+## Arduino / ESP8266 Libraries
+
+- **Arduino Core Library** – Essential microcontroller functions, GPIO control, serial communication  
+- **HX711 Library** – Interface with HX711 load cell amplifier for weight measurement  
+- **Wire Library** – I²C communication for peripheral devices (optional / expansion)  
+- **ESP8266WiFi Library** – Wi-Fi connectivity for ESP8266  
+- **ESP8266HTTPClient Library** – Send HTTP POST requests with sensor data  
+- **ESP8266WebServer Library** – Local web interface for real-time weight display  
+- **ArduinoJson Library** – Construct and serialize JSON payloads  
+- **WiFiClient Library** – TCP client support for network communication  
+- **WiFiClientSecure Library** – HTTPS communication support  
+
+---
+
+## Databases / Cloud Services
+
+- **Firebase Firestore / Realtime Database**  
+  - Sensor data storage  
+  - Machine learning prediction storage  
+
+---
+
+## Hardware Components & Sensors
+
+- **ESP8266 (NodeMCU)** – Main microcontroller with built-in Wi-Fi for sending data to backend  
+- **Load Cell** – Measures the weight of tea leaves  
+- **HX711 Load Cell Module** – Amplifies and converts load cell signals to digital data  
+- **Push Button** – Captures and saves stable weight readings  
+- **Wi-Fi Module (ESP8266 built-in)** – Wireless data transmission  
+- **Power Supply (USB 5V)** – Powers NodeMCU and connected components  
+
+---
+
+## Development & Testing Tools
+
+- **Postman** – API testing  
+- **VS Code** – Code editor  
+- **Git & GitHub** – Version control  
