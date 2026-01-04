@@ -13,14 +13,11 @@ To address these challenges, this project proposes a **comprehensive, AI- and Io
 
 ### 1. Smart Pre-Processing Tea Quality Prediction System Using Tea Leaf Images
 
-This module enables **real-time tea leaf quality assessment before processing**, significantly reducing subjectivity and material wastage. Using a smartphone camera, users capture images of freshly harvested leaves, which are then analyzed for **leaf color, texture, shape, and bud-to-leaf ratio** through advanced computer vision techniques, including:
+Fresh tea leaf quality assessment is a critical yet highly subjective process in tea production, often relying on manual inspection by experienced workers. Variations in human judgment, lighting conditions, and time constraints can lead to inconsistent grading, material wastage, and unfair pricing for farmers—especially in small and medium-scale tea factories. 
 
-- **CIELAB color space analysis**  
-- **GLCM texture analysis**  
-- **Morphological feature extraction**  
-- **YOLO-based bud detection**  
+The Smart Pre-Processing Tea Quality Prediction System enables real-time quality assessment using images captured via a smartphone camera. The system first verifies whether the uploaded image contains a tea leaf, preventing invalid inputs and ensuring reliable analysis. Once confirmed, advanced computer vision techniques—**CIELAB color space analysis, GLCM-based texture extraction, and morphological feature analysis**—are applied to extract critical visual attributes such as **color, texture, shape, and size**. An ensemble machine learning model then classifies the leaves into four quality grades: **Premium, High, Medium, or Low.**
 
-An **ensemble machine learning model** classifies the leaves into quality grades: **Premium, High, Medium, or Low**. Instant feedback is provided through a user-friendly mobile application, enabling **early quality detection, fair pricing for farmers, and improved processing efficiency**.
+Instant feedback is delivered through a user-friendly mobile application, allowing early quality detection before processing begins. This data-driven approach reduces subjectivity, minimizes raw material wastage, supports fair pricing for farmers, and improves overall processing efficiency, contributing to the digital transformation of Sri Lanka’s tea industry.
 
 ---
 
