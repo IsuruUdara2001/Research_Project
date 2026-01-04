@@ -7,9 +7,11 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import * as ImagePicker from "expo-image-picker"; // ✅ Correct import
 import { styles } from "./styles/homeDashboardStyles";
 import { useAppSettings } from "../context/AppSettingsContext";
 
@@ -29,7 +31,6 @@ const MOCK_STATS: QualityStat[] = [
 export default function HomeDashboard() {
   const router = useRouter();
   const { theme, toggleTheme } = useAppSettings();
-
   const isDark = theme === "dark";
 
   const totalToday = MOCK_STATS.reduce((sum, s) => sum + s.value, 0);
@@ -38,7 +39,7 @@ export default function HomeDashboard() {
 
   const palette = isDark
     ? {
-        bg: "#022c22",
+        bg: "#6B9B8A",
         card: "#064e3b",
         cardHighlight: "#bbf7d0",
         text: "#ecfdf5",
@@ -60,51 +61,58 @@ export default function HomeDashboard() {
         footer: "#4b5563",
       };
 
-  // navigation handlers
+  // Navigation handlers
   const handleStartScan = () => router.push("/camera");
   const handleGoToHistory = () => router.push("/history");
   const handleGoToAnalytics = () => router.push("/analytics");
   const handleGoToBatches = () => router.push("/batches");
- 
+
+  // Image upload handler
+  const handleUploadImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Permission denied",
+        "We need access to your media library to upload images."
+      );
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+     if (!result.canceled) {
+    const selectedUri = result.assets[0].uri;
+    // Navigate to identify page with image URI
+    router.push({
+      pathname: "/identify",
+      params: { imageUri: selectedUri },
+    });
+  }
+};
 
   return (
-    <SafeAreaView
-      style={[styles.safeArea, { backgroundColor: palette.bg }]}
-    >
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: palette.bg }]}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
 
       <View style={[styles.root, { backgroundColor: palette.bg }]}>
-
-        {/* HEADER WITH SWITCH + PROFILE */}
+        {/* HEADER */}
         <View style={styles.header}>
-          {/* Left side */}
           <View>
-            <Text
-              style={[
-                styles.greetingText,
-                { fontSize: 22, color: palette.text },
-              ]}
-            >
+            <Text style={[styles.greetingText, { fontSize: 22, color: palette.text }]}>
               Smart Tea Quality
             </Text>
-            <Text
-              style={[
-                styles.subtitleText,
-                { fontSize: 14, color: palette.textSoft },
-              ]}
-            >
+            <Text style={[styles.subtitleText, { fontSize: 14, color: palette.textSoft }]}>
               Pre-Processing Dashboard
             </Text>
           </View>
 
-          {/* Right side */}
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-
-            {/* DARK / LIGHT TOGGLE PILL */}
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={toggleTheme}
-            >
+            {/* Theme toggle */}
+            <TouchableOpacity activeOpacity={0.8} onPress={toggleTheme}>
               <View
                 style={{
                   width: 70,
@@ -129,19 +137,9 @@ export default function HomeDashboard() {
               </View>
             </TouchableOpacity>
 
-            {/* PROFILE AVATAR */}
-            <View
-              style={[
-                styles.userAvatar,
-                { backgroundColor: isDark ? "#064e3b" : "#d1fae5" },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.userInitials,
-                  { fontSize: 13, color: palette.text },
-                ]}
-              >
+            {/* Profile avatar */}
+            <View style={[styles.userAvatar, { backgroundColor: isDark ? "#064e3b" : "#d1fae5" }]}>
+              <Text style={[styles.userInitials, { fontSize: 13, color: palette.text }]}>
                 NG
               </Text>
             </View>
@@ -155,36 +153,17 @@ export default function HomeDashboard() {
           showsVerticalScrollIndicator={false}
         >
           {/* Today summary card */}
-          <View
-            style={[
-              styles.cardPrimary,
-              { backgroundColor: palette.card },
-            ]}
-          >
+          <View style={[styles.cardPrimary, { backgroundColor: palette.card }]}>
             <View style={styles.cardPrimaryRow}>
               <View>
-                <Text
-                  style={[
-                    styles.cardPrimaryLabel,
-                    { fontSize: 13, color: palette.textSoft },
-                  ]}
-                >
+                <Text style={[styles.cardPrimaryLabel, { fontSize: 13, color: palette.textSoft }]}>
                   Today&apos;s Scans
                 </Text>
-                <Text
-                  style={[
-                    styles.cardPrimaryValue,
-                    { fontSize: 26, color: palette.text },
-                  ]}
-                >
+                <Text style={[styles.cardPrimaryValue, { fontSize: 26, color: palette.text }]}>
                   {totalToday}
                 </Text>
               </View>
-              <Ionicons
-                name="leaf"
-                size={40}
-                color={isDark ? "#bbf7d0" : "#047857"}
-              />
+              <Ionicons name="leaf" size={40} color={isDark ? "#bbf7d0" : "#047857"} />
             </View>
 
             {/* Chips */}
@@ -192,13 +171,7 @@ export default function HomeDashboard() {
               <View style={styles.chip}>
                 <Ionicons name="checkmark-circle" size={16} color="#22c55e" />
                 <Text
-                  style={[
-                    styles.chipText,
-                    {
-                      fontSize: 13,
-                      color: isDark ? palette.chipText : "#ffffff",
-                    },
-                  ]}
+                  style={[styles.chipText, { fontSize: 13, color: isDark ? palette.chipText : "#ffffff" }]}
                 >
                   Last grade: {lastGrade}
                 </Text>
@@ -207,41 +180,53 @@ export default function HomeDashboard() {
               <View style={styles.chip}>
                 <Ionicons name="stats-chart" size={16} color="#0ea5e9" />
                 <Text
-                  style={[
-                    styles.chipText,
-                    {
-                      fontSize: 13,
-                      color: isDark ? palette.chipText : "#ffffff",
-                    },
-                  ]}
+                  style={[styles.chipText, { fontSize: 13, color: isDark ? palette.chipText : "#ffffff" }]}
                 >
                   Confidence: {lastConfidence}%
                 </Text>
               </View>
             </View>
 
-            {/* Scan Button */}
+            {/* Start Scan Button */}
             <TouchableOpacity
-              style={[
-                styles.mainButton,
-                { backgroundColor: palette.cardHighlight },
-              ]}
+              style={[styles.mainButton, { backgroundColor: palette.cardHighlight }]}
               onPress={handleStartScan}
               activeOpacity={0.8}
             >
-              <Ionicons name="camera" size={20} color="#022c22" />
+              <Ionicons name="camera" size={20} color="#6B9B8A" />
+              <Text style={[styles.mainButtonText, { fontSize: 13, color: "#6B9B8A" }]}>
+                Start Leaf Scan
+              </Text>
+            </TouchableOpacity>
+
+            {/* Upload Image Button */}
+            <TouchableOpacity
+              style={[
+                styles.mainButton,
+                {
+                  backgroundColor: isDark ? "#0f172a" : "#a5f3fc",
+                  marginTop: 10,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+              ]}
+              onPress={handleUploadImage}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="cloud-upload-outline" size={20} color={isDark ? "#ecfdf5" : "#6B9B8A"} />
               <Text
                 style={[
                   styles.mainButtonText,
-                  { fontSize: 13, color: "#022c22" },
+                  { fontSize: 13, color: isDark ? "#ecfdf5" : "#6B9B8A", marginLeft: 6 },
                 ]}
               >
-                Start Leaf Scan
+                Upload Image
               </Text>
             </TouchableOpacity>
           </View>
 
-          {/* Quality distribution */}
+          {/* Quality Distribution */}
           <View
             style={[
               styles.section,
@@ -253,44 +238,18 @@ export default function HomeDashboard() {
               },
             ]}
           >
-            <Text
-              style={[
-                styles.sectionTitle,
-                { fontSize: 15, color: palette.text },
-              ]}
-            >
+            <Text style={[styles.sectionTitle, { fontSize: 15, color: palette.text }]}>
               Quality Distribution (Today)
             </Text>
 
             <View style={styles.qualityRow}>
               {MOCK_STATS.map((stat) => (
                 <View key={stat.label} style={styles.qualityItem}>
-                  <View
-                    style={[
-                      styles.qualityCircle,
-                      { backgroundColor: stat.color },
-                    ]}
-                  />
-                  <Text
-                    style={[
-                      styles.qualityLabel,
-                      {
-                        fontSize: 13,
-                        color: isDark ? "#f9fafb" : "#ffffff",
-                      },
-                    ]}
-                  >
+                  <View style={[styles.qualityCircle, { backgroundColor: stat.color }]} />
+                  <Text style={[styles.qualityLabel, { fontSize: 13, color: isDark ? "#f9fafb" : "#ffffff" }]}>
                     {stat.label}
                   </Text>
-                  <Text
-                    style={[
-                      styles.qualityValue,
-                      {
-                        fontSize: 13,
-                        color: isDark ? "#f9fafb" : "#ffffff",
-                      },
-                    ]}
-                  >
+                  <Text style={[styles.qualityValue, { fontSize: 13, color: isDark ? "#f9fafb" : "#ffffff" }]}>
                     {stat.value}
                   </Text>
                 </View>
@@ -298,128 +257,48 @@ export default function HomeDashboard() {
             </View>
           </View>
 
-          {/* Quick actions */}
+          {/* Quick Actions */}
           <View style={styles.section}>
-            <Text
-              style={[
-                styles.sectionTitle,
-                { fontSize: 15, color: isDark ? palette.text : "#ffffff" },
-              ]}
-            >
+            <Text style={[styles.sectionTitle, { fontSize: 15, color: isDark ? palette.text : "#ffffff" }]}>
               Quick Actions
             </Text>
 
-            {/* row 1 */}
+            {/* Row 1 */}
             <View style={styles.actionsRow}>
-              <TouchableOpacity
-                style={[
-                  styles.actionCard,
-                  { backgroundColor: palette.quickCard },
-                ]}
-                onPress={handleGoToHistory}
-              >
+              <TouchableOpacity style={[styles.actionCard, { backgroundColor: palette.quickCard }]} onPress={handleGoToHistory}>
                 <Ionicons name="time" size={26} color="#0f766e" />
-                <Text
-                  style={[
-                    styles.actionTitle,
-                    { fontSize: 13, color: palette.text },
-                  ]}
-                >
-                  History
-                </Text>
-                <Text
-                  style={[
-                    styles.actionSubtitle,
-                    {
-                      fontSize: 13,
-                      color: isDark ? palette.textMuted : "#000000",
-                    },
-                  ]}
-                >
+                <Text style={[styles.actionTitle, { fontSize: 13, color: palette.text }]}>History</Text>
+                <Text style={[styles.actionSubtitle, { fontSize: 13, color: isDark ? palette.textMuted : "#000000" }]}>
                   Recent predictions
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={[
-                  styles.actionCard,
-                  { backgroundColor: palette.quickCard },
-                ]}
-                onPress={handleGoToAnalytics}
-              >
+              <TouchableOpacity style={[styles.actionCard, { backgroundColor: palette.quickCard }]} onPress={handleGoToAnalytics}>
                 <Ionicons name="analytics" size={26} color="#7c2d12" />
-                <Text
-                  style={[
-                    styles.actionTitle,
-                    { fontSize: 13, color: palette.text },
-                  ]}
-                >
-                  Analytics
-                </Text>
-                <Text
-                  style={[
-                    styles.actionSubtitle,
-                    {
-                      fontSize: 13,
-                      color: isDark ? palette.textMuted : "#000000",
-                    },
-                  ]}
-                >
+                <Text style={[styles.actionTitle, { fontSize: 13, color: palette.text }]}>Analytics</Text>
+                <Text style={[styles.actionSubtitle, { fontSize: 13, color: isDark ? palette.textMuted : "#000000" }]}>
                   Trends & insights
                 </Text>
               </TouchableOpacity>
             </View>
 
-            {/* row 2 */}
+            {/* Row 2 */}
             <View style={styles.actionsRow}>
-              <TouchableOpacity
-                style={[
-                  styles.actionCard,
-                  { backgroundColor: palette.quickCard },
-                ]}
-                onPress={handleGoToBatches}
-              >
+              <TouchableOpacity style={[styles.actionCard, { backgroundColor: palette.quickCard }]} onPress={handleGoToBatches}>
                 <Ionicons name="cube" size={26} color="#1d4ed8" />
-                <Text
-                  style={[
-                    styles.actionTitle,
-                    { fontSize: 13, color: palette.text },
-                  ]}
-                >
-                  Batches
-                </Text>
-                <Text
-                  style={[
-                    styles.actionSubtitle,
-                    {
-                      fontSize: 13,
-                      color: isDark ? palette.textMuted : "#000000",
-                    },
-                  ]}
-                >
+                <Text style={[styles.actionTitle, { fontSize: 13, color: palette.text }]}>Batches</Text>
+                <Text style={[styles.actionSubtitle, { fontSize: 13, color: isDark ? palette.textMuted : "#000000" }]}>
                   Assign & review
                 </Text>
               </TouchableOpacity>
-
-             
             </View>
           </View>
 
-          {/* Info footer */}
+          {/* Footer */}
           <View style={styles.footer}>
-            <Ionicons
-              name="information-circle-outline"
-              size={18}
-              color={palette.textMuted}
-            />
-            <Text
-              style={[
-                styles.footerText,
-                { fontSize: 13, color: palette.footer },
-              ]}
-            >
-              Use “Start Leaf Scan” to capture tea leaves. Predictions are based
-              on color, texture, shape and size features.
+            <Ionicons name="information-circle-outline" size={18} color={palette.textMuted} />
+            <Text style={[styles.footerText, { fontSize: 13, color: palette.footer }]}>
+              Use “Start Leaf Scan” to capture tea leaves. Predictions are based on color, texture, shape and size features.
             </Text>
           </View>
         </ScrollView>
