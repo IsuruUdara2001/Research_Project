@@ -13,9 +13,9 @@ To address these challenges, this project proposes a **comprehensive, AI- and Io
 
 ### 1. Smart Pre-Processing Tea Quality Prediction System Using Tea Leaf Images
 
-Fresh tea leaf quality assessment is a critical yet highly subjective process in tea production, often relying on manual inspection by experienced workers. Variations in human judgment, lighting conditions, and time constraints can lead to inconsistent grading, material wastage, and unfair pricing for farmers—especially in small and medium-scale tea factories. 
+Fresh tea leaf quality assessment is a critical yet highly subjective process in tea production, often relying on manual inspection by experienced workers. Variations in human judgment, lighting conditions, and time constraints can lead to inconsistent grading, material wastage, and unfair pricing for farmers especially in small and medium-scale tea factories. 
 
-The Smart Pre-Processing Tea Quality Prediction System enables real-time quality assessment using images captured via a smartphone camera. The system first verifies whether the uploaded image contains a tea leaf, preventing invalid inputs and ensuring reliable analysis. Once confirmed, advanced computer vision techniques—**CIELAB color space analysis, GLCM-based texture extraction, and morphological feature analysis**—are applied to extract critical visual attributes such as **color, texture, shape, and size**. An ensemble machine learning model then classifies the leaves into four quality grades: **Premium, High, Medium, or Low.**
+The Smart Pre-Processing Tea Quality Prediction System enables real-time quality assessment using images captured via a smartphone camera. The system first verifies whether the uploaded image contains a tea leaf, preventing invalid inputs and ensuring reliable analysis. Once confirmed, advanced computer vision techniques like **CIELAB color space analysis, GLCM-based texture extraction, and morphological feature analysis** are applied to extract critical visual attributes such as **color, texture, shape, and size**. An ensemble machine learning model then classifies the leaves into four quality grades: **Premium, High, Medium, or Low.**
 
 Instant feedback is delivered through a user-friendly mobile application, allowing early quality detection before processing begins. This data-driven approach reduces subjectivity, minimizes raw material wastage, supports fair pricing for farmers, and improves overall processing efficiency, contributing to the digital transformation of Sri Lanka’s tea industry.
 
@@ -74,21 +74,51 @@ This section lists all **system-wide dependencies** and **module-specific depend
 
 ### 1. Smart Pre-Processing Tea Quality Prediction System Using Tea Leaf Images
 
-**Narrative:**  
-- Real-time tea leaf quality assessment using AI & computer vision  
-- Leaf features: color, texture, shape, bud-to-leaf ratio  
-- ML model classifies leaves into Premium / High / Medium / Low  
+**Programming Languages:**  
 
-**Hardware / Sensors:**  
-- Smartphone camera – Image capture  
+- Python – Backend API development & Machine Learning
+- JavaScript / TypeScript – Mobile application development (React Native) 
 
-**Software / Libraries:**  
-- Python, OpenCV, YOLO, TensorFlow/PyTorch, NumPy, Pandas, Scikit-learn  
-- Mobile app: React Native / Expo  
-- Cloud: Firebase  
+**Frameworks & IDEs**  
 
-> *Teammates can add exact pins, configurations, or extra tools here.*
+- Flask – RESTful backend API (Python)
+- React Native – Cross-platform mobile app development
+- Expo Go – Mobile application testing
+- Scikit-learn – Machine learning framework
 
+**Python Libraries**  
+
+- NumPy – Numerical computations
+- Pandas – Dataset handling and preprocessing
+- OpenCV (cv2) – Image processing
+- Scikit-image – GLCM texture feature extraction
+- Scikit-learn – ML model training and prediction
+- Joblib – Model serialization (save/load)
+- Matplotlib / Seaborn – Data visualization
+
+ **Machine Learning Models**  
+ 
+- Tea Leaf Verification Model(Binary classification): Tea Leaf / Not a Tea Leaf
+- Tea Quality Classification Model(Multi-class classification): Premium, High, Medium, Low
+
+ **Image Processing Techniques**  
+ 
+- CIELAB Color Space Analysis – Objective leaf color evaluation
+- GLCM Texture Analysis – Contrast, homogeneity, entropy, correlation
+- Morphological Feature Extraction – Shape, size, area
+
+**Databases / Cloud Services**
+  
+- Firebase Firestore / Realtime Database
+  - Prediction result storage
+  - Machine learning prediction storage
+  - Historical quality analysis
+
+ **Software & Tools Required**  
+ 
+- Postman – API testing
+- VS Code – Code editor
+- Git & GitHub – Version control
 ---
 
 ### 2. Environment-Aware Humidity Optimization for Tea Quality Prediction
