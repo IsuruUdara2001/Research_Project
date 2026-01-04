@@ -186,17 +186,13 @@ This section lists all **system-wide dependencies** and **module-specific depend
 
 This section lists all **programming languages, frameworks, libraries, hardware, and tools** required for the **Tea Leaf-to-Powder Yield Prediction System**.
 
----
-
-## Programming Languages
+### Programming Languages
 
 - **Python** – Backend API development and machine learning implementation  
 - **C / C++** – ESP32 / ESP8266 firmware development  
 - **JavaScript** – Mobile application development (React Native)  
 
----
-
-## Frameworks / IDE
+### Frameworks / IDE
 
 - **FastAPI (Python)** – RESTful backend APIs for sensor data handling, ML inference, and database integration  
 - **Uvicorn** – ASGI server for running FastAPI backend  
@@ -205,9 +201,7 @@ This section lists all **programming languages, frameworks, libraries, hardware,
 - **Expo Go** – Mobile application testing  
 - **Scikit-learn** – Machine learning framework  
 
----
-
-## Python Libraries
+### Python Libraries
 
 - **NumPy** – Numerical computations and array operations  
 - **Pandas** – Dataset handling, cleaning, and preprocessing  
@@ -215,9 +209,7 @@ This section lists all **programming languages, frameworks, libraries, hardware,
 - **Joblib** – Saving and loading trained ML models  
 - **Firebase Admin SDK** – Secure backend communication with Firebase services  
 
----
-
-## Arduino / ESP8266 Libraries
+### Arduino / ESP8266 Libraries
 
 - **Arduino Core Library** – Essential microcontroller functions, GPIO control, serial communication  
 - **HX711 Library** – Interface with HX711 load cell amplifier for weight measurement  
@@ -229,17 +221,13 @@ This section lists all **programming languages, frameworks, libraries, hardware,
 - **WiFiClient Library** – TCP client support for network communication  
 - **WiFiClientSecure Library** – HTTPS communication support  
 
----
-
-## Databases / Cloud Services
+### Databases / Cloud Services
 
 - **Firebase Firestore / Realtime Database**  
   - Sensor data storage  
   - Machine learning prediction storage  
 
----
-
-## Hardware Components & Sensors
+### Hardware Components & Sensors
 
 - **ESP8266 (NodeMCU)** – Main microcontroller with built-in Wi-Fi for sending data to backend  
 - **Load Cell** – Measures the weight of tea leaves  
@@ -248,9 +236,7 @@ This section lists all **programming languages, frameworks, libraries, hardware,
 - **Wi-Fi Module (ESP8266 built-in)** – Wireless data transmission  
 - **Power Supply (USB 5V)** – Powers NodeMCU and connected components  
 
----
-
-## Development & Testing Tools
+### Development & Testing Tools
 
 - **Postman** – API testing  
 - **VS Code** – Code editor  
