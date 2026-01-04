@@ -8,6 +8,8 @@ import {
     StyleSheet,
     KeyboardAvoidingView,
     Platform,
+    ScrollView,
+    Dimensions,
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,13 +17,14 @@ import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "expo-router";
 
+const { height, width } = Dimensions.get('window');
+
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
     const router = useRouter();
 
-    // Load saved credentials on component mount
     useEffect(() => {
         loadSavedCredentials();
     }, []);
@@ -51,7 +54,6 @@ export default function Login() {
         try {
             await signInWithEmailAndPassword(auth, email, password);
 
-            // Save or clear credentials based on Remember Me
             if (rememberMe) {
                 await AsyncStorage.setItem('savedEmail', email);
                 await AsyncStorage.setItem('savedPassword', password);
@@ -72,57 +74,68 @@ export default function Login() {
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.container}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
         >
-            {/* Tea Bi Logo Area */}
-            <View style={styles.logoContainer}>
-                <Text style={styles.logoText}>Tea Bi</Text>
-                <Text style={styles.logoLeaf}>Leaf</Text>
-                <Text style={styles.tagline}>Belt Monitoring System</Text>
-            </View>
-
-            {/* Title */}
-            <Text style={styles.title}>Welcome Back!</Text>
-            <Text style={styles.subtitle}>Sign in to monitor your belt</Text>
-
-            {/* Input Fields */}
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                placeholderTextColor="#999"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                placeholderTextColor="#999"
-            />
-
-            {/* Remember Me Checkbox */}
-            <TouchableOpacity
-                style={styles.rememberMeContainer}
-                onPress={() => setRememberMe(!rememberMe)}
-                activeOpacity={0.7}
+            <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={false}
             >
-                <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
-                    {rememberMe && (
-                        <Ionicons name="checkmark" size={16} color="#FFFFFF" />
-                    )}
+                {/* Tea Bi Logo Area */}
+                <View style={styles.logoContainer}>
+                    <Text style={styles.logoText}>Tea Bi</Text>
+                    <Text style={styles.logoLeaf}>Leaf</Text>
+                    <Text style={styles.tagline}>Belt Monitoring System</Text>
                 </View>
-                <Text style={styles.rememberMeText}>Remember Me</Text>
-            </TouchableOpacity>
 
-            {/* Login Button */}
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                <Text style={styles.loginButtonText}>Login</Text>
-            </TouchableOpacity>
+                {/* Title */}
+                <View style={styles.headerContainer}>
+                    <Text style={styles.title}>Welcome Back!</Text>
+                    <Text style={styles.subtitle}>Sign in to monitor your belt</Text>
+                </View>
 
-            <Text style={styles.footerText}>Powered by Tea Bi Technology</Text>
+                {/* Input Fields */}
+                <View style={styles.formContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        placeholderTextColor="#999"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                        placeholderTextColor="#999"
+                    />
+
+                    {/* Remember Me Checkbox */}
+                    <TouchableOpacity
+                        style={styles.rememberMeContainer}
+                        onPress={() => setRememberMe(!rememberMe)}
+                        activeOpacity={0.7}
+                    >
+                        <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                            {rememberMe && (
+                                <Ionicons name="checkmark" size={16} color="#FFFFFF" />
+                            )}
+                        </View>
+                        <Text style={styles.rememberMeText}>Remember Me</Text>
+                    </TouchableOpacity>
+
+                    {/* Login Button */}
+                    <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+                        <Text style={styles.loginButtonText}>Login</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <Text style={styles.footerText}>Powered by Tea Bi Technology</Text>
+            </ScrollView>
         </KeyboardAvoidingView>
     );
 }
@@ -131,50 +144,62 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#E8F5E9",
-        paddingHorizontal: 30,
+    },
+    scrollContent: {
+        flexGrow: 1,
+        paddingHorizontal: width * 0.08,
+        paddingVertical: height * 0.05,
         justifyContent: "center",
+        minHeight: height,
     },
     logoContainer: {
         alignItems: "center",
-        marginBottom: 50,
+        marginBottom: height * 0.04,
     },
     logoText: {
-        fontSize: 48,
+        fontSize: Math.min(width * 0.12, 48),
         fontWeight: "300",
         color: "#2E7D32",
         letterSpacing: 3,
     },
     logoLeaf: {
-        fontSize: 44,
+        fontSize: Math.min(width * 0.11, 44),
         color: "#2E7D32",
         marginTop: -12,
     },
     tagline: {
-        fontSize: 16,
+        fontSize: Math.min(width * 0.04, 16),
         color: "#1B5E20",
         marginTop: 10,
         fontWeight: "500",
+        textAlign: "center",
+    },
+    headerContainer: {
+        marginBottom: height * 0.03,
     },
     title: {
-        fontSize: 32,
+        fontSize: Math.min(width * 0.08, 32),
         fontWeight: "700",
         color: "#1B5E20",
         textAlign: "center",
         marginBottom: 8,
     },
     subtitle: {
-        fontSize: 18,
+        fontSize: Math.min(width * 0.045, 18),
         color: "#4CAF50",
         textAlign: "center",
-        marginBottom: 40,
         fontWeight: "500",
     },
+    formContainer: {
+        width: "100%",
+        marginBottom: height * 0.02,
+    },
     input: {
-        height: 56,
+        height: Math.max(height * 0.065, 50),
         backgroundColor: "#FFFFFF",
         borderRadius: 16,
         paddingHorizontal: 20,
-        fontSize: 17,
+        fontSize: Math.min(width * 0.042, 17),
         marginBottom: 16,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
@@ -204,12 +229,12 @@ const styles = StyleSheet.create({
         borderColor: "#2E7D32",
     },
     rememberMeText: {
-        fontSize: 16,
+        fontSize: Math.min(width * 0.04, 16),
         color: "#1B5E20",
         fontWeight: "500",
     },
     loginButton: {
-        height: 58,
+        height: Math.max(height * 0.07, 50),
         backgroundColor: "#2E7D32",
         borderRadius: 29,
         justifyContent: "center",
@@ -223,13 +248,13 @@ const styles = StyleSheet.create({
     },
     loginButtonText: {
         color: "#FFFFFF",
-        fontSize: 20,
+        fontSize: Math.min(width * 0.05, 20),
         fontWeight: "600",
     },
     footerText: {
         textAlign: "center",
-        marginTop: 40,
+        marginTop: height * 0.03,
         color: "#666",
-        fontSize: 14,
+        fontSize: Math.min(width * 0.035, 14),
     },
 });
