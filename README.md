@@ -50,17 +50,8 @@ This system transforms belt maintenance from a **labor-intensive, reactive task*
 
 ### 4. Tea Leaf-to-Powder Yield Prediction System
 
-The **Tea Leaf-to-Powder Yield Prediction System** integrates **IoT sensing and machine learning** to provide accurate predictions of **tea powder output and yield percentages**. During tea leaf intake, **weight sensors connected to ESP32 or NodeMCU devices** measure raw leaf quantities automatically. These measurements are sent in real time to a **cloud database (Firebase)**, with each batch recorded along with **timestamps, batch numbers, and farmer information**.
+The Tea Leaf-to-Powder Yield Comparison System is an IoT-enabled, data-driven solution designed to improve efficiency, transparency, and accuracy in tea production within the Sri Lankan tea industry. The project automates the measurement of raw tea leaf input and final tea powder output using digital load cells integrated with microcontrollers such as ESP32 and Arduino. Each production batch is uniquely identified and tracked from collection to processing, enabling real-time comparison of input and output weights. The system calculates key performance metrics including weight loss, percentage loss, and yield efficiency, while generating alerts for abnormal deviations. A centralized cloud database and mobile-based dashboard provide real-time visualization, reporting, and traceability linked to farmer profiles. By combining IoT, data analytics, and predictive machine learning models, the system transforms traditional manual operations into a smart, Industry 4.0–aligned process that reduces errors, minimizes wastage, enhances decision-making, and improves overall productivity and profitability in tea manufacturing.
 
-Historical and real-time data feed into **machine learning models** that predict expected tea powder output and yield for each batch. Predictions are validated on the backend to ensure **accuracy and reliability** before visualization.
-
-The results are displayed in a **React Native (Expo) mobile application**, offering:
-
-- **Batch-wise predicted outputs**  
-- **Daily, weekly, and monthly statistics**  
-- **Delivery history and performance feedback for farmers**  
-
-Stakeholders can **monitor consistency, compare expected vs. actual results, and make informed processing decisions**, enhancing **transparency, efficiency, and trust** across the tea supply chain.
 
 ---
 ## Dependencies & Tools
