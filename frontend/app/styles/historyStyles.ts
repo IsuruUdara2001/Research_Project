@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#022c22",
+    backgroundColor: "#E8F6E9",
   },
 
   header: {
@@ -26,14 +26,14 @@ export const styles = StyleSheet.create({
   },
 
   headerTitle: {
-    color: "#ecfdf5",
+    color: "#000000ff",
     fontSize: 18,
     fontWeight: "600",
   },
 
   /* Card Styles */
   card: {
-    backgroundColor: "#064e3b",
+    backgroundColor: "#629181",
     borderRadius: 16,
     padding: 10,
     flexDirection: "row",
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     gap: 12,
     borderWidth: 1,
-    borderColor: "#065f46",
+    borderColor: "#629181",
   },
 
   thumb: {
@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
   },
 
   cardTitle: {
-    color: "#ecfdf5",
+    color: "#ffffffff",
     fontSize: 16,
     fontWeight: "700",
   },
@@ -68,12 +68,12 @@ export const styles = StyleSheet.create({
   },
 
   cardConfidence: {
-    color: "#a7f3d0",
+    color: "#ffffffff",
     fontSize: 13,
   },
 
   cardDate: {
-    color: "#9ca3af",
+    color: "#ffffffff",
     fontSize: 12,
   },
 

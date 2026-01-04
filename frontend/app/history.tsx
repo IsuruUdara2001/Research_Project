@@ -67,19 +67,19 @@ export default function HistoryPage() {
         <Text style={styles.cardTitle}>{item.grade}</Text>
 
         <View style={styles.row}>
-          <Ionicons name="stats-chart" size={14} color="#a7f3d0" />
+          <Ionicons name="stats-chart" size={14} color="#ffffffff" />
           <Text style={styles.cardConfidence}>
             {item.confidence}% confidence
           </Text>
         </View>
 
         <View style={styles.row}>
-          <Ionicons name="time-outline" size={14} color="#9ca3af" />
+          <Ionicons name="time-outline" size={14} color="#ffffffff" />
           <Text style={styles.cardDate}>{item.date}</Text>
         </View>
       </View>
 
-      <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
+      <Ionicons name="chevron-forward" size={20} color="#ffffffff" />
     </TouchableOpacity>
   );
 
