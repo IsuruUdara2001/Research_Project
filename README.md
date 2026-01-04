@@ -194,6 +194,11 @@ This section lists all **system-wide dependencies** and **module-specific depend
 - Python 3.x
 - VS Code – Code editor
 - Git & GitHub – Version control
+- #### Software & Tools Required
+- Arduino IDE (v1.8.x or 2.x – latest recommended)
+- ESP32 Arduino Core – latest stable version recommended
+- Boards Manager URL: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+
 
 #### Development & Testing Tools
 - Postman – API testing
