@@ -1,136 +1,212 @@
-// frontend/app/styles/identifyStyles.ts
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#022c22",
+    backgroundColor: "#f0fdf4",
   },
 
-  /* Header */
+  /* ================= HEADER ================= */
   header: {
-    height: 56,
-    backgroundColor: "#022c22",
+    height: 60,
+    backgroundColor: "#f0fdf4",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
     justifyContent: "space-between",
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(255, 255, 255, 0.1)",
   },
   backButton: {
-    width: 32,
-    height: 32,
+    width: 40,
+    height: 40,
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
   },
   headerTitle: {
-    color: "#ecfdf5",
-    fontSize: 16,
-    fontWeight: "700",
+    color: "#000000ff",
+    fontSize: 18,
+    fontWeight: "600",
+    letterSpacing: 0.5,
   },
 
-  /* Content */
+ 
   scrollContent: {
     padding: 16,
     backgroundColor: "#f0fdf4",
-    paddingBottom: 120, // space for buttons
+    paddingBottom: 160,
   },
 
-  /* Image Card */
+
   imageCard: {
-    backgroundColor: "#ffffff",
-    borderRadius: 16,
-    padding: 12,
+    backgroundColor: "#2ac625ff",
+    borderRadius: 20,
     marginBottom: 20,
-    alignItems: "center",
+    overflow: "hidden",
+    elevation: 4,
     shadowColor: "#000",
-    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 2,
+  },
+  imageHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    paddingBottom: 12,
+    backgroundColor: "#629181",
+    borderBottomWidth: 1,
+    borderBottomColor: "#e2e8f0",
+  },
+  imageHeaderText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#ffffffff",
+    marginLeft: 8,
   },
   image: {
     width: "100%",
-    height: 280,
-    borderRadius: 12,
+    height: height * 0.3,
+  },
+  placeholderImage: {
+    width: "100%",
+    height: height * 0.3,
+    backgroundColor: "#629181",
+    alignItems: "center",
+    justifyContent: "center",
   },
   imageLabel: {
-    marginTop: 10,
+    padding: 12,
     fontSize: 14,
-    color: "#064e3b",
-    fontWeight: "600",
+    color: "#ffffffff",
+    textAlign: "center",
+    backgroundColor: "#629181",
+    borderTopWidth: 1,
+    borderTopColor: "#629181",
   },
   errorText: {
     color: "#dc2626",
     fontSize: 16,
     fontWeight: "600",
+    marginTop: 12,
   },
 
-  /* Result Card */
+  /* ================= RESULT CARD ================= */
   resultCard: {
-    backgroundColor: "#ffffff",
-    borderRadius: 16,
-    padding: 20,
-    alignItems: "center",
+    backgroundColor: "#629181",
+    borderRadius: 20,
+    marginBottom: 20,
+    padding: 0,
+    elevation: 4,
     shadowColor: "#000",
-    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 2,
+    overflow: "hidden",
   },
-  successCard: {
-    borderLeftWidth: 6,
-    borderLeftColor: "#22c55e",
+  resultHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    paddingBottom: 12,
+    backgroundColor: "#f0fdf4",
+    borderBottomWidth: 1,
+    borderBottomColor: "#bbf7d0",
   },
-  errorCard: {
-    borderLeftWidth: 6,
-    borderLeftColor: "#ef4444",
-  },
-  resultText: {
-    fontSize: 18,
+  resultTitle: {
+    fontSize: 17,
     fontWeight: "700",
-    marginTop: 10,
-    textAlign: "center",
+    color: "#000000ff",
+    marginLeft: 10,
   },
-  resultHint: {
-    marginTop: 8,
+  resultStatus: {
+    padding: 16,
+  },
+  statusBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    marginBottom: 12,
+  },
+  successBadge: {
+    backgroundColor: "#16a34a",
+  },
+  statusText: {
+    color: "#ffffff",
     fontSize: 14,
-    color: "#065f46",
-    textAlign: "center",
+    fontWeight: "600",
+    marginLeft: 6,
+  },
+  resultDescription: {
+    fontSize: 15,
+    color: "#ffffffff",
+    lineHeight: 22,
   },
 
-  /* Bottom Buttons */
+ 
+
+  /* ================= BOTTOM ACTIONS ================= */
   bottomActions: {
     position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: Platform.OS === "ios" ? 24 : 16,
+    left: 16,
+    right: 16,
     flexDirection: "row",
-    padding: 12,
-    backgroundColor: "#022c22",
     gap: 12,
+    backgroundColor: "transparent",
   },
   buttonHalf: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 14,
-    borderRadius: 14,
+    paddingVertical: 16,
+    borderRadius: 16,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   mainButton: {
-    backgroundColor: "#86efac",
+    backgroundColor: "#629181",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#629181",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    gap: 8,
   },
   mainButtonText: {
-    marginLeft: 6,
-    fontSize: 14,
+    marginLeft: 8,
+    fontSize: 15,
     fontWeight: "700",
-    color: "#022c22",
+    color: "#ffffffff",
   },
   secondaryButton: {
-    backgroundColor: "#064e3b",
+    backgroundColor: "#629181",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#629181",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    gap: 8,
   },
   secondaryButtonText: {
-    marginLeft: 6,
-    fontSize: 14,
+    marginLeft: 8,
+    fontSize: 15,
     fontWeight: "700",
-    color: "#e5e7eb",
+    color: "#ffffffff",
   },
 });

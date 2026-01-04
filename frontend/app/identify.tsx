@@ -19,15 +19,23 @@ export default function IdentifyPage() {
 
   // 🔹 Mock ML result (replace later with real API)
   const isTeaLeaf = true;
+  
+  // 🔹 Mock extracted features (from your preview image)
+  const extractedFeatures = {
+    color: { L: 58.2, a: 3.7, b: 12.9 },
+    texture: { contrast: 0.21, homogeneity: 0.89 },
+    shape: { area: "12,340 px²", aspectRatio: 2.1 },
+    status: "Healthy",
+    grade: "Premium",
+    margin: "Complete"
+  };
 
   const handleBack = () => {
-    router.back();
+    router.replace("/"); 
   };
 
   // ✅ LEFT BUTTON → HOME PAGE
-  const handleGoHome = () => {
-    router.replace("/"); // Home Dashboard
-  };
+  
 
   const handleNext = () => {
     if (!isTeaLeaf) {
@@ -55,10 +63,10 @@ export default function IdentifyPage() {
           onPress={handleBack}
           activeOpacity={0.7}
         >
-          <Ionicons name="chevron-back" size={22} color="#ecfdf5" />
+          <Ionicons name="chevron-back" size={24} color="#ecfdf5" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tea Leaf Identification</Text>
-        <View style={{ width: 32 }} />
+        <View style={{ width: 36 }} />
       </View>
 
       <ScrollView
@@ -67,6 +75,8 @@ export default function IdentifyPage() {
       >
         {/* Image Card */}
         <View style={styles.imageCard}>
+          
+          
           {imageUri ? (
             <Image
               source={{ uri: imageUri }}
@@ -74,62 +84,60 @@ export default function IdentifyPage() {
               resizeMode="cover"
             />
           ) : (
-            <Text style={styles.errorText}>No image provided</Text>
+            <View style={styles.placeholderImage}>
+              <Ionicons name="leaf" size={60} color="#a7f3d0" />
+              <Text style={styles.errorText}>No image provided</Text>
+            </View>
           )}
-          <Text style={styles.imageLabel}>Captured Leaf Image</Text>
+          
+          <Text style={styles.imageLabel}>Original Capture</Text>
+        </View>
+<View style={styles.resultHeader}>
+            <Ionicons
+              name="checkmark-circle"
+              size={24}
+              color="#16a34a"
+            />
+            <Text style={styles.resultTitle}>Identification Result</Text>
+          </View>
+        {/* Result Card */}
+        <View style={styles.resultCard}>
+          
+          
+          <View style={styles.resultStatus}>
+            <View style={[styles.statusBadge, styles.successBadge]}>
+              <Ionicons name="leaf" size={16} color="#ffffff" />
+              <Text style={styles.statusText}>Tea Leaf Confirmed</Text>
+            </View>
+            <Text style={styles.resultDescription}>
+              Leaf verified successfully. Suitable for quality analysis.
+            </Text>
+          </View>
         </View>
 
-        {/* Result Card */}
-        <View
-          style={[
-            styles.resultCard,
-            isTeaLeaf ? styles.successCard : styles.errorCard,
-          ]}
-        >
-          <Ionicons
-            name={isTeaLeaf ? "leaf" : "close-circle"}
-            size={28}
-            color={isTeaLeaf ? "#16a34a" : "#dc2626"}
-          />
-          <Text
-            style={[
-              styles.resultText,
-              { color: isTeaLeaf ? "#16a34a" : "#dc2626" },
-            ]}
-          >
-            {isTeaLeaf
-              ? "This image contains a Tea Leaf"
-              : "This image is NOT a Tea Leaf"}
-          </Text>
-          <Text style={styles.resultHint}>
-            {isTeaLeaf
-              ? "Leaf verified successfully. You may proceed."
-              : "Please upload a valid tea leaf image."}
-          </Text>
-        </View>
       </ScrollView>
 
       {/* Bottom Actions */}
       <View style={styles.bottomActions}>
-        {/* LEFT → HOME */}
+        {/* LEFT → RETTAKE */}
         <TouchableOpacity
           style={[styles.secondaryButton, styles.buttonHalf]}
-          onPress={handleGoHome}
+          onPress={handleBack}
           activeOpacity={0.8}
         >
-          <Ionicons name="home" size={18} color="#e5e7eb" />
-          <Text style={styles.secondaryButtonText}>Home</Text>
+          <Ionicons name="home-outline" size={18} color="#ffffffff" />
+                      <Text style={styles.secondaryButtonText}>Back to Home</Text>
         </TouchableOpacity>
 
-        {/* RIGHT → NEXT */}
+        {/* RIGHT → PREDICT QUALITY */}
         <TouchableOpacity
           style={[styles.mainButton, styles.buttonHalf]}
           onPress={handleNext}
           activeOpacity={0.8}
           disabled={!imageUri}
         >
-          <Ionicons name="arrow-forward" size={18} color="#022c22" />
-          <Text style={styles.mainButtonText}>Next</Text>
+          <Ionicons name="analytics" size={20} color="#ffffffff" />
+          <Text style={styles.mainButtonText}>Go To Next Step</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

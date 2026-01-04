@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   },
   imageCard: {
     marginTop: 4,
-    backgroundColor: "#064e3b",
+    backgroundColor: "#629181",
     borderRadius: 18,
     padding: 10,
     alignItems: "center",
@@ -116,7 +116,7 @@ export const styles = StyleSheet.create({
   mainButtonText: {
     color: "#ffffffff",
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: "600",
   },
   secondaryButton: {
     backgroundColor: "#629181",
