@@ -15,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles/previewStyles";
 
 //  Change this to whatever IP Flask prints (http://<your-ip>:8000)
-const API_BASE_URL = "http://192.168.8.148:8000";
+const API_BASE_URL = "http://192.168.6.9:8000";
 
 
 export default function PreprocessingPreviewScreen() {
@@ -99,7 +99,7 @@ export default function PreprocessingPreviewScreen() {
             onPress={handleRetake}
             activeOpacity={0.8}
           >
-            <Ionicons name="camera" size={20} color="#022c22" />
+            <Ionicons name="camera" size={20} color="#F6EFE5" />
             <Text style={styles.mainButtonText}>Go to Camera</Text>
           </TouchableOpacity>
         </View>
@@ -144,7 +144,7 @@ export default function PreprocessingPreviewScreen() {
           {/* Color */}
           <View style={styles.featureCard}>
             <View style={styles.featureHeaderRow}>
-              <Ionicons name="color-palette" size={20} color="#22c55e" />
+              <Ionicons name="color-palette" size={20} color="#ffffffff" />
               <Text style={styles.featureTitle}>Color (CIELAB)</Text>
             </View>
             <Text style={styles.featureText}>
@@ -160,7 +160,7 @@ export default function PreprocessingPreviewScreen() {
           {/* Texture */}
           <View style={styles.featureCard}>
             <View style={styles.featureHeaderRow}>
-              <Ionicons name="grid" size={20} color="#0ea5e9" />
+              <Ionicons name="grid" size={20} color="#ffffffff" />
               <Text style={styles.featureTitle}>Texture (GLCM)</Text>
             </View>
             <Text style={styles.featureText}>
@@ -175,7 +175,7 @@ export default function PreprocessingPreviewScreen() {
           {/* Shape & Size */}
           <View style={styles.featureCard}>
             <View style={styles.featureHeaderRow}>
-              <Ionicons name="resize" size={20} color="#eab308" />
+              <Ionicons name="resize" size={20} color="#ffffffff" />
               <Text style={styles.featureTitle}>Shape &amp; Size</Text>
             </View>
             <Text style={styles.featureText}>
@@ -197,7 +197,7 @@ export default function PreprocessingPreviewScreen() {
             activeOpacity={0.8}
             disabled={isLoading}
           >
-            <Ionicons name="camera-reverse" size={18} color="#e5e7eb" />
+            <Ionicons name="camera-reverse" size={18} color="#ffffffff" />
             <Text style={styles.secondaryButtonText}>Retake</Text>
           </TouchableOpacity>
 
@@ -208,10 +208,10 @@ export default function PreprocessingPreviewScreen() {
             disabled={isLoading}
           >
             {isLoading ? (
-              <ActivityIndicator size="small" color="#022c22" />
+              <ActivityIndicator size="small" color="#ffffffff" />
             ) : (
               <>
-                <Ionicons name="sparkles" size={18} color="#022c22" />
+                <Ionicons name="sparkles" size={18} color="#F6EFE5" />
                 <Text style={styles.mainButtonText}>Predict Quality</Text>
               </>
             )}

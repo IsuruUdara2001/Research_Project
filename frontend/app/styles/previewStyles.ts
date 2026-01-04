@@ -3,11 +3,11 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#022c22",
+    backgroundColor: "#E8F6E9",
   },
   root: {
     flex: 1,
-    backgroundColor: "#022c22",
+    backgroundColor: "#E8F6E9",
   },
   scrollContent: {
     paddingHorizontal: 16,
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#064e3b",
   },
   headerTitle: {
-    color: "#ecfdf5",
+    color: "#000000ff",
     fontSize: 18,
     fontWeight: "600",
   },
@@ -49,26 +49,26 @@ export const styles = StyleSheet.create({
   },
   imageLabel: {
     marginTop: 8,
-    color: "#d1fae5",
+    color: "#ffffffff",
     fontSize: 13,
   },
   section: {
     marginTop: 18,
   },
   sectionTitle: {
-    color: "#ecfdf5",
+    color: "#000000ff",
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 10,
   },
   featureCard: {
-    backgroundColor: "#022c22",
+    backgroundColor: "#629181",
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 12,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "#064e3b",
+    borderColor: "#629181",
   },
   featureHeaderRow: {
     flexDirection: "row",
@@ -77,22 +77,22 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
   },
   featureTitle: {
-    color: "#e5e7eb",
-    fontSize: 14,
+    color: "#ffffffff",
+    fontSize: 16,
     fontWeight: "600",
   },
   featureText: {
-    color: "#e5e7eb",
-    fontSize: 13,
+    color: "#ffffffff",
+    fontSize: 14,
     marginTop: 2,
   },
   featureValue: {
     fontWeight: "700",
-    color: "#a7f3d0",
+    color: "#ffffffff",
   },
   featureHint: {
-    color: "#9ca3af",
-    fontSize: 11,
+    color: "#ffffffff",
+    fontSize: 12,
     marginTop: 4,
   },
   actionsRow: {
@@ -105,7 +105,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   mainButton: {
-    backgroundColor: "#a7f3d0",
+    backgroundColor: "#629181",
     borderRadius: 999,
     flexDirection: "row",
     alignItems: "center",
@@ -114,14 +114,15 @@ export const styles = StyleSheet.create({
     gap: 8,
   },
   mainButtonText: {
-    color: "#022c22",
+    color: "#ffffffff",
     fontSize: 15,
     fontWeight: "700",
   },
   secondaryButton: {
+    backgroundColor: "#629181",
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#6b7280",
+    borderColor: "#629181",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -129,13 +130,13 @@ export const styles = StyleSheet.create({
     gap: 8,
   },
   secondaryButtonText: {
-    color: "#e5e7eb",
+    color: "#ffffffff",
     fontSize: 15,
     fontWeight: "600",
   },
   errorContainer: {
     flex: 1,
-    backgroundColor: "#022c22",
+    backgroundColor: "#F6EFE5",
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 24,
