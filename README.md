@@ -123,19 +123,83 @@ This section lists all **system-wide dependencies** and **module-specific depend
 
 ### 2. Environment-Aware Humidity Optimization for Tea Quality Prediction
 
-**Narrative:**  
-- Monitors temperature & humidity during tea processing  
-- ML models predict potential quality deviations  
+#### Programming Languages
+- **C / C++** – ESP32 firmware (Arduino IDE)
+- **Python** – Backend API & Machine Learning
+- **JavaScript** – Mobile application (React Native)
 
-**Hardware / Sensors:**  
-- Temperature sensor  
-- Humidity sensor  
-- OLED display  
+#### Frameworks / IDE
+- Arduino IDE – ESP32 programming
+- Flask (Python) – REST API backend
+- React Native – Mobile app development
+- Expo Go – Mobile app testing
+- Scikit-learn – Machine Learning framework
 
-**Software / Libraries:**  
-- Python, Scikit-learn, Matplotlib/Seaborn  
-- Mobile app: React Native / Expo  
-- Cloud: Firebase  
+#### Python Libraries
+- NumPy – Numerical processing
+- Pandas – Dataset handling
+- Scikit-learn – Random Forest model training & prediction
+- Joblib – Model saving/loading
+- Firebase Admin SDK – Cloud integration
+
+#### Arduino / ESP32 Libraries
+- Wire – I2C communication
+- Adafruit SHT31 Library – Temperature & humidity sensor interface
+- Adafruit SSD1306 – OLED display control
+- Adafruit GFX Library – OLED graphics rendering
+
+#### Mobile App Libraries
+- Fetch API – Backend communication
+- Firebase SDK – Cloud data access
+
+#### Databases / Cloud Services
+- Firebase Firestore / Realtime Database
+  - Sensor data storage
+  - Tea leaf quality prediction storage
+  - Historical analysis & remote access
+
+#### Hardware / Sensors
+- ESP32 Dev Board – Wi-Fi enabled IoT controller
+- SHT31-D Temperature & Humidity Sensor Module – Environmental data measurement
+- 1.3" OLED Display (White) – Local data visualization
+- I2C 4-pin Cable – Sensor and display communication
+- Jumper Wires (M–M, F–F, F–M)
+- Mini Solderless Breadboard – Prototyping
+- Plastic Project Box – Device enclosure
+- Micro USB 2.0 Cable – Power and programming
+- Adafruit Micro-B Breakout Board – Stable USB power connection
+
+#### Hardware Summary – Sensor Pin Connections (ESP32)
+- SHT31-D (SDA) → GPIO 21  
+- SHT31-D (SCL) → GPIO 22  
+- OLED Display (SDA) → GPIO 21  
+- OLED Display (SCL) → GPIO 22  
+- VCC → 3.3V  
+- GND → GND  
+
+#### Power Connections
+- All module VCC → 3.3V (ESP32)
+- All module GND → GND (ESP32)
+- Common ground required
+
+#### Machine Learning Model
+- **Algorithm:** Random Forest
+- **Input Parameters:** Temperature, Humidity
+- **Output:** Predicted tea leaf quality / grade
+- **Purpose:** Predict tea quality based on environmental conditions
+
+#### Software & Tools Required
+- Arduino IDE (v1.8.x or 2.x – latest recommended)
+- ESP32 Arduino Core
+- Python 3.x
+- VS Code – Code editor
+- Git & GitHub – Version control
+
+#### Development & Testing Tools
+- Postman – API testing
+- Expo Go – Mobile app testing
+- Firebase Console – Cloud monitoring
+
 
 > *Teammates can fill in pin configs, thresholds, or extra sensors.*
 
