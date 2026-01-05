@@ -83,7 +83,7 @@ export default function Analytics({ navigation }) {
         {/* Temperature Card */}
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <Ionicons name="thermometer-outline" size={24} color="#FFFFFF" />
+              <Ionicons name="thermometer-outline" size={24} color="#FFFFFF" style={styles.cardHeaderIcon} />
             <Text style={styles.cardTitle}>Temperature</Text>
           </View>
           <Text style={styles.mainValue}>24°</Text>
@@ -93,12 +93,73 @@ export default function Analytics({ navigation }) {
         {/* Humidity Card */}
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <Ionicons name="water-outline" size={24} color="#FFFFFF" />
+              <Ionicons name="water-outline" size={24} color="#FFFFFF" style={styles.cardHeaderIcon} />
             <Text style={styles.cardTitle}>Humidity</Text>
           </View>
           <Text style={styles.mainValue}>65%</Text>
           <Text style={styles.subValue}>Comfortable</Text>
         </View>
+
+          {/* Leaf Quality Card (live percentage + category) */}
+          <View style={styles.qualityCard}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="leaf-outline" size={24} color="#FFFFFF" style={styles.cardHeaderIcon} />
+              <Text style={styles.cardTitle}>Leaf Quality</Text>
+            </View>
+            {/* Live dashboard insights (replace these values with real telemetry/model output) */}
+            {(() => {
+              const liveInsights = {
+                safeRanges: { Temperature: "18–32°C", Humidity: "40–90%" },
+                sensorReadings: { Temp: "26.0°C", Hum: "80.0%" },
+                finalInputUsed: { Temp: "26.0°C", Hum: "80.0%" },
+                predictedPercent: 72.84,
+                finalGrade: "Standard",
+                zone: "Standard Zone",
+                reason: "Predicted % = 72.84 (between 65 and 75)",
+                recommendation: "Maintain RH at ~90% (within 40–90%) to reach ~77.64%",
+                targetRH: 90,
+                expectedPercentAtTarget: 77.64,
+              };
+
+              const predictedQuality = Number(liveInsights.predictedPercent.toFixed(2));
+
+              const getQualityCategory = (percent) => {
+                if (percent >= 75) return { label: "Premium", color: "#4CAF50" };
+                if (percent >= 65) return { label: "Standard", color: "#FFB300" };
+                return { label: "Low", color: "#E57373" };
+              };
+
+              const qualityCategory = getQualityCategory(predictedQuality);
+
+              return (
+                <>
+                  <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                    <Text style={styles.qualityPercent}>{predictedQuality}%</Text>
+                    <View style={[styles.qualityBadge, { backgroundColor: qualityCategory.color }]}>
+                      <Text style={styles.qualityBadgeText}>{qualityCategory.label}</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.qualityBarContainer}>
+                    {/* segments sized to represent ranges: Low (0-65), Standard (65-75), Premium (75-100) */}
+                    <View style={[styles.qualitySegment, { backgroundColor: "#E57373", flex: 65 }]} />
+                    <View style={[styles.qualitySegment, { backgroundColor: "#FFB74D", flex: 10 }]} />
+                    <View style={[styles.qualitySegment, { backgroundColor: "#81C784", flex: 25 }]} />
+                    <View style={[styles.qualityIndicator, { left: `${predictedQuality}%` }]} />
+                  </View>
+
+                  <Text style={styles.recommendationText}>{liveInsights.recommendation}</Text>
+
+                  <Text style={styles.detailText}>Final Grade: {liveInsights.finalGrade} • Zone: {liveInsights.zone}</Text>
+                  <Text style={styles.reasonText}>Reason: {liveInsights.reason}</Text>
+
+                  <Text style={styles.detailText}>
+                    Target RH: ~{liveInsights.targetRH}% → Expected quality ≈ {liveInsights.expectedPercentAtTarget}%
+                  </Text>
+                </>
+              );
+            })()}
+          </View>
 
         {/* Unit Toggle */}
         <View style={styles.toggleContainer}>
@@ -222,7 +283,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 16,
-    gap: 8,
+  },
+  cardHeaderIcon: {
+    marginRight: 8,
   },
   cardTitle: {
     fontSize: 16,
@@ -245,14 +308,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 4,
     marginBottom: 24,
-    gap: 4,
   },
   toggleButton: {
     flex: 1,
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: "center",
+    marginRight: 4,
   },
+  /* If you want the last button to have no extra margin, override externally */
   toggleButtonActive: {
     backgroundColor: "#6B9B8A",
   },
@@ -281,13 +345,13 @@ const styles = StyleSheet.create({
   periodSelector: {
     flexDirection: "row",
     marginBottom: 24,
-    gap: 12,
   },
   periodButton: {
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
     backgroundColor: "#FAFAF5",
+    marginRight: 12,
   },
   periodButtonActive: {
     backgroundColor: "#E8F5E9",
@@ -346,5 +410,66 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
+  },
+  /* Leaf quality styles */
+  qualityCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+  },
+  qualityPercent: {
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#2C2C2C",
+  },
+  qualityBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  qualityBadgeText: {
+    color: "#FFFFFF",
+    fontWeight: "600",
+  },
+  qualityBarContainer: {
+    flexDirection: "row",
+    height: 12,
+    borderRadius: 8,
+    overflow: "hidden",
+    marginTop: 12,
+    marginBottom: 8,
+    position: "relative",
+  },
+  qualitySegment: {
+    flex: 1,
+  },
+  qualityIndicator: {
+    position: "absolute",
+    top: -6,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: "#2C2C2C",
+  },
+  recommendationText: {
+    fontSize: 13,
+    color: "#6B6B6B",
+    marginTop: 8,
+  },
+  detailText: {
+    fontSize: 13,
+    color: "#4A4A4A",
+    marginTop: 8,
+    fontWeight: "600",
+  },
+  reasonText: {
+    fontSize: 12,
+    color: "#7A7A7A",
+    marginTop: 6,
   },
 });
