@@ -334,6 +334,6 @@ This section lists all **programming languages, frameworks, libraries, hardware,
 
 ### Development & Testing Tools
 
-- **Postman** – API testing  
+- **Postman** – API testingg  
 - **VS Code** – Code editor  
 - **Git & GitHub** – Version control  
