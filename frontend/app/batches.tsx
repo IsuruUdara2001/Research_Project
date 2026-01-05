@@ -36,7 +36,7 @@ const BATCHES: Batch[] = [
   },
   {
     id: "b3",
-    name: "Medium Mix C",
+    name: "Medium Batch C",
     grade: "Medium",
     currentCount: 27,
     capacity: 50,
@@ -99,7 +99,7 @@ export default function BatchAssignmentScreen() {
           onPress={handleCreateBatch}
           activeOpacity={0.8}
         >
-          <Ionicons name="add" size={18} color="#022c22" />
+          <Ionicons name="add" size={18} color="#F6EFE5" />
         </TouchableOpacity>
       </View>
 
@@ -162,7 +162,7 @@ export default function BatchAssignmentScreen() {
                   <Ionicons
                     name="swap-horizontal"
                     size={16}
-                    color="#e5e7eb"
+                    color="#1bed13ff"
                   />
                   <Text style={styles.secondaryButtonText}>
                     Assign to this batch
