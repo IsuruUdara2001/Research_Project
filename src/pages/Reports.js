@@ -18,36 +18,83 @@ export default function Reports({ navigation }) {
   // Sample data for reports
   const reportData = {
     Daily: {
-      totalFarmers: 45,
-      totalSupply: 1250,
-      avgSupply: 27.8,
+      // Environment-aware KPIs for the daily report
+      predictionConfidence: 88.5,
+      environmentStatus: "Optimal",
+      avgTemp: 26.0,
+      avgHumidity: 80,
+      totalSensorReadings: 1420,
+      predictedQuality: "High",
       date: "23/12/2024",
-      topFarmers: [
-        { id: "F001", name: "John Silva", supply: 85 },
-        { id: "F002", name: "Kumara Perera", supply: 78 },
-        { id: "F003", name: "Nimal Fernando", supply: 65 },
+      topRiskPeriods: [
+        {
+          id: "R1",
+          timeRange: "02:00 - 04:00",
+          temp: "28.5°C",
+          humidity: 92,
+          predictedQuality: "Low",
+          confidence: 64.2,
+          alerts: ["High humidity"],
+        },
+        {
+          id: "R2",
+          timeRange: "13:00 - 15:00",
+          temp: "33.2°C",
+          humidity: 78,
+          predictedQuality: "Medium",
+          confidence: 70.1,
+          alerts: ["High temperature"],
+        },
+      ],
+      bestQualityPeriods: [
+        {
+          id: "B1",
+          timeRange: "06:00 - 08:00",
+          temp: "24.0°C",
+          humidity: 68,
+          predictedQuality: "High",
+          confidence: 91.3,
+          alerts: [],
+        },
+        {
+          id: "B2",
+          timeRange: "20:00 - 22:00",
+          temp: "23.5°C",
+          humidity: 65,
+          predictedQuality: "Premium",
+          confidence: 94.2,
+          alerts: [],
+        },
       ],
     },
     Weekly: {
-      totalFarmers: 52,
-      totalSupply: 8750,
-      avgSupply: 168.3,
+      predictionConfidence: 82.1,
+      environmentStatus: "Warning",
+      avgTemp: 25.8,
+      avgHumidity: 74,
+      totalSensorReadings: 8900,
+      predictedQuality: "Standard",
       dateRange: "17/12/2024 - 23/12/2024",
-      topFarmers: [
-        { id: "F001", name: "John Silva", supply: 595 },
-        { id: "F002", name: "Kumara Perera", supply: 546 },
-        { id: "F003", name: "Nimal Fernando", supply: 455 },
+      topRiskPeriods: [
+        { id: "R1", timeRange: "Mon 02:00 - 04:00", temp: "29.1°C", humidity: 91, predictedQuality: "Low", confidence: 63.5, alerts: ["High humidity"] },
+      ],
+      bestQualityPeriods: [
+        { id: "B1", timeRange: "Fri 06:00 - 08:00", temp: "24.2°C", humidity: 66, predictedQuality: "High", confidence: 90.1, alerts: [] },
       ],
     },
     Monthly: {
-      totalFarmers: 58,
-      totalSupply: 35200,
-      avgSupply: 607.0,
+      predictionConfidence: 79.4,
+      environmentStatus: "Warning",
+      avgTemp: 26.4,
+      avgHumidity: 72,
+      totalSensorReadings: 36000,
+      predictedQuality: "Standard",
       dateRange: "01/12/2024 - 31/12/2024",
-      topFarmers: [
-        { id: "F001", name: "John Silva", supply: 2380 },
-        { id: "F002", name: "Kumara Perera", supply: 2184 },
-        { id: "F003", name: "Nimal Fernando", supply: 1820 },
+      topRiskPeriods: [
+        { id: "R1", timeRange: "Week 2 (Various)", temp: "30.5°C", humidity: 88, predictedQuality: "Low", confidence: 60.2, alerts: ["High humidity","High temperature"] },
+      ],
+      bestQualityPeriods: [
+        { id: "B1", timeRange: "Week 4 (Various)", temp: "24.0°C", humidity: 66, predictedQuality: "Premium", confidence: 92.4, alerts: [] },
       ],
     },
   };
@@ -174,38 +221,34 @@ export default function Reports({ navigation }) {
         {/* Report Summary Card */}
         <View style={styles.summaryCard}>
           <View style={styles.summaryHeader}>
-            <Ionicons name="document-text" size={24} color="#6B9B8A" />
+            <Ionicons name="document-text" size={24} color="#6B9B8A" style={styles.summaryIcon} />
             <Text style={styles.summaryTitle}>{selectedPeriod} Summary</Text>
           </View>
 
           <View style={styles.summaryContent}>
             <View style={styles.summaryRow}>
               <View style={styles.summaryItem}>
-                <Text style={styles.summaryLabel}>Total Farmers</Text>
+                <Text style={styles.summaryLabel}>Prediction Confidence</Text>
                 <Text style={styles.summaryValue}>
-                  {currentReport.totalFarmers}
+                  {currentReport.predictionConfidence}%
                 </Text>
               </View>
               <View style={styles.summaryDivider} />
               <View style={styles.summaryItem}>
-                <Text style={styles.summaryLabel}>Total Supply</Text>
-                <Text style={styles.summaryValue}>
-                  {currentReport.totalSupply} kg
-                </Text>
+                <Text style={styles.summaryLabel}>Environment Status</Text>
+                <Text style={styles.summaryValue}>{currentReport.environmentStatus}</Text>
               </View>
             </View>
 
             <View style={styles.summaryDividerHorizontal} />
 
             <View style={styles.summaryItem}>
-              <Text style={styles.summaryLabel}>Average Supply per Farmer</Text>
-              <Text style={styles.summaryValueLarge}>
-                {currentReport.avgSupply} kg
-              </Text>
+              <Text style={styles.summaryLabel}>Predicted Tea Quality</Text>
+              <Text style={styles.summaryValueLarge}>{currentReport.predictedQuality}</Text>
             </View>
 
             <View style={styles.dateRangeContainer}>
-              <Ionicons name="calendar-outline" size={16} color="#7A8A80" />
+              <Ionicons name="calendar-outline" size={16} color="#7A8A80" style={{ marginRight: 6 }} />
               <Text style={styles.dateRangeText}>
                 {currentReport.date || currentReport.dateRange}
               </Text>
@@ -213,23 +256,41 @@ export default function Reports({ navigation }) {
           </View>
         </View>
 
-        {/* Top Performers */}
+        {/* Top Risk Periods & Best Quality Periods */}
         <View style={styles.performersCard}>
-          <Text style={styles.performersTitle}>Top Performers</Text>
+          <Text style={styles.performersTitle}>Top Risk Periods</Text>
           <View style={styles.performersList}>
-            {currentReport.topFarmers.map((farmer, index) => (
-              <View key={farmer.id} style={styles.performerItem}>
+            {currentReport.topRiskPeriods.map((p, index) => (
+              <View key={p.id} style={styles.performerItem}>
                 <View style={styles.performerRank}>
                   <Text style={styles.performerRankText}>{index + 1}</Text>
                 </View>
                 <View style={styles.performerInfo}>
-                  <Text style={styles.performerName}>{farmer.name}</Text>
-                  <Text style={styles.performerId}>ID: {farmer.id}</Text>
+                  <Text style={styles.performerName}>{p.timeRange}</Text>
+                  <Text style={styles.performerId}>Temp: {p.temp} • Humidity: {p.humidity}%</Text>
                 </View>
                 <View style={styles.performerSupply}>
-                  <Text style={styles.performerSupplyValue}>
-                    {farmer.supply} kg
-                  </Text>
+                  <Text style={styles.performerSupplyValue}>{p.predictedQuality}</Text>
+                  <Text style={styles.performerSmall}>Conf: {p.confidence}%</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+
+          <Text style={[styles.performersTitle, { marginTop: 16 }]}>Best Quality Periods</Text>
+          <View style={styles.performersList}>
+            {currentReport.bestQualityPeriods.map((p, index) => (
+              <View key={p.id} style={styles.performerItem}>
+                <View style={styles.performerRank}>
+                  <Text style={styles.performerRankText}>{index + 1}</Text>
+                </View>
+                <View style={styles.performerInfo}>
+                  <Text style={styles.performerName}>{p.timeRange}</Text>
+                  <Text style={styles.performerId}>Temp: {p.temp} • Humidity: {p.humidity}%</Text>
+                </View>
+                <View style={styles.performerSupply}>
+                  <Text style={styles.performerSupplyValue}>{p.predictedQuality}</Text>
+                  <Text style={styles.performerSmall}>Conf: {p.confidence}%</Text>
                 </View>
               </View>
             ))}
@@ -239,14 +300,14 @@ export default function Reports({ navigation }) {
         {/* Statistics Cards */}
         <View style={styles.statsGrid}>
           <View style={styles.statCard}>
-            <Ionicons name="trending-up" size={32} color="#66BB6A" />
-            <Text style={styles.statValue}>+12%</Text>
-            <Text style={styles.statLabel}>Growth Rate</Text>
+            <Ionicons name="thermometer" size={32} color="#66BB6A" />
+            <Text style={styles.statValue}>{currentReport.avgTemp}°C</Text>
+            <Text style={styles.statLabel}>Average Temperature</Text>
           </View>
           <View style={styles.statCard}>
-            <Ionicons name="people" size={32} color="#6B9B8A" />
-            <Text style={styles.statValue}>95%</Text>
-            <Text style={styles.statLabel}>Active Farmers</Text>
+            <Ionicons name="water" size={32} color="#6B9B8A" />
+            <Text style={styles.statValue}>{currentReport.avgHumidity}%</Text>
+            <Text style={styles.statLabel}>Average Humidity</Text>
           </View>
         </View>
 
@@ -255,23 +316,21 @@ export default function Reports({ navigation }) {
           <Text style={styles.insightsTitle}>Key Insights</Text>
           <View style={styles.insightsList}>
             <View style={styles.insightItem}>
-              <Ionicons name="checkmark-circle" size={20} color="#66BB6A" />
+              <Ionicons name="information-circle" size={20} color="#66BB6A" />
               <Text style={styles.insightText}>
-                Supply increased by 12% compared to last{" "}
-                {selectedPeriod.toLowerCase()} period
+                Overall environment status: {currentReport.environmentStatus}
               </Text>
             </View>
             <View style={styles.insightItem}>
               <Ionicons name="checkmark-circle" size={20} color="#66BB6A" />
               <Text style={styles.insightText}>
-                {currentReport.topFarmers.length} farmers contributed 45% of
-                total supply
+                Predicted quality: {currentReport.predictedQuality} (confidence {currentReport.predictionConfidence}%)
               </Text>
             </View>
             <View style={styles.insightItem}>
-              <Ionicons name="information-circle" size={20} color="#6B9B8A" />
+              <Ionicons name="alert-circle" size={20} color="#FF6B6B" />
               <Text style={styles.insightText}>
-                Average quality rating: 4.5/5.0
+                {currentReport.topRiskPeriods.length} high-risk periods detected — review Top Risk Periods
               </Text>
             </View>
           </View>
@@ -341,7 +400,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 4,
     marginBottom: 16,
-    gap: 4,
   },
   periodButton: {
     flex: 1,
@@ -362,7 +420,6 @@ const styles = StyleSheet.create({
   },
   dateFilterContainer: {
     flexDirection: "row",
-    gap: 12,
     marginBottom: 16,
   },
   dateFilter: {
@@ -404,7 +461,6 @@ const styles = StyleSheet.create({
   summaryHeader: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
     marginBottom: 16,
   },
   summaryTitle: {
@@ -413,7 +469,7 @@ const styles = StyleSheet.create({
     color: "#2C2C2C",
   },
   summaryContent: {
-    gap: 16,
+    
   },
   summaryRow: {
     flexDirection: "row",
@@ -453,12 +509,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 6,
     marginTop: 4,
   },
   dateRangeText: {
     fontSize: 13,
     color: "#7A8A80",
+  },
+  summaryIcon: {
+    marginRight: 8,
   },
   performersCard: {
     backgroundColor: "#FFFFFF",
@@ -475,7 +533,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   performersList: {
-    gap: 12,
+    
   },
   performerItem: {
     flexDirection: "row",
@@ -483,7 +541,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FAFAF5",
     borderRadius: 12,
     padding: 12,
-    gap: 12,
+    marginBottom: 12,
   },
   performerRank: {
     width: 32,
@@ -519,9 +577,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#6B9B8A",
   },
+  performerSmall: {
+    fontSize: 12,
+    color: "#7A8A80",
+    marginTop: 4,
+    textAlign: "right",
+  },
   statsGrid: {
     flexDirection: "row",
-    gap: 12,
     marginBottom: 16,
   },
   statCard: {
@@ -560,12 +623,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   insightsList: {
-    gap: 12,
+    
   },
   insightItem: {
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 10,
+    marginBottom: 12,
   },
   insightText: {
     flex: 1,
@@ -574,7 +637,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   actionButtons: {
-    gap: 12,
     marginBottom: 20,
   },
   downloadButton: {
@@ -587,9 +649,8 @@ const styles = StyleSheet.create({
     shadowColor: "#6B9B8A",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 4,
-    gap: 8,
+  shadowRadius: 6,
+  elevation: 4,
   },
   downloadButtonText: {
     fontSize: 16,
@@ -603,9 +664,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 14,
     borderRadius: 12,
-    borderWidth: 2,
-    borderColor: "#6B9B8A",
-    gap: 8,
+  borderWidth: 2,
+  borderColor: "#6B9B8A",
   },
   emailButtonText: {
     fontSize: 16,
