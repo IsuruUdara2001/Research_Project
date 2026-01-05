@@ -103,7 +103,7 @@ def add_leaf_record(record: LeafRecord):
         "village_location": village_location,
         "leaf_weight": leaf_weight,
         "timestamp": datetime.now(),
-         "status": "available",     # ✅ NEW
+         "status": "available",     #  NEW
          "batch_id": None 
     })
 
@@ -133,11 +133,11 @@ def create_batch(batch: BatchCreate):
                 detail=f"Leaf {c.leaf_id} already used in another batch"
             )
 
-    # 🔢 STEP 2: Calculate total weight
+    #  Calculate total weight
     total_weight = sum(c.leaf_weight for c in batch.collections)
     weather = get_weather_data()
 
-    # 🧠 STEP 3: ML prediction
+    # ML prediction
     if total_weight <= 250:
         df = pd.DataFrame([{
             "leaf_weight_kg": total_weight,
@@ -165,7 +165,7 @@ def create_batch(batch: BatchCreate):
 
     expected_yield = (predicted_output / total_weight) * 100
 
-    # 🆔 STEP 4: Create batch
+    #   Create batch
     batch_id = f"BATCH-{int(datetime.utcnow().timestamp() * 1000)}"
 
     db.collection("batches").document(batch_id).set({
@@ -178,7 +178,7 @@ def create_batch(batch: BatchCreate):
         "startTime": datetime.utcnow().isoformat()
     })
 
-    # 🔒 STEP 5: Lock leaf records (mark as used)
+    # Lock leaf records (mark as used)
     for c in batch.collections:
         db.collection("leaf").document(c.leaf_id).update({
             "status": "used",
