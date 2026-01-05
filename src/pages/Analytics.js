@@ -133,6 +133,7 @@ export default function Analytics({ navigation }) {
 
               return (
                 <>
+                  <Text style={styles.qualityLabel}>Tea Quality Percentage</Text>
                   <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                     <Text style={styles.qualityPercent}>{predictedQuality}%</Text>
                     <View style={[styles.qualityBadge, { backgroundColor: qualityCategory.color }]}>
@@ -424,6 +425,12 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "700",
     color: "#2C2C2C",
+  },
+  qualityLabel: {
+    fontSize: 13,
+    color: "#7A8A80",
+    marginBottom: 6,
+    fontWeight: "600",
   },
   qualityBadge: {
     paddingHorizontal: 10,
