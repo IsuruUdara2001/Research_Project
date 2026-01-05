@@ -11,42 +11,16 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function TeaBiMenuPage({ navigation }) {
   const menuItems = [
-    {
-      id: 1,
-      title: "Dashboard",
-      icon: "grid",
-      route: "Dashboard",
-    },
-    {
-      id: 2,
-      title: "Farmer Management",
-      icon: "people",
-      route: "FarmerManagement",
-    },
-    {
-      id: 3,
-      title: "Analytics",
-      icon: "pie-chart",
-      route: "Analytics",
-    },
-    {
-      id: 4,
-      title: "Live Humidity",
-      icon: "water",
-      route: "LiveHumidity",
-    },
-    {
-      id: 5,
-      title: "Reports",
-      icon: "document-text",
-      route: "Reports",
-    },
+    { id: 1, title: "Dashboard", icon: "grid", route: "Dashboard" },
+    { id: 2, title: "Analytics", icon: "pie-chart", route: "Analytics" },
+    { id: 3, title: "Live Humidity", icon: "water", route: "LiveHumidity" },
+    { id: 4, title: "Reports", icon: "document-text", route: "Reports" },
   ];
 
-  const handleMenuPress = (item) => {
-    console.log(`Navigating to ${item.title}`);
-    navigation.navigate(item.route);
-  };
+  const handleMenuPress = (item) => navigation.navigate(item.route);
+
+  const rows = [];
+  for (let i = 0; i < menuItems.length; i += 2) rows.push(menuItems.slice(i, i + 2));
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,70 +38,26 @@ export default function TeaBiMenuPage({ navigation }) {
           <View style={styles.placeholder} />
         </View>
 
-        {/* Menu Grid */}
+        {/* Menu Grid (dynamic) */}
         <View style={styles.menuGrid}>
-          <View style={styles.row}>
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() => handleMenuPress(menuItems[0])}
-              activeOpacity={0.85}
-            >
-              <View style={styles.iconCircle}>
-                <Ionicons name={menuItems[0].icon} size={36} color="#FFFFFF" />
-              </View>
-              <Text style={styles.menuTitle}>{menuItems[0].title}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() => handleMenuPress(menuItems[1])}
-              activeOpacity={0.85}
-            >
-              <View style={styles.iconCircle}>
-                <Ionicons name={menuItems[1].icon} size={36} color="#FFFFFF" />
-              </View>
-              <Text style={styles.menuTitle}>{menuItems[1].title}</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.row}>
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() => handleMenuPress(menuItems[2])}
-              activeOpacity={0.85}
-            >
-              <View style={styles.iconCircle}>
-                <Ionicons name={menuItems[2].icon} size={36} color="#FFFFFF" />
-              </View>
-              <Text style={styles.menuTitle}>{menuItems[2].title}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() => handleMenuPress(menuItems[3])}
-              activeOpacity={0.85}
-            >
-              <View style={styles.iconCircle}>
-                <Ionicons name={menuItems[3].icon} size={36} color="#FFFFFF" />
-              </View>
-              <Text style={styles.menuTitle}>{menuItems[3].title}</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.row}>
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() => handleMenuPress(menuItems[4])}
-              activeOpacity={0.85}
-            >
-              <View style={styles.iconCircle}>
-                <Ionicons name={menuItems[4].icon} size={36} color="#FFFFFF" />
-              </View>
-              <Text style={styles.menuTitle}>{menuItems[4].title}</Text>
-            </TouchableOpacity>
-
-            <View style={styles.emptyCard} />
-          </View>
+          {rows.map((pair, rowIndex) => (
+            <View style={styles.row} key={rowIndex}>
+              {pair.map((item) => (
+                <TouchableOpacity
+                  key={item.id}
+                  style={styles.menuCard}
+                  onPress={() => handleMenuPress(item)}
+                  activeOpacity={0.85}
+                >
+                  <View style={styles.iconCircle}>
+                    <Ionicons name={item.icon} size={36} color="#FFFFFF" />
+                  </View>
+                  <Text style={styles.menuTitle}>{item.title}</Text>
+                </TouchableOpacity>
+              ))}
+              {pair.length === 1 && <View style={styles.emptyCard} />}
+            </View>
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>
