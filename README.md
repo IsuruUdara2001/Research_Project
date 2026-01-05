@@ -206,7 +206,6 @@ This section lists all **system-wide dependencies** and **module-specific depend
 - Firebase Console – Cloud monitoring
 
 
-> *Teammates can fill in pin configs, thresholds, or extra sensors.*
 
 ---
 
