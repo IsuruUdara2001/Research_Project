@@ -49,7 +49,7 @@ export default function Dashboard() {
               <View style={[styles.statusDot, styles.greenDot]} />
               <Text style={styles.statusLabel}>Leaf Load Cells</Text>
             </View>
-            <Text style={styles.statusValue}>3 Active</Text>
+            <Text style={styles.statusValue}>1 Active</Text>
           </View>
 
           <View style={styles.statusItem}>
