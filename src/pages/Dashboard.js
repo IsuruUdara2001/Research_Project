@@ -63,27 +63,20 @@ export default function Dashboard({ navigation }) {
   const quickActions = [
     {
       id: 1,
-      title: "Add Farmer",
-      icon: "person-add",
-      color: "#6B9B8A",
-      route: "FarmerManagement",
-    },
-    {
-      id: 2,
       title: "View Analytics",
       icon: "analytics",
       color: "#66BB6A",
       route: "Analytics",
     },
     {
-      id: 3,
+      id: 2,
       title: "Live Monitor",
       icon: "water",
       color: "#42A5F5",
       route: "LiveHumidity",
     },
     {
-      id: 4,
+      id: 3,
       title: "Reports",
       icon: "document-text",
       color: "#9C27B0",
@@ -244,9 +237,7 @@ export default function Dashboard({ navigation }) {
         {/* Recent Activity */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Recent Activity</Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("FarmerManagement")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Reports")}>
             <Text style={styles.seeAllText}>See All</Text>
           </TouchableOpacity>
         </View>
