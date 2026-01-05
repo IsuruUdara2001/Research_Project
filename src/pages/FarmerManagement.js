@@ -1,29 +1,24 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  Alert,
-  Modal,
-  Platform,
-} from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function FarmerManagement({ navigation }) {
-  const [farmers, setFarmers] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [formData, setFormData] = useState({
-    farmerId: "",
-    farmerName: "",
-    date: new Date(),
-    dailySupply: "",
-  });
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#2C2C2C" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Farmer Management</Text>
+        <View style={styles.placeholder} />
+      </View>
+
+      <View style={styles.center}>
+        <Text style={styles.removedText}>Farmer Management has been removed.</Text>
+        <Text style={styles.infoText}>This feature was removed per your request.</Text>
+      </View>
+    </SafeAreaView>
+  );
 
   const formatDate = (date) => {
     const day = date.getDate().toString().padStart(2, "0");
@@ -339,24 +334,22 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 24,
   },
-  addButton: {
-    backgroundColor: "#6B9B8A",
-    flexDirection: "row",
+  center: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 14,
-    borderRadius: 12,
-    marginBottom: 24,
-    shadowColor: "#6B9B8A",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 4,
+    padding: 24,
   },
-  addButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#FFFFFF",
+  removedText: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#2C2C2C",
+    marginBottom: 8,
+  },
+  infoText: {
+    fontSize: 14,
+    color: "#6B6B6B",
+    textAlign: "center",
   },
   emptyState: {
     alignItems: "center",
