@@ -9,41 +9,66 @@ export default function ActiveBatches() {
 
   // 🔥 Fetch active batches from backend
 
-   useEffect(() => {
-    const loadBatchesWithPrediction = async () => {
-      try {
-        const res = await fetch("http://192.168.244.112:8000/api/activeBatches");
-        const data = await res.json();
+  useEffect(() => {
+  const dummyBatches = [
+    {
+      id: "BATCH-001",
+      startTime: "09:30 AM",
+      status: "Processing",
+      statusColor: "#f59e0b",
+      isProcessing: true,
+      totalWeight: 520,
 
-        console.log("🔥 Active Batches:", data);
+      predictedOutput: 130,
+      expectedYield: 25,
 
-       const formatted = data.map(b => ({
-  id: b.id,
-  startTime: new Date(b.startTime + "Z").toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  }),
-  status: b.status,
-  statusColor: b.isProcessing ? "#f59e0b" : "#10b981",
-  collections: b.collections || [],
-  totalWeight: b.totalWeight,
+      collections: [
+        {
+          farmer_name: "Kamal",
+          leaf_weight: 120,
+          time: "09:10 AM",
+        },
+        {
+          farmer_name: "Nimal",
+          leaf_weight: 200,
+          time: "09:15 AM",
+        },
+        {
+          farmer_name: "Sunil",
+          leaf_weight: 200,
+          time: "09:20 AM",
+        },
+      ],
+    },
+    {
+      id: "BATCH-002",
+      startTime: "10:15 AM",
+      status: "Ready",
+      statusColor: "#10b981",
+      isProcessing: false,
+      totalWeight: 450,
 
-  // ✅ READ FROM DB
-  predictedOutput: b.predictedOutput,
-  expectedYield: b.expectedYield,
+      predictedOutput: 110,
+      expectedYield: 24.4,
 
-  isProcessing: b.isProcessing,
-}));
+      collections: [
+        {
+          farmer_name: "Amara",
+          leaf_weight: 150,
+          time: "10:00 AM",
+        },
+        {
+          farmer_name: "Ruwan",
+          leaf_weight: 300,
+          time: "10:05 AM",
+        },
+      ],
+    },
+  ];
 
+  setBatches(dummyBatches);
+}, []);
 
-        setBatches(formatted);
-      } catch (err) {
-        console.error("❌ Error loading batches:", err);
-      }
-    };
-
-    loadBatchesWithPrediction();
-  }, []);
 
   const handleSetReady = async (batch) => {
   try {
