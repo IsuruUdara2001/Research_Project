@@ -52,8 +52,37 @@ const fetchCollections = () => {
  
 
   useEffect(() => {
-    fetchCollections();
-  }, []);
+  setCollections([
+    {
+      id: 1,
+      name: "Kamal Perera",
+      location: "Badulla",
+      weight: 120,
+      time: "Jan 5, 09:45 AM",
+      initial: "K",
+      color: "#10b981",
+    },
+    {
+      id: 2,
+      name: "Nimal Silva",
+      location: "Haputale",
+      weight: 95,
+      time: "Jan 5, 10:10 AM",
+      initial: "N",
+      color: "#10b981",
+    },
+    {
+      id: 3,
+      name: "Sunil Fernando",
+      location: "Bandarawela",
+      weight: 150,
+      time: "Jan 5, 10:30 AM",
+      initial: "S",
+      color: "#10b981",
+    },
+  ]);
+}, []);
+
 
   
   // UI Logic
@@ -156,7 +185,7 @@ const openManualEntry = () => {
   // Prepare payload
   const payload = {
     farmer_id: newFarmerID.trim(),       // only farmer ID
-    leaf_weight: Number(iotWeight), // ✅ IoT weight  // leaf weight as number
+    leaf_weight: Number(iotWeight), //  IoT weight  // leaf weight as number
   };
 
   // Send to backend
@@ -208,7 +237,7 @@ const openManualEntry = () => {
             </View>
           </View>
 
-          {/* ✅ Add Manual Entry Button */}
+          {/*  Add Manual Entry Button */}
           <TouchableOpacity style={styles.addManualButton} onPress={openManualEntry}>
             <Text style={styles.addManualButtonText}>➕ Add leaf Entry</Text>
           </TouchableOpacity>
@@ -318,7 +347,7 @@ const openManualEntry = () => {
         </Link>
       </View>
 
-      {/* ✅ Manual Entry Modal */}
+      {/*  Manual Entry Modal */}
       <Modal
         visible={manualModalVisible}
         transparent
@@ -339,7 +368,7 @@ const openManualEntry = () => {
            <TextInput
   style={styles.input}
   value={iotWeight}
-  editable={false}   // 🔒 user cannot edit
+  editable={false}   //  user cannot edit
 />
 
 
