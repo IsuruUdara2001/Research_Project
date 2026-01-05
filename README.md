@@ -9,6 +9,13 @@ To address these challenges, this project proposes a **comprehensive, AI- and Io
 
 ---
 
+## Architecture Diagram
+
+<img width="1105" height="1534" alt="Untitled Diagram346 drawio (2)" src="https://github.com/user-attachments/assets/7fccf2c6-da80-41db-9a2a-f709fa5b89e3" />
+
+
+---
+
 ## Components
 
 ### 1. Smart Pre-Processing Tea Quality Prediction System Using Tea Leaf Images
@@ -333,6 +340,6 @@ This section lists all **programming languages, frameworks, libraries, hardware,
 
 ### Development & Testing Tools
 
-- **Postman** – API testingg  
+- **Postman** – API testing  
 - **VS Code** – Code editor  
 - **Git & GitHub** – Version control  
