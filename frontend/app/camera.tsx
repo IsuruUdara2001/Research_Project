@@ -71,8 +71,8 @@ export default function CameraScreen() {
 
       // 👉 Go to Preprocessing Preview screen with this image
       router.push({
-        pathname: "/preview",
-        params: { uri: photo.uri },
+        pathname: "/identify",
+       params: { imageUri: photo.uri },
       });
     } catch (error) {
       console.warn("Error capturing photo:", error);
@@ -94,7 +94,7 @@ export default function CameraScreen() {
           onPress={handleBack}
           activeOpacity={0.7}
         >
-          <Ionicons name="chevron-back" size={22} color="#ecfdf5" />
+          <Ionicons name="chevron-back" size={22} color="#ececfdff" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Capture Tea Leaf</Text>
         <View style={{ width: 32 }} />
@@ -129,9 +129,9 @@ export default function CameraScreen() {
         {/* Capture button */}
         <View style={styles.bottomBar}>
           <View className="bottomInfo" style={styles.bottomInfo}>
-            <Ionicons name="leaf" size={18} color="#a7f3d0" />
+            <Ionicons name="leaf" size={18} color="#064e3b" />
             <Text style={styles.bottomInfoText}>
-              AI will detect the leaf and extract color, texture and shape
+              AI will detect the tea leaf and extract color, texture and shape
               features.
             </Text>
           </View>
@@ -149,7 +149,7 @@ export default function CameraScreen() {
               ]}
             >
               {isCapturing && (
-                <ActivityIndicator size="small" color="#022c22" />
+                <ActivityIndicator size="small" color="#064e3b" />
               )}
             </View>
           </TouchableOpacity>
