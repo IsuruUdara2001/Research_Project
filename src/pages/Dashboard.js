@@ -91,13 +91,69 @@ export default function Dashboard({ navigation }) {
     activeNow: 38,
   };
 
-  const recentActivity = [
-    { id: 1, farmer: "John Silva", supply: 85, time: "2 mins ago" },
-    { id: 2, farmer: "Kumara Perera", supply: 78, time: "15 mins ago" },
-    { id: 3, farmer: "Nimal Fernando", supply: 65, time: "28 mins ago" },
+  // Recent environmental insights (replaces farmer/weight entries)
+  const recentInsights = [
+    {
+      id: 1,
+      title: "Environment Stable",
+      temp: 24.0,
+      humidity: 65,
+      time: "2 mins ago",
+      status: "success",
+    },
+    {
+      id: 2,
+      title: "High Humidity Warning",
+      temp: 28.5,
+      humidity: 92,
+      time: "15 mins ago",
+      status: "warning",
+    },
+    {
+      id: 3,
+      title: "Premium Zone Detected",
+      temp: 23.5,
+      humidity: 66,
+      time: "28 mins ago",
+      status: "premium",
+    },
   ];
 
   const humidityStatus = getHumidityStatus(currentHumidity);
+
+  /* RecentActivityCard - reusable card for showing environment insights */
+  const RecentActivityCard = ({ item }) => {
+    const getStatusIcon = (status) => {
+      if (status === "success") return "✅";
+      if (status === "warning") return "⚠";
+      if (status === "premium") return "⭐";
+      return "ℹ️";
+    };
+
+    const bgColor =
+      item.status === "success"
+        ? "#E8F5E9"
+        : item.status === "warning"
+        ? "#FFF3E0"
+        : "#E8F5FF";
+
+    return (
+      <View style={styles.activityItem}>
+        <View style={[styles.activityIconContainer, { backgroundColor: bgColor }]}>
+          <Text style={styles.statusEmoji}>{getStatusIcon(item.status)}</Text>
+        </View>
+
+        <View style={styles.activityInfo}>
+          <Text style={styles.activityTitle}>{item.title}</Text>
+          <Text style={styles.activitySubtitle}>{`${item.temp}°C | ${item.humidity}% RH`}</Text>
+        </View>
+
+        <View style={styles.activityTimeWrap}>
+          <Text style={styles.activityTime}>{item.time}</Text>
+        </View>
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -234,7 +290,7 @@ export default function Dashboard({ navigation }) {
           ))}
         </View>
 
-        {/* Recent Activity */}
+        {/* Recent Activity (Environmental Insights) */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Recent Activity</Text>
           <TouchableOpacity onPress={() => navigation.navigate("Reports")}>
@@ -243,28 +299,10 @@ export default function Dashboard({ navigation }) {
         </View>
 
         <View style={styles.activityCard}>
-          {recentActivity.map((activity, index) => (
-            <View key={activity.id}>
-              <View style={styles.activityItem}>
-                <View style={styles.activityIconContainer}>
-                  <Ionicons
-                    name="person-circle-outline"
-                    size={40}
-                    color="#6B9B8A"
-                  />
-                </View>
-                <View style={styles.activityInfo}>
-                  <Text style={styles.activityFarmer}>{activity.farmer}</Text>
-                  <Text style={styles.activityTime}>{activity.time}</Text>
-                </View>
-                <View style={styles.activitySupply}>
-                  <Text style={styles.activitySupplyValue}>
-                    {activity.supply} kg
-                  </Text>
-                  <Ionicons name="checkmark-circle" size={16} color="#66BB6A" />
-                </View>
-              </View>
-              {index < recentActivity.length - 1 && (
+          {recentInsights.map((insight, index) => (
+            <View key={insight.id}>
+              <RecentActivityCard item={insight} />
+              {index < recentInsights.length - 1 && (
                 <View style={styles.activityDivider} />
               )}
             </View>
@@ -382,7 +420,6 @@ const styles = StyleSheet.create({
   },
   weatherContainer: {
     flexDirection: "row",
-    gap: 12,
     marginBottom: 16,
   },
   weatherCard: {
@@ -392,7 +429,7 @@ const styles = StyleSheet.create({
     padding: 16,
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    marginRight: 12,
   },
   weatherIconContainer: {
     width: 40,
@@ -420,7 +457,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 12,
     borderRadius: 12,
-    gap: 10,
     marginBottom: 24,
   },
   statusAlertText: {
@@ -451,7 +487,7 @@ const styles = StyleSheet.create({
   statsGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 12,
+    // replaced `gap` with margin on children for React Native compatibility
     marginBottom: 24,
   },
   statCard: {
@@ -486,7 +522,6 @@ const styles = StyleSheet.create({
   quickActionsGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 12,
     marginBottom: 24,
   },
   quickActionCard: {
@@ -497,6 +532,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#E5E5E5",
+    marginRight: 12,
   },
   quickActionIcon: {
     width: 56,
@@ -531,19 +567,29 @@ const styles = StyleSheet.create({
   activityInfo: {
     flex: 1,
   },
-  activityFarmer: {
+  activityTitle: {
     fontSize: 14,
     fontWeight: "600",
     color: "#2C2C2C",
     marginBottom: 2,
   },
+  activitySubtitle: {
+    fontSize: 12,
+    color: "#7A8A80",
+  },
   activityTime: {
     fontSize: 12,
     color: "#7A8A80",
   },
+  activityTimeWrap: {
+    alignItems: "flex-end",
+  },
+  statusEmoji: {
+    fontSize: 26,
+  },
   activitySupply: {
     alignItems: "flex-end",
-    gap: 4,
+    // replaced `gap` with margins where needed
   },
   activitySupplyValue: {
     fontSize: 16,
@@ -601,13 +647,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 4,
-    gap: 8,
+    // spacing between icon/text handled via text margin
   },
   reportButtonText: {
     fontSize: 16,
     fontWeight: "600",
     color: "#FFFFFF",
-
+    marginHorizontal: 8,
     textAlign: "center",
   },
 });
