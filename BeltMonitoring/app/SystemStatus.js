@@ -64,6 +64,7 @@ export default function SystemStatus() {
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
+                {/* Title moved to top */}
                 <Text style={[styles.title, { fontSize: titleSize }]}>
                     System Status
                 </Text>
@@ -136,13 +137,14 @@ const styles = StyleSheet.create({
     },
     scrollContent: {
         paddingBottom: 30,
+        paddingTop: 20,
     },
     title: {
         textAlign: "center",
         fontWeight: "700",
         color: COLORS.text,
-        marginBottom: 20,
         marginTop: 20,
+        marginBottom: 20,
     },
     loadingText: {
         marginTop: 10,
