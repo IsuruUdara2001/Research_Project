@@ -19,21 +19,21 @@ export default function HistoryPage() {
   const historyItems = [
     {
       id: "1",
-      uri: "https://picsum.photos/200/300",
+      uri: "https://images.pexels.com/photos/16886315/pexels-photo-16886315.jpeg",
       grade: "Premium",
       confidence: 93,
       date: "2025-02-01 10:25 AM",
     },
     {
       id: "2",
-      uri: "https://picsum.photos/200/301",
+      uri: "https://images.pexels.com/photos/16886315/pexels-photo-16886315.jpeg",
       grade: "High",
       confidence: 87,
       date: "2025-01-30 04:10 PM",
     },
     {
       id: "3",
-      uri: "https://picsum.photos/200/302",
+      uri: "https://images.pexels.com/photos/16886315/pexels-photo-16886315.jpeg",
       grade: "Medium",
       confidence: 74,
       date: "2025-01-29 09:12 AM",
