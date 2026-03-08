@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { API_ENDPOINTS } from "../config/apiConfig";
+import { ref, onValue, query, limitToLast } from "firebase/database";
+import { database } from "../config/firebaseConfig";
 
 export default function LiveHumidity({ navigation }) {
   const [currentHumidity, setCurrentHumidity] = useState(65);
@@ -48,33 +50,45 @@ export default function LiveHumidity({ navigation }) {
   };
 
   useEffect(() => {
-    // Initial fetch
-    fetchLiveData();
+    // Reference to the specific device in weather_data
+    const weatherRef = query(
+      ref(database, 'weather_data/6C:C8:40:8B:49:DC'),
+      limitToLast(1)
+    );
 
-    // Set interval for real-time updates every 5 seconds
-    const interval = setInterval(() => {
-      fetchLiveData();
-      
-      // Keeping your original status update logic for visual feedback
-      const newHumidity = Math.floor(Math.random() * (80 - 60 + 1)) + 60;
-      const newTemp = Math.floor(Math.random() * (28 - 22 + 1)) + 22;
-      setCurrentHumidity(newHumidity);
-      setCurrentTemperature(newTemp);
-    }, 5000);
+    // Set up real-time listener
+    const unsubscribe = onValue(weatherRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        // Since limitToLast(1) returns an object with a random key as the root,
+        // we take the first value inside it.
+        const latestEntryKey = Object.keys(data)[0];
+        const latestData = data[latestEntryKey];
+        
+        if (latestData.humidity !== undefined) {
+          setCurrentHumidity(Math.round(latestData.humidity));
+        }
+        if (latestData.temperature !== undefined) {
+          setCurrentTemperature(latestData.temperature);
+        }
+        setLastUpdated(new Date());
+      } else {
+        console.log("No data available");
+      }
+    }, (error) => {
+      console.error("Firebase Realtime Database Error:", error);
+    });
 
-    return () => clearInterval(interval);
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
-    fetchLiveData().then(() => {
-      const newHumidity = Math.floor(Math.random() * (80 - 60 + 1)) + 60;
-      const newTemp = Math.floor(Math.random() * (28 - 22 + 1)) + 22;
-      setCurrentHumidity(newHumidity);
-      setCurrentTemperature(newTemp);
-      setLastUpdated(new Date());
+    // Since Firebase maintains a persistent connection, this is just for UI feedback
+    setTimeout(() => {
       setRefreshing(false);
-    });
+    }, 1000);
   };
 
   const getHumidityStatus = (humidity) => {
@@ -159,7 +173,7 @@ export default function LiveHumidity({ navigation }) {
             />
             <Text style={styles.infoTitle}>Current Temperature</Text>
           </View>
-          <Text style={styles.infoValue}>{currentTemperature}°C</Text>
+          <Text style={styles.infoValue}>{Number(currentTemperature).toFixed(2)}°C</Text>
         </View>
 
         <View style={styles.guideCard}>
