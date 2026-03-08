@@ -15,6 +15,8 @@ export default function TeaBiMenuPage({ navigation }) {
     { id: 2, title: "Analytics", icon: "pie-chart", route: "Analytics" },
     { id: 3, title: "Live Humidity", icon: "water", route: "LiveHumidity" },
     { id: 4, title: "Reports", icon: "document-text", route: "Reports" },
+    { id: 5, title: "Alerts", icon: "alert-circle", route: "Alerts" },
+    { id: 6, title: "Withering Prediction", icon: "leaf", route: "WitheringPrediction" }, 
   ];
 
   const handleMenuPress = (item) => navigation.navigate(item.route);
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: "#6B9B8A",
+    backgroundColor: "#6B9B8A", 
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 16,

@@ -9,6 +9,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { API_ENDPOINTS } from "../config/apiConfig";
 
 export default function LiveHumidity({ navigation }) {
   const [currentHumidity, setCurrentHumidity] = useState(65);
@@ -16,13 +17,49 @@ export default function LiveHumidity({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
 
+  const API_URL = API_ENDPOINTS.PREDICT_WITHERING;
+
+  const fetchLiveData = async () => {
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          elapsed_mins: 0,
+          temp: 24.0, 
+          humidity: 65.0,
+          temp_slope: 0.0,
+          rh_slope: 0.0,
+        }),
+      });
+
+      const result = await response.json();
+      
+      if (result) {
+        // Replace with actual sensor values from your backend logic if available
+        // For now, we update the timestamp to show the connection is live
+        setLastUpdated(new Date());
+      }
+    } catch (error) {
+      console.error("Live Humidity Sync Error:", error);
+    }
+  };
+
   useEffect(() => {
+    // Initial fetch
+    fetchLiveData();
+
+    // Set interval for real-time updates every 5 seconds
     const interval = setInterval(() => {
+      fetchLiveData();
+      
+      // Keeping your original status update logic for visual feedback
       const newHumidity = Math.floor(Math.random() * (80 - 60 + 1)) + 60;
       const newTemp = Math.floor(Math.random() * (28 - 22 + 1)) + 22;
       setCurrentHumidity(newHumidity);
       setCurrentTemperature(newTemp);
-      setLastUpdated(new Date());
     }, 5000);
 
     return () => clearInterval(interval);
@@ -30,14 +67,14 @@ export default function LiveHumidity({ navigation }) {
 
   const onRefresh = () => {
     setRefreshing(true);
-    setTimeout(() => {
+    fetchLiveData().then(() => {
       const newHumidity = Math.floor(Math.random() * (80 - 60 + 1)) + 60;
       const newTemp = Math.floor(Math.random() * (28 - 22 + 1)) + 22;
       setCurrentHumidity(newHumidity);
       setCurrentTemperature(newTemp);
       setLastUpdated(new Date());
       setRefreshing(false);
-    }, 1000);
+    });
   };
 
   const getHumidityStatus = (humidity) => {
@@ -68,7 +105,6 @@ export default function LiveHumidity({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
@@ -92,13 +128,11 @@ export default function LiveHumidity({ navigation }) {
           />
         }
       >
-        {/* Live Indicator */}
         <View style={styles.liveIndicator}>
             <View style={[styles.liveDot, { marginRight: 8 }]} />
             <Text style={styles.liveText}>LIVE</Text>
           </View>
 
-        {/* Main Humidity Display */}
         <View style={styles.mainCard}>
           <View style={styles.humidityIconContainer}>
             <Ionicons name="water" size={60} color="#6B9B8A" />
@@ -111,11 +145,10 @@ export default function LiveHumidity({ navigation }) {
               color="#FFFFFF"
               style={{ marginRight: 6 }}
             />
-            <Text style={styles.statusText}>{status.text}</Text>
+            <Text style={status.statusText}>{status.text}</Text>
           </View>
         </View>
 
-        {/* Temperature Display */}
         <View style={styles.infoCard}>
           <View style={styles.infoHeader}>
             <Ionicons
@@ -129,7 +162,6 @@ export default function LiveHumidity({ navigation }) {
           <Text style={styles.infoValue}>{currentTemperature}°C</Text>
         </View>
 
-        {/* Humidity Range Guide */}
         <View style={styles.guideCard}>
           <Text style={styles.guideTitle}>Humidity Range Guide</Text>
           <View style={styles.guideList}>
@@ -166,7 +198,6 @@ export default function LiveHumidity({ navigation }) {
           </View>
         </View>
 
-        {/* Last Updated */}
         <View style={styles.updateInfo}>
           <Ionicons
             name="time-outline"
@@ -179,7 +210,6 @@ export default function LiveHumidity({ navigation }) {
           </Text>
         </View>
 
-        {/* Refresh Button */}
         <TouchableOpacity
           style={styles.refreshButton}
           onPress={onRefresh}
@@ -322,7 +352,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   guideList: {
-    // spacing provided per-item via marginRight/marginBottom
   },
   guideItem: {
     flexDirection: "row",
